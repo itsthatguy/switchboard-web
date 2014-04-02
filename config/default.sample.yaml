@@ -1,0 +1,4 @@
+nick: "vikinghug"
+server: "irc.twitch.tv"
+password: "oauth:abcdefghijklmnop" # http://twitchapps.com/tmi
+channel: "#vikinghug"
