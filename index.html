@@ -4,18 +4,54 @@
   <title>Node IRC Client</title>
   <link rel="stylesheet" type="text/css" href="./.generated/css/main.css">
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="/vendor/jquery/dist/jquery.js"></script>
 </head>
 <body>
 
-<div id="chat"></div>
-<input id="input" type="text"/>
+
+<div id="chat">
+  <div data-template="chatline">
+    <p><span class="time">11:20:20</span> - <span class="nickname">Stadl0r:</span> <span class="message">Message Test</span></p>
+  </div>
+  <p><span class="time">11:20:20</span> - <span class="nickname">Vikinghugs:</span> Message Test</p>
+
+</div>
+<input id="input" type="text"/ placeholder="Enter Message or / Command" >
 
 <script>
+
+  var init = function() {
+    $chatlineTemplate = $('#chat').find("[data-template='chatline']").clone();
+    $("#chat").empty();
+  }
+
+  var addMessage = function(user, message) {
+    console.log("ADD MESSAGE");
+    $el = $chatlineTemplate.clone();
+    currentTime = new Date().getTime() / 1000;
+    $el.find('.time').html(currentTime);
+    $el.find('.nickname').html(user);
+    $el.find('.message').html(message);
+    $("#chat").append($el);
+  }
+
+
   var socket = io.connect('http://localhost:3002');
-  socket.on('news', function (data) {
-    console.log(data);
+  socket.on('message', function (data) {
+    addMessage(data.user, data.message);
     socket.emit('my other event', { my: 'data' });
   });
+
+  $("#input").on("keypress", function (event) {
+    if (event.keyCode == 13) {
+      message = $(this).val();
+      $(this).val('');
+      socket.emit("message", {message: message});
+      addMessage("vikinghug-node", message);
+    }
+  });
+
+  init();
 </script>
 </body>
 </html>
