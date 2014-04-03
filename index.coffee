@@ -8,7 +8,6 @@ users = {}
 
 client = new irc.Client config.server, config.nick,
   channels: ["#{config.channel}"]
-  password: config.password
 
 
 client.addListener "message", (from, to, message) ->
@@ -40,4 +39,5 @@ r.context.say = (msg) ->
   client.say config.channel, msg
   return
 
+r.context.client = client
 r.context.users = users
