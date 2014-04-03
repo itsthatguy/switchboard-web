@@ -11,22 +11,29 @@ client = new irc.Client config.server, config.nick,
 
 
 client.addListener "message", (from, to, message) ->
-  console.log from + " => " + to + ": " + message
+  console.log "MESSAGE: #{from} => #{to} : #{message}"
   return
 
 client.addListener "names#{config.channel}", (nicks) ->
   for key, value of nicks
-    console.log key, value
+    console.log "NAMES: #{key} : #{value}"
     users[key] = value
   console.log users
 
 client.addListener "join#{config.channel}", (nick, message) ->
-  console.log nick, message
+  console.log "JOIN: #{nick} : #{message}"
   users[nick] = ''
 
 client.addListener "part#{config.channel}", (nick, message) ->
-  console.log nick, message
+  console.log "PART: #{nick} : #{message}"
   delete users[nick]
+
+client.addListener "registered", (message) ->
+  console.log "REGISTERED: #{message}"
+
+client.addListener "'error'", (message) ->
+  console.log "ERROR: #{message}"
+
 
 
 # REPL
