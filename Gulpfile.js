@@ -4,7 +4,7 @@ var gulp = require('gulp');
 var stylus = require('gulp-stylus');
 
 var paths = {
-  css: ['./app/css/main.styl']
+  css: ['./app/css/**/*.styl']
 };
 
 // Get one .styl file and render
