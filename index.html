@@ -10,10 +10,11 @@
 
 
 <div id="chat">
-  <div data-template="chatline">
-    <p><span class="time">11:20:20</span> - <span class="nickname">Stadl0r:</span> <span class="message">Message Test</span></p>
-  </div>
-  <p><span class="time">11:20:20</span> - <span class="nickname">Vikinghugs:</span> Message Test</p>
+  <ul class="wrapper">
+    <li data-template="chatline">
+      <p><span class="time">11:20:20</span> - <span class="nickname">Stadl0r:</span> <span class="message">Message Test</span></p>
+    </li>
+  </ul>
 
 </div>
 <input id="input" type="text"/ placeholder="Enter Message or / Command" >
@@ -22,7 +23,7 @@
 
   var init = function() {
     $chatlineTemplate = $('#chat').find("[data-template='chatline']").clone();
-    $("#chat").empty();
+    $("#chat > .wrapper").empty();
   }
 
   var addMessage = function(user, message) {
@@ -32,7 +33,8 @@
     $el.find('.time').html(currentTime);
     $el.find('.nickname').html(user);
     $el.find('.message').html(message);
-    $("#chat").append($el);
+    $("#chat > .wrapper").append($el);
+    handleScroll();
   }
 
 
@@ -50,6 +52,16 @@
       addMessage("vikinghug-node", message);
     }
   });
+
+  var scrollTolerance = 15;
+
+  var handleScroll = function() {
+    scrollTo = $('#chat').scrollTop() + $('#chat > .wrapper li:last').outerHeight();
+    scrollCurrent = $('#chat > .wrapper').outerHeight() - $('#chat').outerHeight();
+    if (scrollTo >= scrollCurrent-this.scrollTolerance) {
+      $('#chat').animate({ scrollTop: $('#chat > .wrapper').outerHeight() });
+    }
+  }
 
   init();
 </script>
