@@ -15,7 +15,7 @@
       <p><span class="time">11:20:20</span> - <span class="nickname">Stadl0r:</span> <span class="message">Message Test</span></p>
     </li>
   </ul>
-
+<div id="window"><input id="nick" type="text"/ placeholder="Enter Nickname" ></div>
 </div>
 <input id="input" type="text"/ placeholder="Enter Message or / Command" >
 
@@ -49,7 +49,7 @@
       message = $(this).val();
       $(this).val('');
       socket.emit("message", {message: message});
-      addMessage("vikinghug-node", message);
+      addMessage("Stadl0r", message);
     }
   });
 
@@ -67,3 +67,4 @@
 </script>
 </body>
 </html>
+

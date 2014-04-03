@@ -38,7 +38,7 @@ body {
 
 #input {
   font-family: body-font;
-  position: absolute;
+  position: fixed;
   background: white;
   display: block;
   border: none;
@@ -56,4 +56,31 @@ body {
 #input:focus {
   border-top: 6px solid orange;
   outline: none;
+}
+
+#window {
+  position: relative;
+  background: purple;
+  width: 300px;
+  height: 150px;
+  margin: auto;
+}
+
+#nick {
+  position: absolute;
+  font-family: body-font;
+  background: white;
+  height:40px;
+  top: 37%;
+  left: 10%;
+  padding: 0 15px;
+  width:80%;
+   transition: border .1s ease-in-out;
+  -webkit-transition: border .1s ease-in-out;
+}
+
+#nick:focus {
+  border-top: 6px solid orange;
+  outline:none;
+
 }
