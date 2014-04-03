@@ -7,11 +7,16 @@
     "irc": "^0.3.6",
     "coffee": "0.0.1",
     "js-yaml": "^3.0.2",
-    "config": "^0.4.35"
+    "config": "^0.4.35",
+    "stylus": "^0.42.3",
+    "gulp-stylus": "^0.1.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.6.0"
+  }
 }
