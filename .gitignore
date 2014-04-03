@@ -26,4 +26,4 @@ node_modules
 
 config/default.yaml
 
-generated/
+.generated/
