@@ -3,10 +3,19 @@
 <head>
   <title>Node IRC Client</title>
   <link rel="stylesheet" type="text/css" href="./.generated/css/main.css">
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 </head>
 <body>
 
-<p>Hello Brub!</p>
+<div id="chat"></div>
+<input id="input" type="text"/>
 
+<script>
+  var socket = io.connect('http://localhost:3002');
+  socket.on('news', function (data) {
+    console.log(data);
+    socket.emit('my other event', { my: 'data' });
+  });
+</script>
 </body>
 </html>

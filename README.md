@@ -3,16 +3,16 @@
 name to be determined
 
 
-# Run the local server (for designing)
+## Run the local server (for designing)
 
 ```bash
-DEBUG=send node lib/dev.js
+npm start
 ```
 
 Point your browsering devices to: `http://localhost:3002/`
 
 
-# Run gulp to monitor changes to files
+## Run gulp to monitor changes to files
 
 
 ```bash
