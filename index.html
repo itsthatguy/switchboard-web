@@ -10,8 +10,9 @@
 
 
 <div id="chat">
-
-  <p><span class="time">11:20:20</span> - <span class="nickname">Stadl0r:</span> Message Test</p>
+  <div data-template="chatline">
+    <p><span class="time">11:20:20</span> - <span class="nickname">Stadl0r:</span> <span class="message">Message Test</span></p>
+  </div>
   <p><span class="time">11:20:20</span> - <span class="nickname">Vikinghugs:</span> Message Test</p>
 
 </div>
@@ -19,9 +20,19 @@
 
 <script>
 
+  var init = function() {
+    $chatlineTemplate = $('#chat').find("[data-template='chatline']").clone();
+    $("#chat").empty();
+  }
+
   var addMessage = function(user, message) {
     console.log("ADD MESSAGE");
-    $("#chat").append("<div><span class='user'>"+user+"</span><span class='message'>"+message+"</span></div>");
+    $el = $chatlineTemplate.clone();
+    currentTime = new Date().getTime() / 1000;
+    $el.find('.time').html(currentTime);
+    $el.find('.nickname').html(user);
+    $el.find('.message').html(message);
+    $("#chat").append($el);
   }
 
 
@@ -34,10 +45,13 @@
   $("#input").on("keypress", function (event) {
     if (event.keyCode == 13) {
       message = $(this).val();
+      $(this).val('');
       socket.emit("message", {message: message});
       addMessage("vikinghug-node", message);
     }
   });
+
+  init();
 </script>
 </body>
 </html>
