@@ -1,5 +1,5 @@
 
-app     = require("./webserver").app 
+app     = require("./webserver").app
 server  = require("./webserver").server
 
 irc     = require("irc")
