@@ -25,3 +25,5 @@ build/Release
 node_modules
 
 config/default.yaml
+
+generated/
