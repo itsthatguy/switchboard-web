@@ -4,6 +4,7 @@
   <title>Node IRC Client</title>
   <link rel="stylesheet" type="text/css" href="./.generated/css/main.css">
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="/vendor/jquery/dist/jquery.js"></script>
 </head>
 <body>
 
@@ -11,10 +12,25 @@
 <input id="input" type="text"/>
 
 <script>
+
+  var addMessage = function(user, message) {
+    console.log("ADD MESSAGE");
+    $("#chat").append("<div><span class='user'>"+user+"</span><span class='message'>"+message+"</span></div>");
+  }
+
+
   var socket = io.connect('http://localhost:3002');
-  socket.on('news', function (data) {
-    console.log(data);
+  socket.on('message', function (data) {
+    addMessage(data.user, data.message);
     socket.emit('my other event', { my: 'data' });
+  });
+
+  $("#input").on("keypress", function (event) {
+    if (event.keyCode == 13) {
+      message = $(this).val();
+      socket.emit("message", {message: message});
+      addMessage("vikinghug-node", message);
+    }
   });
 </script>
 </body>
