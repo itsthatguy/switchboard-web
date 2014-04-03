@@ -3,6 +3,14 @@
 name to be determined
 
 
+## Getting started
+
+```bash
+npm install coffee-script -g
+npm install
+bower install
+```
+
 ## Run the local server (for designing)
 
 ```bash
