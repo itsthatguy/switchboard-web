@@ -48,3 +48,4 @@ r.context.say = (msg) ->
 
 r.context.client = client
 r.context.users = users
+
