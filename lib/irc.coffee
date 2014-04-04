@@ -49,17 +49,11 @@ destroyListeners = (client) ->
     "error"]
 
 
-sendMessage = (user, message) ->
-  console.log "sendMessage"
-  console.log app.socket?
-  app.socket.emit("message", {user: user, message: message}) if app.socket?
-
 
 createListeners = (client, socket) ->
   client.addListener "message", (from, to, message) ->
     console.log "MESSAGE: #{from} => #{to} : #{message}"
-    sendMessage(from, message)
-  return
+    app.socket.emit("message", {from: from, to: to, message: message}) if app.socket?
 
   client.addListener "names#{config.channel}", (nicks) ->
     for key, value of nicks
@@ -67,11 +61,11 @@ createListeners = (client, socket) ->
       users[key] = value
     console.log users
 
-  client.addListener "join#{config.channel}", (nick, message) ->
+  client.addListener "join", (channel, nick, message) ->
     console.log "JOIN: #{nick} : #{message}"
     users[nick] = ''
 
-  client.addListener "part#{config.channel}", (nick, message) ->
+  client.addListener "part", (channel, nick, reason, message) ->
     console.log "PART: #{nick} : #{message}"
     delete users[nick]
 
@@ -80,6 +74,22 @@ createListeners = (client, socket) ->
 
   client.addListener "error", (message) ->
     console.log "ERROR: #{message}"
+
+  client.addListener '+mode', (channel, from, mode, argument, message) ->
+
+  client.addListener "-mode", (channel, from, mode, argument, message) ->
+
+  client.addListener "raw", (message) ->
+    console.log "raw #{message}"
+    app.socket.emit("raw", {message: message}) if app.socket?
+
+  # client.addListener "", () ->
+  # client.addListener "", () ->
+  # client.addListener "", () ->
+  # client.addListener "", () ->
+  # client.addListener "", () ->
+  # client.addListener "", () ->
+  # client.addListener "", () ->
 
 
 createRepl = (client) ->

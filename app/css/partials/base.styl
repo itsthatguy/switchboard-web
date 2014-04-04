@@ -26,12 +26,15 @@ body {
   bottom: 60px;
   padding: 30px;
 
-  .wrapper {
+  #chat-messages {
     list-style-type: none;
     padding-left: 0;
   }
 
-  .time { color: white; }
+  .time {
+    color: rgba(white, .2);
+    margin-right: 10px;
+  }
   .nickname { color: orange; }
   .message { word-wrap: break-word; }
 }
@@ -59,6 +62,7 @@ body {
 }
 
 #window {
+  display: none;
   position: relative;
   background: purple;
   width: 300px;
@@ -70,17 +74,16 @@ body {
   position: absolute;
   font-family: body-font;
   background: white;
-  height:40px;
+  height: 40px;
   top: 37%;
   left: 10%;
   padding: 0 15px;
-  width:80%;
+  width: 80%;
    transition: border .1s ease-in-out;
   -webkit-transition: border .1s ease-in-out;
 }
 
 #nick:focus {
   border-top: 6px solid orange;
-  outline:none;
-
+  outline: none;
 }

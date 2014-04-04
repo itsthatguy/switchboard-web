@@ -1,69 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Node IRC Client</title>
+  <title>Switchboard</title>
   <link rel="stylesheet" type="text/css" href="./.generated/css/main.css">
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="/vendor/jquery/dist/jquery.js"></script>
 </head>
 <body>
 
-
+<form>
 <div id="chat">
-  <ul class="wrapper">
-    <li data-template="chatline">
-      <p><span class="time">11:20:20</span> - <span class="nickname">Stadl0r:</span> <span class="message">Message Test</span></p>
+  <ul id="chat-messages">
+    <li data-template="message">
+      <p><span class="time">11:20:20</span><span class="nickname">Stadl0r:</span> <span class="message">Message Test</span></p>
     </li>
   </ul>
 <div id="window"><input id="nick" type="text"/ placeholder="Enter Nickname" ></div>
 </div>
 <input id="input" type="text"/ placeholder="Enter Message or / Command" >
+</form>
 
+<script src="./.generated/js/main.js"></script>
 <script>
 
-  var init = function() {
-    $chatlineTemplate = $('#chat').find("[data-template='chatline']").clone();
-    $("#chat > .wrapper").empty();
-  }
+  // var init = function() {
+  //   $chatlineTemplate = $('#chat').find("[data-template='chatline']").clone();
+  //   $("#chat > .wrapper").empty();
+  // }
 
-  var addMessage = function(user, message) {
-    console.log("ADD MESSAGE");
-    $el = $chatlineTemplate.clone();
-    currentTime = new Date().getTime() / 1000;
-    $el.find('.time').html(currentTime);
-    $el.find('.nickname').html(user);
-    $el.find('.message').html(message);
-    $("#chat > .wrapper").append($el);
-    handleScroll();
-  }
+  // var addMessage = function(user, message) {
+  //   console.log("ADD MESSAGE");
+  //   $el = $chatlineTemplate.clone();
+  //   currentTime = new Date().getTime() / 1000;
+  //   $el.find('.time').html(currentTime);
+  //   $el.find('.nickname').html(user);
+  //   $el.find('.message').html(message);
+  //   $("#chat > .wrapper").append($el);
+  //   handleScroll();
+  // }
 
 
-  var socket = io.connect('http://localhost:3002');
-  socket.on('message', function (data) {
-    addMessage(data.user, data.message);
-    socket.emit('my other event', { my: 'data' });
-  });
+  // var socket = io.connect('http://localhost:3002');
+  // socket.on('message', function (data) {
+  //   addMessage(data.user, data.message);
+  //   socket.emit('my other event', { my: 'data' });
+  // });
 
-  $("#input").on("keypress", function (event) {
-    if (event.keyCode == 13) {
-      message = $(this).val();
-      $(this).val('');
-      socket.emit("message", {message: message});
-      addMessage("Stadl0r", message);
-    }
-  });
+  // $("#input").on("keypress", function (event) {
+  //   if (event.keyCode == 13) {
+  //     message = $(this).val();
+  //     $(this).val('');
+  //     socket.emit("message", {message: message});
+  //     addMessage("Stadl0r", message);
+  //   }
+  // });
 
-  var scrollTolerance = 15;
+  // var scrollTolerance = 15;
 
-  var handleScroll = function() {
-    scrollTo = $('#chat').scrollTop() + $('#chat > .wrapper li:last').outerHeight();
-    scrollCurrent = $('#chat > .wrapper').outerHeight() - $('#chat').outerHeight();
-    if (scrollTo >= scrollCurrent-this.scrollTolerance) {
-      $('#chat').animate({ scrollTop: $('#chat > .wrapper').outerHeight() });
-    }
-  }
+  // var handleScroll = function() {
+  //   scrollTo = $('#chat').scrollTop() + $('#chat > .wrapper li:last').outerHeight();
+  //   scrollCurrent = $('#chat > .wrapper').outerHeight() - $('#chat').outerHeight();
+  //   if (scrollTo >= scrollCurrent-this.scrollTolerance) {
+  //     $('#chat').animate({ scrollTop: $('#chat > .wrapper').outerHeight() });
+  //   }
+  // }
 
-  init();
+  // init();
 </script>
 </body>
 </html>
