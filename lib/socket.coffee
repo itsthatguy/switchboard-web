@@ -7,3 +7,10 @@ module.exports = (socket, irc) ->
     console.log "getConnectionData"
     socket.emit("setConnectionData", {nick: irc.nick})
 
+  socket.on "getConnectionData", =>
+    console.log "getConnectionData"
+    socket.emit("setConnectionData", {nick: irc.nick})
+
+  socket.on "setNick", (data) =>
+    console.log "NICK"
+    irc.send("NICK", data.nick)

@@ -68,6 +68,11 @@ class EventHandler
     console.log "getConnectionData"
     @socket.emit("getConnectionData")
 
+
+  setNick: (nick) ->
+    console.log "setNick", nick
+    @socket.emit("setNick", {nick: nick})
+
   # THIS IS FOR DEV ONLY
   clearState: ->
     keys = gapi.hangout.data.getKeys()

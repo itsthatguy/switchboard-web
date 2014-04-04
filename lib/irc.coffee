@@ -41,6 +41,10 @@ ircclient.prototype.setSocket = (socket) ->
 ircclient.prototype.say = (message) ->
   app.client.say("#vikinghug", message)
 
+ircclient.prototype.send = (command, data) ->
+  console.log "ircclient.prototype.send", command, data
+  app.client.send(command, data)
+
 
 destroyListeners = (client) ->
   listeners = [

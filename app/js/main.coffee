@@ -111,6 +111,9 @@ class Main
         message = @$input.val()
         if (message == "/reset")
           EventHandler.clearState()
+        else if (/^\/nick/g.test(message))
+          message = message.replace(/^\/nick\s*/g, "")
+          EventHandler.setNick(message)
         else
           _self.addMessage
             from: "#{from}"
