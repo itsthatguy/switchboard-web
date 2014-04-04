@@ -70,15 +70,15 @@ createListeners = (client, socket) ->
 
   client.addListener "join", (channel, nick, message) ->
     console.log "JOIN: #{nick} : #{message}"
-    users[nick] = ''
+    app.socket.emit("JOIN", {channel, nick, message})
 
   client.addListener "nick", (oldnick, newnick, channels, message) ->
     console.log "NICK: #{oldnick}, #{newnick}:", channels, message
-    app.socket.emit("NICK", oldnick, newnick, channels)
+    app.socket.emit("NICK", {oldnick, newnick, channels, message})
 
   client.addListener "part", (channel, nick, reason, message) ->
     console.log "PART: #{nick} : #{message}"
-    delete users[nick]
+    app.socket.emit("PART", {channel, nick, message})
 
   client.addListener "registered", (message) ->
     console.log "REGISTERED: #{message}"
