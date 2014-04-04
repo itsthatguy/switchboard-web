@@ -26,4 +26,4 @@ Point your browsering devices to: `http://localhost:3002/`
 ```bash
 gulp watch
 ```
-
+Make sure to run before saving any changes or else it will not function properly.
