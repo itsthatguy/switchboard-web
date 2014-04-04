@@ -33,7 +33,7 @@ class Main
   scrollTolerance: 15
 
   user: {
-    name: "{{FAKEDATA}}"
+    nick: "{{FAKEDATA}}"
   }
 
   constructor: ->
@@ -43,7 +43,9 @@ class Main
     @setupEvents()
     @$input.focus()
 
-  setUser: (user) -> @user = user
+  setUser: (user) ->
+    console.log user
+    @user = user
 
   addUsers: (users) ->
     for user in users
@@ -61,7 +63,7 @@ class Main
       $el.attr("data-sid", sid)
       img = if !!user["image"] then user["image"] else './.generated/img/vikinghug-avatar.png'
       $el.find('img').attr("src", img)
-      $el.find('.name').text(user["name"])
+      $el.find('.name').text(user["nick"])
       $el.find('.circle').attr('data-color', @userColor[sid])
 
   removeUsers: (users) ->
@@ -84,6 +86,9 @@ class Main
         @focusInput()
         e.preventDefault()
 
+    $("#modal button").on "click", (e) ->
+      $("#modal").removeClass('open')
+
     @$input.on 'focus', (e) =>
       $('.input-wrapper').addClass('focus')
 
@@ -102,7 +107,7 @@ class Main
     $("form").submit (e) =>
       e.preventDefault()
       if (@$input.val().length > 0)
-        from = @user.name
+        from = @user.nick
         message = @$input.val()
         if (message == "/reset")
           EventHandler.clearState()

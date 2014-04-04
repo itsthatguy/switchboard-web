@@ -21,10 +21,15 @@ class EventHandler
   constructor: (main) ->
     @main = main
     @setupEvents()
+    @getConnectionData()
 
   setupEvents: ->
     @socket.on 'message', (data) =>
       @main.addMessage({from: data.from, message: data.message})
+
+    @socket.on 'setConnectionData', (data) =>
+      console.log data
+      @main.setUser(data)
     # });
 
     # # onApiReady
@@ -58,6 +63,10 @@ class EventHandler
     #   @log "onMessageReceived", event
     #   @log "getParticipantById", @getMessageData(event)
     #   window.main.addMessage(@getMessageData(event))
+
+  getConnectionData: ->
+    console.log "getConnectionData"
+    @socket.emit("getConnectionData")
 
   # THIS IS FOR DEV ONLY
   clearState: ->

@@ -20,10 +20,13 @@ Object.defineProperty app, "socket",
 ircclient = ->
   @client = null
   @socket = null
+  @nick = config.nick
+  @server = config.server
+  @channel = config.channel
 
 ircclient.prototype.start = ->
-  app.client = new irc.Client config.server, config.nick,
-    channels: ["#{config.channel}"]
+  app.client = new irc.Client @server, @nick,
+    channels: ["#{@channel}"]
 
   createListeners(app.client, app.socket)
   createRepl(app.client)
@@ -79,9 +82,9 @@ createListeners = (client, socket) ->
 
   client.addListener "-mode", (channel, from, mode, argument, message) ->
 
-  client.addListener "raw", (message) ->
-    console.log "raw #{message}"
-    app.socket.emit("raw", {message: message}) if app.socket?
+  # client.addListener "raw", (message) ->
+  #   console.log "raw #{message}"
+  #   app.socket.emit("raw", {message: message}) if app.socket?
 
   # client.addListener "", () ->
   # client.addListener "", () ->
