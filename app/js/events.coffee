@@ -31,9 +31,20 @@ class EventHandler
       console.log data
       @main.setUser(data)
 
-    @socket.on 'NICK', (oldnick, newnick, channels) =>
-      console.log oldnick, newnick, channels
-      @main.setNick(newnick)
+    # {channel, nick, message}
+    @socket.on 'PART', (data) =>
+      console.log data.channel, data.nick, data.message
+      @main.addPart(data)
+
+    # {channel, nick, message}
+    @socket.on 'JOIN', (data) =>
+      console.log data.channel, data.nick, data.message
+      @main.addJoin(data)
+
+    # {oldnick, newnick, channels, message}
+    @socket.on 'NICK', (data) =>
+      console.log data.oldnick, data.newnick, data.channels
+      @main.setNick(data)
     # });
 
     # # onApiReady

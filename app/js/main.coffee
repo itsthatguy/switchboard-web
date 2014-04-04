@@ -29,6 +29,8 @@ class Main
 
   $input: $("#input")
 
+  $templates: []
+
   userColor: {}
   scrollTolerance: 15
 
@@ -38,7 +40,9 @@ class Main
 
   constructor: ->
     EventHandler = new events(this)
-    @$chatlineTemplate = $('#chat').find("[data-template='message']").remove()
+    @$templates["message"] = $('#chat').find("[data-template='message']").remove()
+    @$templates["join"] = $('#chat').find("[data-template='join']").remove()
+    @$templates["nick"] = $('#chat').find("[data-template='nick']").remove()
     @shuffleArray()
     @setupEvents()
     @$input.focus()
@@ -47,8 +51,9 @@ class Main
     console.log user
     @user = user
 
-  setNick: (nick) ->
-    @user.nick = nick
+  setNick: (data) ->
+    @user.nick = data.newnick
+    @addNick(data)
 
   addUsers: (users) ->
     for user in users
@@ -125,14 +130,47 @@ class Main
         @$input.val('')
       return false
 
+  getTime: ->
+    return moment().format('h:mm:ss a')
+
+  addPart: (data) ->
+    @log "addPart", data
+    message = "#{data.nick} has left #{data.channel}"
+    @addChannelMessage(message)
+
+  addJoin: (data) ->
+    @log "addJoin", data
+    message = "#{data.nick} has joined #{data.channel}"
+    @addChannelMessage(message)
+
+  addChannelMessage: (message) ->
+    $el = @$templates["join"].clone()
+    currentTime = @getTime()
+    $el.find('.time').html(currentTime)
+    $el.find('.message').html(message)
+    $("#chat-messages").append($el)
+    $('#messages li:first').remove() if $('#messages').find('li').length > 20
+    @handleScroll()
+
+
+  addNick: (data) ->
+    @log "addNick", data
+
+    $el = @$templates["nick"].clone()
+    currentTime = @getTime()
+    $el.find('.time').html(currentTime)
+    $el.find('.message').html("#{data.oldnick} is now known as #{data.newnick}")
+    $("#chat-messages").append($el)
+    $('#messages li:first').remove() if $('#messages').find('li').length > 20
+    @handleScroll()
 
   addMessage: (data) ->
     @log "addMessage", data
     message = @parseMessage(data.message)
     from = data.from
 
-    $el = @$chatlineTemplate.clone()
-    currentTime = moment().format('h:mm:ss a')
+    $el = @$templates["message"].clone()
+    currentTime = @getTime()
     $el.find('.time').html(currentTime)
     $el.find('.nickname').html(from)
     $el.find('.message').html(message)
