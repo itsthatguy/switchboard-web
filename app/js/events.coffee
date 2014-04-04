@@ -30,6 +30,10 @@ class EventHandler
     @socket.on 'setConnectionData', (data) =>
       console.log data
       @main.setUser(data)
+
+    @socket.on 'NICK', (oldnick, newnick, channels) =>
+      console.log oldnick, newnick, channels
+      @main.setNick(newnick)
     # });
 
     # # onApiReady

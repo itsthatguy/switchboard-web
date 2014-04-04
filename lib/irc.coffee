@@ -72,6 +72,10 @@ createListeners = (client, socket) ->
     console.log "JOIN: #{nick} : #{message}"
     users[nick] = ''
 
+  client.addListener "nick", (oldnick, newnick, channels, message) ->
+    console.log "NICK: #{oldnick}, #{newnick}:", channels, message
+    app.socket.emit("NICK", oldnick, newnick, channels)
+
   client.addListener "part", (channel, nick, reason, message) ->
     console.log "PART: #{nick} : #{message}"
     delete users[nick]
@@ -86,9 +90,9 @@ createListeners = (client, socket) ->
 
   client.addListener "-mode", (channel, from, mode, argument, message) ->
 
-  # client.addListener "raw", (message) ->
-  #   console.log "raw #{message}"
-  #   app.socket.emit("raw", {message: message}) if app.socket?
+  client.addListener "raw", (message) ->
+    console.log "raw", message
+    app.socket.emit("raw", {message: message}) if app.socket?
 
   # client.addListener "", () ->
   # client.addListener "", () ->

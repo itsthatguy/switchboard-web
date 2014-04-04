@@ -47,6 +47,9 @@ class Main
     console.log user
     @user = user
 
+  setNick: (nick) ->
+    @user.nick = nick
+
   addUsers: (users) ->
     for user in users
       @addUser(user)

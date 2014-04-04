@@ -13,7 +13,7 @@ class Switchboard
 
   constructor: ->
     @irc = new irc()
-    @app.io = io.listen(server)
+    @app.io = io.listen(server, {log: false})
     @irc.start()
 
     @app.io.sockets.on 'connection', (socket) =>
