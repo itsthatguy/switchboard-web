@@ -3,45 +3,21 @@ IRCBridge = require('./ircbridge')
 
 class Client
   socket: null
-  server: null
-  port: null
-  nick: null
-  channels: []
-  ircbridge: null
+  adapter: null
 
   constructor: (socket) ->
     @socket = socket
 
 
-  connect: (server, port, nick, channels) ->
-    @server = server
-    @port = port
-    @nick = nick
-    @channels = channels if channels?
+  connect: (data) ->
 
-    @ircbridge = new IRCBridge(server, port, nick, channels)
+    @adapter = new IRCBridge(@socket)
+    @adapter.connect(data)
 
-    @ircbridge.irc.addListener "registered", (message) =>
-      connection =
-        server: @server
-        port: @port
-        nick: @nick
-        channels: @channels
-      @socket.emit("CONNECTED", connection)
-
-    @ircbridge.irc.addListener "raw", (message) =>
-      @eventsHandler(message)
+    @socket.on "JOIN", (data) =>
+      @adapter.join(data)
 
     return
-
-  eventsHandler: (message) ->
-    command = message.command
-
-    switch command
-      when "JOIN"
-        @socket.emit "JOIN", {nick: message.nick, channels: message.args}
-      else
-        "poop"
 
 
 
