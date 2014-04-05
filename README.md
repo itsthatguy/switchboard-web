@@ -1,6 +1,4 @@
-# node-irc
-
-name to be determined
+# Switchboard IRC Client
 
 
 ## Getting started
@@ -11,7 +9,7 @@ npm install
 bower install
 ```
 
-## Run the local server (for designing)
+## Run the local server (for accessing the webserver)
 
 ```bash
 npm start
@@ -26,4 +24,4 @@ Point your browsering devices to: `http://localhost:3002/`
 ```bash
 gulp watch
 ```
-
+Make sure to run before saving any changes or else it will not function properly.

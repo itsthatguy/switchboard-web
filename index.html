@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Switchboard</title>
-  <link rel="stylesheet" type="text/css" href="./.generated/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="/vendor/jquery/dist/jquery.js"></script>
 </head>
@@ -21,14 +21,27 @@
       <p><span class="time">11:20:20</span> * <span class="message">Stadl0ris now known as Dummy</span></p>
     </li>
   </ul>
+  <div id="sidebar">
+  <ul id="members">
+      <li data-template="memberlist">
+      <p><span class="nickname">Stadl0r</span></p>
+      </li>
+  </ul>
+  </div>
 </div>
 
-<input id="input" type="text" placeholder="Enter Message or / Command" >
+<input id="input" type="text" placeholder="Enter Message or / Command" ><submit id="send" />
 </form>
 
 
 
 <div id="modal" class="open">
+  <div id="topbar">
+    <div id="logo">
+      <i class="icon-logo"></i>
+      <span>test</span>
+    </div>
+  </div>
   <div class="overlay"></div>
   <div class="panel">
     <input class="nickname" type="text" placeholder="Enter Nickname" >
@@ -36,7 +49,7 @@
   </div>
 </div>
 
-<script src="./.generated/js/main.js"></script>
+<script src="/assets/js/main.js"></script>
 <script>
 
   // var init = function() {
