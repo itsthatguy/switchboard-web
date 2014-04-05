@@ -45,7 +45,6 @@ class Main
     @$templates["nick"] = $('#chat').find("[data-template='nick']").remove()
     @shuffleArray()
     @setupEvents()
-    @$input.focus()
 
   setUser: (user) ->
     console.log user
@@ -95,7 +94,7 @@ class Main
         e.preventDefault()
 
     $("#modal button").on "click", (e) ->
-      $("#modal").removeClass('open')
+      $("form#server-info").submit()
 
     $("#sidebar-members-button").on "mouseover", (e) ->
       $(this).add("#sidebar-members").addClass('open')
@@ -109,16 +108,15 @@ class Main
     @$input.on 'blur', (e) =>
       $('#chat-input-wrapper').removeClass('focus')
 
-
     @$input.on "keyup", (e) =>
       if (e.keyCode == 13 && !e.shiftKey)
-        $("form").submit()
+        $("form#chat").submit()
 
     $('a.button, button').on 'click', (e) => @focusInput()
 
 
     _self = @
-    $("form").submit (e) =>
+    $("form#chat").submit (e) =>
       e.preventDefault()
       if (@$input.val().length > 0)
         from = @user.nick
@@ -135,6 +133,16 @@ class Main
           EventHandler.sendMessage(message)
         @$input.val('')
       return false
+
+
+    $('#modal > input').on "keyup", (e) =>
+      if (e.keyCode == 13 && !e.shiftKey)
+        $("form#server-info").submit()
+
+    $("form#server-info").submit (e) ->
+      e.preventDefault()
+      $("#modal").removeClass('open')
+
 
   getTime: ->
     return moment().format('h:mm:ss a')
