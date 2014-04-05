@@ -30,3 +30,6 @@ node_modules
 config/default.yaml
 
 .generated/
+
+# db
+*.db
