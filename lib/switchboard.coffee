@@ -1,24 +1,27 @@
 
-app     = require("./webserver").app
-server  = require("./webserver").server
-irc     = require("./irc")
-sock    = require("./socket")
-io      = require("socket.io")
+# socketManager = require("./socketmanager")
+
+webserver     = require("./webserver")
+io            = require("socket.io")
+Client        = require("./client")
+
+
+clients = []
 
 class Switchboard
-  app: app
-  server: server
-  socket: null
-  irc: null
+
 
   constructor: ->
-    @irc = new irc()
-    @app.io = io.listen(server, {log: false})
-    @irc.start()
+    socketServer = io.listen(webserver, {log: false})
 
-    @app.io.sockets.on 'connection', (socket) =>
-      console.log "CONNECT"
-      @socket = sock(socket, @irc)
-      @irc.setSocket(socket)
+    socketServer.sockets.on 'connection', (socket) =>
+      socket.emit("HELLO")
+
+      socket.on "CONNECT", (data) ->
+        this.emit("OK")
+        client = new Client(socket)
+        client.connect(data.server, data.port, data.nick, data.channels)
+
+
 
 module.exports = new Switchboard()
