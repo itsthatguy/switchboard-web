@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Switchboard</title>
+  <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="/vendor/jquery/dist/jquery.js"></script>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="account">
+    <i class="icon-user"></i>
+    <span>{{nickname}}</span>
+  </div>
+  <div id="sidebar-members-button" class="light small">
+    <i class="icon-user"></i>
+    <span>42 members</span>
+  </div>
+</div>
+
+<div>
+  <form id="chat">
+  <div>
+    <ul id="chat-messages">
+      <li data-template="message">
+        <p><span class="time">11:20:20</span><span class="nickname">Stadl0r:</span> <span class="message">Message Test</span></p>
+      </li>
+      <li data-template="join">
+        <p><span class="time">11:20:20</span> * <span class="message">Stadl0r has joined #vikinghug</span></p>
+      </li>
+      <li data-template="nick">
+        <p><span class="time">11:20:20</span> * <span class="message">Stadl0r now known as Dummy</span></p>
+      </li>
+    </ul>
+  </div>
+
+  <div id="chat-input-wrapper">
+    <input id="chat-input" type="text" placeholder="Enter Message or / Command" >
+  </div>
+  </form>
+
+  <div id="sidebar-members">
+    <ul>
+      <li data-template="memberlist"> <span class="nickname">Stadl0r</span> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+    </ul>
+  </div>
+</div>
+
+<div id="modal" class="open">
+  <div class="overlay"></div>
+  <div class="panel">
+    <form id="server-info">
+      <input class="server" type="text" placeholder="Enter Server" value="irc.freenode.net">
+      <input class="nickname" type="text" placeholder="Enter Nickname" autofocus>
+      <input class="channel" type="text" placeholder="Enter a Channel" value="#vikinghug">
+      <button>Submit!</button>
+    </form>
+  </div>
+</div>
+
+<script src="/assets/js/main.js"></script>
+<script>
+
+  // var init = function() {
+  //   $chatlineTemplate = $('#chat').find("[data-template='chatline']").clone();
+  //   $("#chat > .wrapper").empty();
+  // }
+
+  // var addMessage = function(user, message) {
+  //   console.log("ADD MESSAGE");
+  //   $el = $chatlineTemplate.clone();
+  //   currentTime = new Date().getTime() / 1000;
+  //   $el.find('.time').html(currentTime);
+  //   $el.find('.nickname').html(user);
+  //   $el.find('.message').html(message);
+  //   $("#chat > .wrapper").append($el);
+  //   handleScroll();
+  // }
+
+
+  // var socket = io.connect('http://localhost:3002');
+  // socket.on('message', function (data) {
+  //   addMessage(data.user, data.message);
+  //   socket.emit('my other event', { my: 'data' });
+  // });
+
+  // $("#input").on("keypress", function (event) {
+  //   if (event.keyCode == 13) {
+  //     message = $(this).val();
+  //     $(this).val('');
+  //     socket.emit("message", {message: message});
+  //     addMessage("Stadl0r", message);
+  //   }
+  // });
+
+  // var scrollTolerance = 15;
+
+  // var handleScroll = function() {
+  //   scrollTo = $('#chat').scrollTop() + $('#chat > .wrapper li:last').outerHeight();
+  //   scrollCurrent = $('#chat > .wrapper').outerHeight() - $('#chat').outerHeight();
+  //   if (scrollTo >= scrollCurrent-this.scrollTolerance) {
+  //     $('#chat').animate({ scrollTop: $('#chat > .wrapper').outerHeight() });
+  //   }
+  // }
+
+  // init();
+</script>
+</body>
+</html>
+
