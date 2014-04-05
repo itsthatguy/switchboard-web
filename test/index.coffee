@@ -85,7 +85,6 @@ describe "When another client joins a channel:", ->
     channels: ["#alsdfkj32dsjkhfab"]
 
   before (done) ->
-
     newClient = io.connect(socketURL, ioOpts)
 
     newClient.on "connect", ->
@@ -97,7 +96,6 @@ describe "When another client joins a channel:", ->
       db.nick = data.nick
       this.removeAllListeners()
       done()
-
 
 
   it "should receive a join message", ->
