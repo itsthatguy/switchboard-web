@@ -86,23 +86,22 @@ describe "When another client joins a channel:", ->
 
   before (done) ->
     newClient = io.connect(socketURL, ioOpts)
-
-    newClient.on "connect", ->
-      this.emit("CONNECT", _ircOpts)
+    newClient.emit("CONNECT", _ircOpts)
 
     client.on "JOIN", (data) ->
-      db.join = true
-      db.channels = data.channels
-      db.nick = data.nick
-      this.removeAllListeners()
-      done()
+      if data.nick != ircOpts.nick
+        db.join = true
+        db.channels = data.channels
+        db.nick = data.nick
+        this.removeAllListeners()
+        done()
 
 
   it "should receive a join message", ->
     db.join.should.be.true
 
   it "should be the user #{_ircOpts.nick}", ->
-    db.join.should.be.true
+    db.nick.should.equal _ircOpts.nick
 
   it "should be one of the following channel(s) #{_ircOpts.channels}", ->
     expect(ircOpts.channels)
