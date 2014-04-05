@@ -9,9 +9,9 @@
 <body>
 
 <div id="topbar">
-  <div class="logo">
-    <i class="icon-tv"></i>
-    <span>Switchboard</span>
+  <div class="account">
+    <i class="icon-user"></i>
+    <span>{{nickname}}</span>
   </div>
   <div id="sidebar-members-button" class="light small">
     <i class="icon-user"></i>
@@ -20,8 +20,8 @@
 </div>
 
 <div>
-  <form>
-  <div id="chat">
+  <form id="chat">
+  <div>
     <ul id="chat-messages">
       <li data-template="message">
         <p><span class="time">11:20:20</span><span class="nickname">Stadl0r:</span> <span class="message">Message Test</span></p>
@@ -92,8 +92,12 @@
 <div id="modal" class="open">
   <div class="overlay"></div>
   <div class="panel">
-    <input class="nickname" type="text" placeholder="Enter Nickname" >
-    <button>Do Eet!</button>
+    <form id="server-info">
+      <input class="server" type="text" placeholder="Enter Server" value="irc.freenode.net">
+      <input class="nickname" type="text" placeholder="Enter Nickname" autofocus>
+      <input class="channel" type="text" placeholder="Enter a Channel" value="#vikinghug">
+      <button>Submit!</button>
+    </form>
   </div>
 </div>
 

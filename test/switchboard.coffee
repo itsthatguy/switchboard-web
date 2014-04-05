@@ -19,6 +19,7 @@ describe "When Switchboard is initialized the client:", ->
 
     client.on "HELLO", ->
       db.hello = true
+      this.removeAllListeners()
       done()
 
   it 'should connect to Switchboard socket server successfully', ->
@@ -32,7 +33,7 @@ ircOpts =
   server: "irc.freenode.net"
   port: "6667"
   nick: "testviking"
-  channels: ["#vikinghug", "#alsdfkj32dsjkhfab"]
+  channels: ["#vikinghug"]
 
 
 
@@ -85,27 +86,31 @@ describe "When another client joins a channel:", ->
     channels: ["#alsdfkj32dsjkhfab"]
 
   before (done) ->
-    newClient = io.connect(socketURL, ioOpts)
+    client.emit("JOIN", {channels: _ircOpts.channels})
 
-    newClient.on "connect", ->
-      this.emit("CONNECT", _ircOpts)
+    newClient = io.connect(socketURL, ioOpts)
+    newClient.emit("CONNECT", _ircOpts)
+
+
 
     client.on "JOIN", (data) ->
-      db.join = true
-      db.channels = data.channels
-      db.nick = data.nick
-      this.removeAllListeners()
-      done()
+      if data.nick != ircOpts.nick
+        db.join = true
+        db.channels = data.channels
+        db.nick = data.nick
+        this.removeAllListeners()
+        done()
+
 
 
   it "should receive a join message", ->
     db.join.should.be.true
 
   it "should be the user #{_ircOpts.nick}", ->
-    db.join.should.be.true
+    db.nick.should.equal _ircOpts.nick
 
   it "should be one of the following channel(s) #{_ircOpts.channels}", ->
-    expect(ircOpts.channels)
+    expect(_ircOpts.channels)
       .to.include.members db.channels
 
 

@@ -17,10 +17,11 @@ class Switchboard
     socketServer.sockets.on 'connection', (socket) =>
       socket.emit("HELLO")
 
+      client = null
       socket.on "CONNECT", (data) ->
         this.emit("OK")
         client = new Client(socket)
-        client.connect(data.server, data.port, data.nick, data.channels)
+        client.connect(data)
 
 
 
