@@ -1,5 +1,5 @@
 --compilers coffee:coffee-script/register
---timeout 10s
+--timeout 20s
 --require should
 --reporter spec
 --ui bdd
