@@ -27,7 +27,7 @@ class Main
     "lime",
     "brown"]
 
-  $input: $("#input")
+  $input: $("#chat-input")
 
   $templates: []
 
@@ -69,7 +69,7 @@ class Main
       $el.animate("margin-left": 0, "margin-right": 0)
       $el.appendTo($('.avatars'))
       $el.attr("data-sid", sid)
-      img = if !!user["image"] then user["image"] else './.generated/img/vikinghug-avatar.png'
+      img = if !!user["image"] then user["image"] else './assets/img/vikinghug-avatar.png'
       $el.find('img').attr("src", img)
       $el.find('.name').text(user["nick"])
       $el.find('.circle').attr('data-color', @userColor[sid])
@@ -97,11 +97,17 @@ class Main
     $("#modal button").on "click", (e) ->
       $("#modal").removeClass('open')
 
+    $("#sidebar-members-button").on "mouseover", (e) ->
+      $(this).add("#sidebar-members").addClass('open')
+
+    $("#sidebar-members").on "mouseleave", (e) ->
+      $(this).add("#sidebar-members-button").removeClass('open')
+
     @$input.on 'focus', (e) =>
-      $('.input-wrapper').addClass('focus')
+      $('#chat-input-wrapper').addClass('focus')
 
     @$input.on 'blur', (e) =>
-      $('.input-wrapper').removeClass('focus')
+      $('#chat-input-wrapper').removeClass('focus')
 
 
     @$input.on "keyup", (e) =>

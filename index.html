@@ -2,31 +2,92 @@
 <html>
 <head>
   <title>Switchboard</title>
-  <link rel="stylesheet" type="text/css" href="./.generated/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="/vendor/jquery/dist/jquery.js"></script>
 </head>
 <body>
 
-<form>
-<div id="chat">
-  <ul id="chat-messages">
-    <li data-template="message">
-      <p><span class="time">11:20:20</span><span class="nickname">Stadl0r:</span> <span class="message">Message Test</span></p>
-    </li>
-    <li data-template="join">
-      <p><span class="time">11:20:20</span> * <span class="message">Stadl0ris has joined #vikinghug</span></p>
-    </li>
-    <li data-template="nick">
-      <p><span class="time">11:20:20</span> * <span class="message">Stadl0ris now known as Dummy</span></p>
-    </li>
-  </ul>
+<div id="topbar">
+  <div class="logo">
+    <i class="icon-tv"></i>
+    <span>Switchboard</span>
+  </div>
+  <div id="sidebar-members-button" class="light small">
+    <i class="icon-user"></i>
+    <span>42 members</span>
+  </div>
 </div>
 
-<input id="input" type="text" placeholder="Enter Message or / Command" >
-</form>
+<div>
+  <form>
+  <div id="chat">
+    <ul id="chat-messages">
+      <li data-template="message">
+        <p><span class="time">11:20:20</span><span class="nickname">Stadl0r:</span> <span class="message">Message Test</span></p>
+      </li>
+      <li data-template="join">
+        <p><span class="time">11:20:20</span> * <span class="message">Stadl0r has joined #vikinghug</span></p>
+      </li>
+      <li data-template="nick">
+        <p><span class="time">11:20:20</span> * <span class="message">Stadl0r now known as Dummy</span></p>
+      </li>
+    </ul>
+  </div>
 
+  <div id="chat-input-wrapper">
+    <input id="chat-input" type="text" placeholder="Enter Message or / Command" >
+  </div>
+  </form>
 
+  <div id="sidebar-members">
+    <ul>
+      <li data-template="memberlist"> <span class="nickname">Stadl0r</span> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+    </ul>
+  </div>
+</div>
 
 <div id="modal" class="open">
   <div class="overlay"></div>
@@ -36,7 +97,7 @@
   </div>
 </div>
 
-<script src="./.generated/js/main.js"></script>
+<script src="/assets/js/main.js"></script>
 <script>
 
   // var init = function() {
