@@ -1,0 +1,34 @@
+
+button {
+  transition: background .2s ease-out,
+              color .2s ease-out,
+              box-shadow .1s  ease-in-out;
+  background: black;
+  box-shadow: inset 0 0 0 white;
+  cursor: pointer;
+  border: none;
+  color: white;
+  font-family: "Source Sans Pro";
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  outline: none;
+  padding: 8px 10px 10px;
+  margin: 0 0 20px;
+
+  &:hover {
+    box-shadow: inset 0 -6px 0 coralred;
+    background: black
+    color: coralred;
+  }
+
+
+  &.light {
+
+  }
+
+  &.small {
+    font-size: 18px;
+  }
+}

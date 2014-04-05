@@ -1,6 +1,4 @@
-# node-irc
-
-name to be determined
+# Switchboard IRC Client
 
 
 ## Getting started
@@ -11,7 +9,7 @@ npm install
 bower install
 ```
 
-## Run the local server (for designing)
+## Run the local server (for accessing the webserver)
 
 ```bash
 npm start

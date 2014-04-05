@@ -1,6 +1,7 @@
 // Gulpfile.js
 // Require the needed packages
 var gulp = require('gulp');
+var clean = require('gulp-clean');
 var stylus = require('gulp-stylus');
 var browserify = require('gulp-browserify');
 var rename = require('gulp-rename');
@@ -63,11 +64,20 @@ gulp.task('assets', function() {
     .pipe(gulp.dest(paths.assetsOutput));
 });
 
+//
+// Clean
+//
+
+gulp.task('clean', function() {
+  gulp.src('./.generated/**/*', {read: false})
+    .pipe(clean());
+});
+
 
 //
 // Watch
 //
-gulp.task('watch', function() {
+gulp.task('watch', ['clean','stylus','coffee','assets'], function() {
   gulp.watch(paths.cssPath, ['stylus']);
   gulp.watch(paths.coffeePath, ['coffee']);
   gulp.watch(paths.assetsPaths, ['assets']);

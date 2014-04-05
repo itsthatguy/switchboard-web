@@ -31,5 +31,5 @@ config/default.yaml
 
 .generated/
 
-# db
+# database
 *.db

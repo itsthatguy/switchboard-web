@@ -3,9 +3,11 @@
   "version": "0.0.0",
   "description": "node irc",
   "main": "index.coffee",
+  "directories": {
+    "test": "test"
+  },
   "dependencies": {
     "irc": "^0.3.6",
-    "coffee": "0.0.1",
     "js-yaml": "^3.0.2",
     "config": "^0.4.35",
     "stylus": "^0.42.3",
@@ -13,10 +15,11 @@
     "express": "^3.5.1",
     "ejs": "^1.0.0",
     "socket.io": "^0.9.16",
-    "gulp-coffee": "^1.4.1"
+    "gulp-coffee": "^1.4.1",
+    "coffee-script": "^1.7.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node_modules/.bin/mocha",
     "start": "coffee index.coffee"
   },
   "author": "",
@@ -26,6 +29,10 @@
     "send": "^0.2.0",
     "gulp-browserify": "^0.5.0",
     "coffeeify": "^0.6.0",
-    "gulp-rename": "^1.2.0"
+    "gulp-rename": "^1.2.0",
+    "mocha": "^1.18.2",
+    "socket.io-client": "^0.9.16",
+    "chai": "^1.9.1",
+    "gulp-clean": "^0.2.4"
   }
 }

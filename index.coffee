@@ -1,1 +1,1 @@
-require("./lib/switchboard")
+Switchboard = require("./lib/switchboard")
