@@ -52,6 +52,14 @@ gulp.task('coffee', function() {
     }))
     .pipe(rename('main.js'))
     .pipe(gulp.dest(paths.coffeeOutput))
+
+  gulp.src('./app/js/app.coffee', { read: false })
+    .pipe(browserify({
+      transform: ['coffeeify'],
+      extensions: ['.coffee']
+    }))
+    .pipe(rename('app.js'))
+    .pipe(gulp.dest(paths.coffeeOutput))
 });
 
 
