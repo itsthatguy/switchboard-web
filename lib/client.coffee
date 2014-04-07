@@ -1,4 +1,4 @@
-IRCBridge = require('./ircbridge')
+IRCBridge = require('./ircadapter')
 
 
 class Client
@@ -18,6 +18,9 @@ class Client
       @adapter.join(data)
 
     return
+
+  disconnect: ->
+    @adapter.disconnect()
 
 
 

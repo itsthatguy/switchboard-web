@@ -24,5 +24,10 @@ class Switchboard
         client.connect(data)
 
 
+      socket.on "DISCONNECT", (data) ->
+        console.log "DISCONNECTING"
+        client.disconnect()
+
+
 
 module.exports = new Switchboard()

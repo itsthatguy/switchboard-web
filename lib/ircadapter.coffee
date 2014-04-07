@@ -1,7 +1,7 @@
 IRC     = require("irc")
 net     = require("net")
 
-class IRCBridge
+class IRCAdapter
   io: null
   socket: null
 
@@ -13,7 +13,7 @@ class IRCBridge
   debug: false
 
   constructor: (socket) ->
-    console.log("IRCBridge") unless @debug?
+    console.log("IRCAdapter") unless @debug?
     @socket = socket
 
   connect: (data) ->
@@ -39,6 +39,9 @@ class IRCBridge
     @io.addListener "raw", (message) =>
       @eventsHandler(message)
 
+  disconnect: -> @io.disconnect()
+
+
   join: (data) ->
     for channel in data.channels
       @io.join(channel)
@@ -53,4 +56,4 @@ class IRCBridge
         "poop"
 
 
-module.exports = IRCBridge
+module.exports = IRCAdapter

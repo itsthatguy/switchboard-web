@@ -9,7 +9,7 @@ module.exports = App = Ember.Application.create
   ###
   name: 'App'
 
-Ember.View.reopen({
+Ember.View.reopen
   init: ->
     this._super()
     self = this
@@ -18,8 +18,8 @@ Ember.View.reopen({
     Em.keys(this).forEach (key) ->
       if (key.substr(0, 5) == 'data-')
         self.get('attributeBindings').pushObject(key)
-})
 
+require './socket.coffee'
 require './routes.coffee'
 require './routes/index.coffee'
 require './controllers/index.coffee'
