@@ -3,10 +3,23 @@ console.log "ApplicationRoute"
 
 App = require '../app.coffee'
 
-
 module.exports = App.ApplicationRoute = Ember.Route.extend
   templateName: "chat"
-  setupController: ->
+  setupController: (controller) ->
+    socket = controller.get('store.socket')
+    console.log "CONTROLLER => ", controller
+    @setupEvents(socket)
+
+  setupEvents: (socket) ->
+    console.log "setupEvents"
+    socket.on "connect", =>
+      console.log "SOCKET: CONNECTED"
+      @controller.init()
+
+    socket.on "MESSAGE", (data) =>
+      console.log "SOCKET: MESSAGE"
+      @controller.addMessage(data)
+
 
   model: ->
     console.log "ApplicationRoute.model"
@@ -24,21 +37,22 @@ module.exports = App.ApplicationRoute = Ember.Route.extend
         parentView: 'application'
 
     connect: ->
+      socket = @get "store.socket"
       console.log "CONNECT"
       ircOpts =
-        server: "irc.freenode.net"
+        server: "server.minmax.me"
         port: "6667"
-        nick: "testviking-client"
-        channels: ["#vikinghug"]
+        nick: "switchboard-test-client"
+        channels: ["#switchboard"]
 
-      App.Socket.emit 'CONNECT', ircOpts
+      socket.emit 'CONNECT', ircOpts
 
       return this.disconnectOutlet
         outlet: 'modal'
         parentView: 'application'
 
     disconnect: ->
+      socket = @get "store.socket"
       console.log "DISCONNECT"
-      App.Socket.emit 'DISCONNECT'
-
+      socket.emit 'DISCONNECT'
 

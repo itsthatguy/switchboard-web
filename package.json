@@ -34,6 +34,7 @@
     "socket.io-client": "^0.9.16",
     "chai": "^1.9.1",
     "gulp-clean": "^0.2.4",
-    "should": "^3.2.0"
+    "should": "^3.2.0",
+    "gulp-util": "^2.2.14"
   }
 }

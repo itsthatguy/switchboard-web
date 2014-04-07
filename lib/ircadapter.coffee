@@ -46,12 +46,21 @@ class IRCAdapter
     for channel in data.channels
       @io.join(channel)
 
-  eventsHandler: (message) ->
-    command = message.command
+  eventsHandler: (data) ->
+    command = data.command
+
+    console.log command
 
     switch command
       when "JOIN"
-        @socket.emit "JOIN", {nick: message.nick, channels: message.args}
+        @socket.emit "JOIN", {nick: data.nick, channels: data.args}
+      when "PRIVMSG"
+        console.log data
+        payload =
+          nick: data.nick
+          message: data.args.splice(1)[0]
+          location: data.args.shift()
+        @socket.emit "MESSAGE", payload
       else
         "poop"
 

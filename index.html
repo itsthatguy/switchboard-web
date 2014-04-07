@@ -42,6 +42,12 @@
   <form id="chat">
     <div>
       <ul id="chat-messages">
+        <li>{{stuff}}</li>
+        {{#each message in messages}}
+          <li>{{{message.from}}} {{{message.message}}}</li>
+        {{else}}
+          <li>Sorry, no messages</li>
+        {{/each}}
       </ul>
     </div>
     <div id="chat-input-wrapper">

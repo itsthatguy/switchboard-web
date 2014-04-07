@@ -1,6 +1,7 @@
 // Gulpfile.js
 // Require the needed packages
 var gulp = require('gulp');
+var gutil = require('gulp-util');
 var clean = require('gulp-clean');
 var stylus = require('gulp-stylus');
 var browserify = require('gulp-browserify');
@@ -54,7 +55,9 @@ gulp.task('default', function () {
 // Get and render all .styl files recursively
 gulp.task('stylus', function () {
   gulp.src(paths.cssInput)
-    .pipe(stylus())
+    .pipe(stylus()
+      .on('error', gutil.log)
+      .on('error', gutil.beep))
     .pipe(gulp.dest(paths.cssOutput));
 });
 
@@ -68,7 +71,9 @@ gulp.task('coffee', function() {
     .pipe(browserify({
       transform: ['coffeeify'],
       extensions: ['.coffee']
-    }))
+    })
+      .on('error', gutil.log)
+      .on('error', gutil.beep))
     .pipe(rename('main.js'))
     .pipe(gulp.dest(paths.coffeeOutput))
 
@@ -76,7 +81,7 @@ gulp.task('coffee', function() {
     .pipe(browserify({
       transform: ['coffeeify'],
       extensions: ['.coffee']
-    }))
+    }).on('error', gutil.log).on('error', gutil.beep))
     .pipe(rename('app.js'))
     .pipe(gulp.dest(paths.coffeeOutput))
 });
@@ -88,6 +93,8 @@ gulp.task('coffee', function() {
 
 gulp.task('assets', function() {
   gulp.src(paths.assetsPaths, {base: paths.assetsBasePath})
+    .on('error', gutil.log)
+    .on('error', gutil.beep)
     .pipe(gulp.dest(paths.assetsOutput));
 });
 
