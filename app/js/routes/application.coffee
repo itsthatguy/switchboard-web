@@ -16,9 +16,10 @@ module.exports = App.ApplicationRoute = Ember.Route.extend
       console.log "SOCKET: CONNECTED"
       controller.init()
 
+    that = this
     socket.on "MESSAGE", (data) =>
-      c4 = this.controllerFor('chat')
-      console.log "SOCKET: MESSAGE", c4
+      console.log "UUUUGHHHH"
+      that.store.push(App.Message, data)
       @send "addMessage", data
 
   actions:

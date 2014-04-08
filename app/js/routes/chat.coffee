@@ -5,7 +5,9 @@ App = require '../app.coffee'
 
 module.exports = App.ChatRoute = Ember.Route.extend
   model: (params, queryParams) ->
-    return this.store.findAll(App.Chat)
+    messages = this.store.find(App.Message, {location: params.location})
+    console.log "messsssssssagggesss", messages
+    return messages
 
   # afterModel: (chats, transition) ->
   #   transition.send "joinChannel", transition.params.location
@@ -17,7 +19,6 @@ module.exports = App.ChatRoute = Ember.Route.extend
   actions: {
     addMessage: (data) ->
       console.log "ChatView.addMessage", data, this.store
-      this.store.push('chat', data)
       return "shapow!"
 
     joinChannel: (channel) ->

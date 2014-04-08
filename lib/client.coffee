@@ -17,6 +17,9 @@ class Client
     @socket.on "JOIN", (data) =>
       @adapter.join(data)
 
+    @socket.on "MESSAGE", (data) =>
+      @adapter.message(data)
+
     return
 
   disconnect: ->

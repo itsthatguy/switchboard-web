@@ -39,11 +39,11 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="chat">
-  <form id="chat">
+  <form id="chat" {{action "sendMessage"}}>
     <div>
       <div id="chat-messages">
         <p>{{stuff}}</p>
-        {{#each messages}}
+        {{#each}}
           <p>{{{nick}}} {{{message}}}</p>
         {{else}}
           <p>Sorry, no messages</p>
@@ -51,7 +51,7 @@
       </div>
     </div>
     <div id="chat-input-wrapper">
-      <input id="chat-input" type="text" placeholder="Enter Message or / Command" >
+      {{view Ember.TextField valueBinding="controller.firstName" id="chat-input" placeholder="Enter Message or / Command"}}
     </div>
   </form>
 </script>

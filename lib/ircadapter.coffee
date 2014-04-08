@@ -46,6 +46,9 @@ class IRCAdapter
     for channel in data.channels
       @io.join(channel)
 
+  message: (data) ->
+    @io.say(data)
+
   eventsHandler: (data) ->
     command = data.command
 

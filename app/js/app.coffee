@@ -12,7 +12,15 @@ module.exports = App = Ember.Application.create
 App.Store = DS.Store.extend
   revision: 12
   adapter: DS.FixtureAdapter.extend
-    queryFixtures: (fixtures, query, type) -> return fixtures
+    queryFixtures: (fixtures, query, type) ->
+      return [] if typeof query isnt "object"
+      hit = Object.keys(query).length
+      fixtures = fixtures.filter (item) ->
+        match = 0
+        for key, val of query
+          match += 1 if item[key] is val
+        if match is hit then true else false
+      return fixtures
   socket: io.connect "http://localhost:3002/"
 
 App.ApplicationAdapter = DS.FixtureAdapter.extend()
