@@ -1,4 +1,3 @@
-require '../../bower_components/ember-data/ember-data.js'
 
 module.exports = App = Ember.Application.create
   ###*
@@ -12,7 +11,11 @@ module.exports = App = Ember.Application.create
 
 App.Store = DS.Store.extend
   revision: 12
+  adapter: DS.FixtureAdapter.extend
+    queryFixtures: (fixtures, query, type) -> return fixtures
   socket: io.connect "http://localhost:3002/"
+
+App.ApplicationAdapter = DS.FixtureAdapter.extend()
 
 Ember.View.reopen
   init: ->
@@ -25,23 +28,12 @@ Ember.View.reopen
         self.get('attributeBindings').pushObject(key)
 
 
-App.Server = {
-  server: "server.minmax.me"
-  port: 6667
-  password: null
-  chats: [
-    {nick: "itsthatguy", message: "oh hai", location: "#switchboard"}
-    {nick: "itsthatguy", message: "oh hai friend", location: "#switchboard"}
-    {nick: "itsthatguy", message: "oh hai", location: "switchboard-tes"}
-  ]
-}
-
 
 # require './socket.coffee'
+require './controllers/index.coffee'
 require './routes.coffee'
 require './routes/index.coffee'
 require './models/index.coffee'
-require './controllers/index.coffee'
 require './views/index.coffee'
 require './components/index.coffee'
 

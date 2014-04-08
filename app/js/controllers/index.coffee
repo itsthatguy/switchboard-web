@@ -1,4 +1,4 @@
 
-require './modal.coffee'
+# require './modal.coffee'
 require './chat.coffee'
-require './application.coffee'
+# require './application.coffee'

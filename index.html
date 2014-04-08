@@ -41,14 +41,14 @@
 <script type="text/x-handlebars" data-template-name="chat">
   <form id="chat">
     <div>
-      <ul id="chat-messages">
-        <li>{{stuff}}</li>
-        {{#each message in messages}}
-          <li>{{{message.from}}} {{{message.message}}}</li>
+      <div id="chat-messages">
+        <p>{{stuff}}</p>
+        {{#each messages}}
+          <p>{{{nick}}} {{{message}}}</p>
         {{else}}
-          <li>Sorry, no messages</li>
+          <p>Sorry, no messages</p>
         {{/each}}
-      </ul>
+      </div>
     </div>
     <div id="chat-input-wrapper">
       <input id="chat-input" type="text" placeholder="Enter Message or / Command" >
@@ -111,6 +111,7 @@
 
 <script src="/vendor/handlebars/handlebars.js"></script>
 <script src="/vendor/ember/ember.js"></script>
+<script src="/vendor/ember-data/ember-data.js"></script>
 <script src="/assets/js/app.js"></script>
 <!-- <script src="/assets/js/main.js"></script> -->
 <script>

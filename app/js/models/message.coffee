@@ -1,11 +1,10 @@
 
 App = require "../app.coffee"
 
-attr = DS.attr
+module.exports = App.Message = DS.Model.extend
+  sentAt: DS.attr('date'),
+  nick: DS.attr('string')
+  message: DS.attr('string')
 
-App.Message = DS.Model.extend
-  type: attr('string')
-  from: attr('string')
-  to: attr('string')
-  message: attr('string')
 
+App.Message.FIXTURES = []

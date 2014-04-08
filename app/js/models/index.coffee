@@ -1,2 +1,2 @@
-require './chat.coffee'
-require './message.coffee'
+require "./chat.coffee"
+require "./message.coffee"
