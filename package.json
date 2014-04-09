@@ -20,7 +20,7 @@
   },
   "scripts": {
     "test": "node_modules/.bin/mocha",
-    "start": "coffee index.coffee"
+    "start": "gulp watch && coffee index.coffee"
   },
   "author": "",
   "license": "ISC",
