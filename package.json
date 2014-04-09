@@ -16,11 +16,12 @@
     "ejs": "^1.0.0",
     "socket.io": "^0.9.16",
     "gulp-coffee": "^1.4.1",
-    "coffee-script": "^1.7.1"
+    "coffee-script": "^1.7.1",
+    "win-spawn": "^2.0.0"
   },
   "scripts": {
     "test": "node_modules/.bin/mocha",
-    "start": "gulp watch && coffee index.coffee"
+    "start": "node start.js"
   },
   "author": "",
   "license": "ISC",
