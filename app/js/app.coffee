@@ -153,3 +153,4 @@ App.ChatTabView = Ember.View.extend
 # require './components/index.coffee'
 
 # window.App = App
+
