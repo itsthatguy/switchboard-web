@@ -4,9 +4,7 @@ var util = require("util");
 var path = require('path');
 var spawn = require('win-spawn');
 
-
-basedir = path.join(__dirname, "node_modules", ".bin");
-
+var basedir = path.join(__dirname, "node_modules", ".bin");
 var commandArray = [];
 
 var die = function(cmd) {
@@ -19,7 +17,6 @@ var die = function(cmd) {
 }
 
 var runCommand = function(command, args) {
-
   var cmd = spawn(path.join(basedir, command), args);
   commandArray.push(cmd);
 
@@ -35,7 +32,6 @@ var runCommand = function(command, args) {
     util.print('Child process exited with code', code, "\n");
     die(cmd);
   });
-
   cmd.on('exit', function(code) {
     util.print('Child process exited with code', code, "\n");
     die(cmd);
