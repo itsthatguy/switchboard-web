@@ -16,12 +16,18 @@ class Switchboard
 
     socketServer.sockets.on 'connection', (socket) =>
       socket.emit("HELLO")
+      console.log "INITIAL CONNECTION", socket
 
       client = null
       socket.on "CONNECT", (data) ->
         this.emit("OK")
         client = new Client(socket)
         client.connect(data)
+
+
+      socket.on "DISCONNECT", (data) ->
+        console.log "DISCONNECTING"
+        client.disconnect()
 
 
 

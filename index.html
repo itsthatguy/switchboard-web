@@ -8,100 +8,131 @@
 </head>
 <body>
 
-<div id="topbar">
-  <div class="account">
-    <i class="icon-user"></i>
-    <span>{{nickname}}</span>
-  </div>
-  <div id="sidebar-members-button" class="light small">
-    <i class="icon-user"></i>
-    <span>42 members</span>
-  </div>
-</div>
+<script type="text/x-handlebars">
 
-<div>
-  <form id="chat">
+  <div class="ember-view">
+  {{render "topbar" topbar}}
   <div>
-    <ul id="chat-messages">
-      <li data-template="message">
-        <p><span class="time">11:20:20</span><span class="nickname">Stadl0r:</span> <span class="message">Message Test</span></p>
-      </li>
-      <li data-template="join">
-        <p><span class="time">11:20:20</span> * <span class="message">Stadl0r has joined #vikinghug</span></p>
-      </li>
-      <li data-template="nick">
-        <p><span class="time">11:20:20</span> * <span class="message">Stadl0r now known as Dummy</span></p>
-      </li>
-    </ul>
+    {{outlet}}
+    {{outlet modal}}
   </div>
 
-  <div id="chat-input-wrapper">
-    <input id="chat-input" type="text" placeholder="Enter Message or / Command" >
-  </div>
-  </form>
+</script>
 
+
+<script type="text/x-handlebars" data-template-name="topbar">
+  <div id="topbar">
+    <div class="account">
+      <i class="icon-user"></i>
+      <span>{{nickname}}</span>
+    </div>
+    <div>
+      {{render "chat-tabs" App.chats}}
+    </div>
+    {{!-- <div>
+      <button {{action "connect"}}>Connect</button>
+      <button {{action "disconnect"}}>Disconnect</button>
+      <button {{action 'openModal' 'modal' model}}>OPEN MODAL</button>
+    </div> --}}
+    <div id="sidebar-members-button" class="light small">
+      <i class="icon-user"></i>
+      <span>42 members</span>
+    </div>
+  </div>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="chat-tabs">
+  {{#each}}
+    {{view App.ChatTabView}}
+  {{else}}
+    <p>No Channels</p>
+  {{/each}}
+  {{ input value=msg id="newChannel" action="joinChannel"}}
+  <button {{action joinChannel}}>Add Channel</button>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="chat-tab">
+  {{#link-to "chat" name}}{{name}}{{/link-to}}
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="chat">
+  <div id="chat">
+    {{#scrolling-div id="chat-messages" update-when=this}}
+      {{#each}}
+        <p>{{{this}}}</p>
+      {{else}}
+        <p>Sorry, no messages</p>
+      {{/each}}
+    {{/scrolling-div}}
+
+    <div id="chat-input-wrapper">
+      {{input action="sendMessage" value=msg id="chat-input" placeholder="Enter Message or / Command"}}
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" id="components/scrolling-div">{{yield}}</script>
+
+<script type="text/x-handlebars" id="components/message">
+  <li data-template="message">
+  <p><span class="time">11:20:20</span><span class="nickname">Stadl0r:</span> <span class="message">Message Test</span></p>
+  </li>
+</script>
+<script type="text/x-handlebars" id="components/join">
+  <li data-template="join">
+    <p><span class="time">11:20:20</span> * <span class="message">Stadl0r has joined #vikinghug</span></p>
+  </li>
+</script>
+<script type="text/x-handlebars" id="components/nick">
+  <li data-template="nick">
+    <p><span class="time">11:20:20</span> * <span class="message">Stadl0r now known as Dummy</span></p>
+  </li>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="sidebar">
   <div id="sidebar-members">
     <ul>
       <li data-template="memberlist"> <span class="nickname">Stadl0r</span> </li>
       <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
     </ul>
   </div>
-</div>
+</script>
 
-<div id="modal" class="open">
-  <div class="overlay"></div>
-  <div class="panel">
+
+<script type="text/x-handlebars" data-template-name="modal">
+    {{#modal-dialog action="close"}}
     <form id="server-info">
+      <div class="close-button" {{action "close"}}>
+        <i class="icon-star"></i>
+      </close>
       <input class="server" type="text" placeholder="Enter Server" value="irc.freenode.net">
       <input class="nickname" type="text" placeholder="Enter Nickname" autofocus>
       <input class="channel" type="text" placeholder="Enter a Channel" value="#vikinghug">
-      <button>Submit!</button>
+      <button {{action "connect"}}>Submit!</button>
     </form>
-  </div>
-</div>
+    {{/modal-dialog}}
+</script>
 
-<script src="/assets/js/main.js"></script>
+
+<script type="text/x-handlebars" id="components/modal-dialog">
+
+  <div id="modal" class="open" >
+    <div class="overlay"></div>
+    <div class="panel">
+      {{yield}}
+    </div>
+  </div>
+
+</script>
+
+<script src="/vendor/handlebars/handlebars.js"></script>
+<script src="/vendor/ember/ember.js"></script>
+<script src="/assets/js/app.js"></script>
+<!-- <script src="/assets/js/main.js"></script> -->
 <script>
 
   // var init = function() {

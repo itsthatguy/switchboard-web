@@ -1,4 +1,4 @@
-events = require("./events.coffee")
+
 moment = require("../../bower_components/momentjs/moment.js")
 
 EventHandler = null

@@ -1,7 +1,7 @@
 IRC     = require("irc")
 net     = require("net")
 
-class IRCBridge
+class IRCAdapter
   io: null
   socket: null
 
@@ -13,7 +13,7 @@ class IRCBridge
   debug: false
 
   constructor: (socket) ->
-    console.log("IRCBridge") unless @debug?
+    console.log("IRCAdapter") unless @debug?
     @socket = socket
 
   connect: (data) ->
@@ -39,18 +39,33 @@ class IRCBridge
     @io.addListener "raw", (message) =>
       @eventsHandler(message)
 
+  disconnect: -> @io.disconnect()
+
+
   join: (data) ->
     for channel in data.channels
       @io.join(channel)
 
-  eventsHandler: (message) ->
-    command = message.command
+  message: (data) ->
+    @io.say(data)
+
+  eventsHandler: (data) ->
+    command = data.command
+
+    console.log command
 
     switch command
       when "JOIN"
-        @socket.emit "JOIN", {nick: message.nick, channels: message.args}
+        @socket.emit "JOIN", {nick: data.nick, channels: data.args}
+      when "PRIVMSG"
+        console.log data
+        payload =
+          nick: data.nick
+          message: data.args.splice(1)[0]
+          location: data.args.shift()
+        @socket.emit "MESSAGE", payload
       else
         "poop"
 
 
-module.exports = IRCBridge
+module.exports = IRCAdapter
