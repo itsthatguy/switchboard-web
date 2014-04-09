@@ -27,10 +27,13 @@
       <span>{{nickname}}</span>
     </div>
     <div>
+      {{render "chat-tabs" App.chats}}
+    </div>
+    {{!-- <div>
       <button {{action "connect"}}>Connect</button>
       <button {{action "disconnect"}}>Disconnect</button>
       <button {{action 'openModal' 'modal' model}}>OPEN MODAL</button>
-    </div>
+    </div> --}}
     <div id="sidebar-members-button" class="light small">
       <i class="icon-user"></i>
       <span>42 members</span>
@@ -38,23 +41,40 @@
   </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="chat">
-  <form id="chat" {{action "sendMessage"}}>
-    <div>
-      <div id="chat-messages">
-        <p>{{stuff}}</p>
-        {{#each}}
-          <p>{{{nick}}} {{{message}}}</p>
-        {{else}}
-          <p>Sorry, no messages</p>
-        {{/each}}
-      </div>
-    </div>
-    <div id="chat-input-wrapper">
-      {{view Ember.TextField valueBinding="controller.firstName" id="chat-input" placeholder="Enter Message or / Command"}}
-    </div>
-  </form>
+
+<script type="text/x-handlebars" data-template-name="chat-tabs">
+  {{#each}}
+    {{view App.ChatTabView}}
+  {{else}}
+    <p>No Channels</p>
+  {{/each}}
+  {{ input value=msg id="newChannel" action="joinChannel"}}
+  <button {{action joinChannel}}>Add Channel</button>
 </script>
+
+
+<script type="text/x-handlebars" data-template-name="chat-tab">
+  {{#link-to "chat" name}}{{name}}{{/link-to}}
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="chat">
+  <div id="chat">
+    {{#scrolling-div id="chat-messages" update-when=this}}
+      {{#each}}
+        <p>{{{this}}}</p>
+      {{else}}
+        <p>Sorry, no messages</p>
+      {{/each}}
+    {{/scrolling-div}}
+
+    <div id="chat-input-wrapper">
+      {{input action="sendMessage" value=msg id="chat-input" placeholder="Enter Message or / Command"}}
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" id="components/scrolling-div">{{yield}}</script>
 
 <script type="text/x-handlebars" id="components/message">
   <li data-template="message">
@@ -111,7 +131,6 @@
 
 <script src="/vendor/handlebars/handlebars.js"></script>
 <script src="/vendor/ember/ember.js"></script>
-<script src="/vendor/ember-data/ember-data.js"></script>
 <script src="/assets/js/app.js"></script>
 <!-- <script src="/assets/js/main.js"></script> -->
 <script>

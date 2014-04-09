@@ -1,10 +1,23 @@
 
 App = require "../app.coffee"
 
-module.exports = App.Chat = DS.Model.extend
-  nick: DS.attr('string')
-  location: DS.attr('string')
-  message: DS.hasMany('App.Message', {async: true})
+# module.exports = App.Chat = DS.Model.extend
+#   nick: DS.attr('string')
+#   location: DS.attr('string')
+#   message: DS.hasMany('App.Message', {async: true})
+
+module.exports = App.ChatsArray = Ember.ArrayProxy.extend
+
+  chats: null
+
+  init: ->
+    @chats = Ember.A()
+
+  joinChat: (name) ->
+    @chats.pushObject(name)
+
+  partChat: (name) ->
+    @chats = chats.without(name)
 
 
 App.Chat.FIXTURES = [
