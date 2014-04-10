@@ -1,4 +1,4 @@
-IRCBridge = require('./ircadapter')
+IRCAdapter = require('./ircadapter')
 
 
 class Clients
@@ -15,9 +15,9 @@ class Clients
     client = @getClient(id)
     if client?
       console.log "CLIENT", client
-      client.adapter = new IRCBridge(socket)
+      client.adapter = new IRCAdapter(socket)
     else
-      client = {id: id, adapter: new IRCBridge(@socket), socket: socket}
+      client = {id: id, adapter: new IRCAdapter(@socket), socket: socket}
       @clients.push(client)
     return client.id
 
@@ -28,7 +28,7 @@ class Clients
         return client
 
   connect: (data) ->
-    @adapter = new IRCBridge(@socket)
+    @adapter = new IRCAdapter(@socket)
     @adapter.connect(data)
 
     @socket.on "JOIN", (data) =>

@@ -5,17 +5,7 @@ webserver     = require("./webserver")
 io            = require("socket.io")
 Clients       = require("./clients")
 parseCookie   = require("express").cookieParser()
-# Datastore     = require('nedb')
 
-
-
-# db = new Datastore({filename: 'db/switchboard.db', autoload: true})
-
-
-sessions = []
-session =
-  socket: undefined
-  client: undefined
 
 class Switchboard
 
@@ -32,7 +22,19 @@ class Switchboard
         console.log "HANDSHAKE <-"
         unless client.adapter?
           console.log "unless client.adapter?"
-          Clients.newClient(socket, data.sid)
+          client = Clients.newClient(socket, data.sid)
+
+        # if we don't have a client
+        # - create new client in clientManager
+
+        # if we have a client but no client adapter
+        # - create a new client adapter
+
+        # if we have a client and a client adapter
+        # - check. cool
+
+        # createSessionEvents(socket, client)
+
 
 
 
@@ -62,7 +64,7 @@ class Switchboard
         # db.findOne({sid: data.sid}, handleData)
 
 
-      createConnectionEvents = ->
+      createConnectionEvents = (socket, client) ->
         socket.emit("OK")
 
         socket.on "CONNECT", (data) ->
