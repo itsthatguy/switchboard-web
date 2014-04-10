@@ -14,27 +14,6 @@ class Switchboard
   constructor: ->
     socketServer = io.listen(webserver, {log: false})
 
-    # socketServer.configure ->
-    #   socketServer.set 'authorization', (handshakeData, callback) =>
-    #     console.log "handshakeData", handshakeData
-    #     session = parseCookie handshakeData, null, (err) =>
-    #       session = db.get(handshakeData.cookies.sid)
-    #       console.log "session: ", session
-    #       if (session?)
-    #         console.log "GOT IT!"
-
-    #       else
-    #         console.log "DON'T GOT IT!"
-    #         sessionData =
-    #           socket: null
-    #           client: null
-
-    #         session = db.set(handshakeData.cookies.sid, sessionData)
-
-    #       callback(null, true)
-    #       return callback(session, true)
-
-
     socketServer.sockets.on 'connection', (socket) =>
       session = null
 
