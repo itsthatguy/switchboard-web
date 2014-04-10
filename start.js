@@ -29,11 +29,7 @@ var runCommand = function(command, args) {
     util.print(data);
   });
   cmd.on('close', function(code) {
-    util.print('Child process exited with code', code, "\n");
-    die(cmd);
-  });
-  cmd.on('exit', function(code) {
-    util.print('Child process exited with code', code, "\n");
+    util.print('Child process exited with code: ', code, "\n");
     die(cmd);
   });
 }

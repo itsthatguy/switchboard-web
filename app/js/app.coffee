@@ -1,8 +1,12 @@
+Cookies = require "../../bower_components/cookies-js/src/cookies.js"
 
 module.exports = window.App = Ember.Application.create()
 
 App.Router.map ->
   @resource "chat", { path: "/chat/:name" }
+
+App.Socket = io.connect "http://localhost:3002/"
+App.Socket.emit 'HANDSHAKE', sid: Cookies.get("sid")
 
 App.ChatsArray = Ember.ArrayProxy.extend
   init: ->
