@@ -15,17 +15,10 @@ bower install
 
 ## Run the local server (for accessing the webserver)
 
+When you run `npm start` the server will automatically precompile any files as they change.
+
 ```bash
 npm start
 ```
 
 Point your browsering devices to: `http://localhost:3002/`
-
-
-## Run gulp to monitor changes to files
-
-
-```bash
-gulp watch
-```
-Make sure to run before saving any changes or else it will not function properly.
