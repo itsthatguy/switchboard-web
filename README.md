@@ -1,5 +1,9 @@
 # Switchboard IRC Client
 
+Early screenshot of design work:
+
+![image](https://cloud.githubusercontent.com/assets/1118006/2670564/69d5a5b4-c0cf-11e3-989b-0c8b296dae90.png)
+
 
 ## Getting started
 
