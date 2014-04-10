@@ -33,3 +33,6 @@ config/default.yaml
 
 # database
 *.db
+
+bower_components
+
