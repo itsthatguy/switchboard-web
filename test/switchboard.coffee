@@ -19,6 +19,9 @@ describe "When Switchboard is initialized the client:", ->
 
     client.on "HELLO", ->
       db.hello = true
+      console.log "HELLO <-"
+      console.log "HANDSHAKE ->"
+      client.emit 'HANDSHAKE', sid: "test"
       this.removeAllListeners()
       done()
 
@@ -42,6 +45,7 @@ describe "When the client tells Switchboard to connect:", ->
   db = {}
 
   before (done) ->
+    console.log "client"
     client.emit("CONNECT", ircOpts)
 
     client.on "OK", ->
