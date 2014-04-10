@@ -5,7 +5,7 @@ webserver     = require("./webserver")
 io            = require("socket.io")
 Client        = require("./client")
 parseCookie   = require("express").cookieParser()
-dirty         = require('dirty');
+dirty         = require('dirty')
 db            = dirty('db/clients.db')
 
 
