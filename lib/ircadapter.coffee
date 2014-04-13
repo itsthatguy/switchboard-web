@@ -1,3 +1,4 @@
+
 IRC     = require("irc")
 net     = require("net")
 
@@ -52,13 +53,11 @@ class IRCAdapter
   eventsHandler: (data) ->
     command = data.command
 
-    console.log command
-
     switch command
       when "JOIN"
         @socket.emit "JOIN", {nick: data.nick, channels: data.args}
       when "PRIVMSG"
-        console.log data
+        # console.log data
         payload =
           nick: data.nick
           message: data.args.splice(1)[0]
