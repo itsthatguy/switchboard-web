@@ -13,38 +13,39 @@
 #   person.image,
 #   person.image.url )
 
+socket = './socket.coffee'
+main = require './main.coffee'
+
 class EventHandler
   logging: true
   main: null
-  socket: io.connect('http://localhost:3002')
 
-  constructor: (main) ->
-    @main = main
+  constructor: ->
     @setupEvents()
     @getConnectionData()
 
   setupEvents: ->
-    @socket.on 'message', (data) =>
-      @main.addMessage({from: data.from, message: data.message})
+    socket.on 'message', (data) =>
+      main.addMessage({from: data.from, message: data.message})
 
-    @socket.on 'setConnectionData', (data) =>
+    socket.on 'setConnectionData', (data) =>
       console.log data
-      @main.setUser(data)
+      main.setUser(data)
 
     # {channel, nick, message}
-    @socket.on 'PART', (data) =>
+    socket.on 'PART', (data) =>
       console.log data.channel, data.nick, data.message
-      @main.addPart(data)
+      main.addPart(data)
 
     # {channel, nick, message}
-    @socket.on 'JOIN', (data) =>
+    socket.on 'JOIN', (data) =>
       console.log data.channel, data.nick, data.message
-      @main.addJoin(data)
+      main.addJoin(data)
 
     # {oldnick, newnick, channels, message}
-    @socket.on 'NICK', (data) =>
+    socket.on 'NICK', (data) =>
       console.log data.oldnick, data.newnick, data.channels
-      @main.setNick(data)
+      main.setNick(data)
     # });
 
     # # onApiReady
@@ -81,12 +82,12 @@ class EventHandler
 
   getConnectionData: ->
     console.log "getConnectionData"
-    @socket.emit("getConnectionData")
+    socket.emit("getConnectionData")
 
 
   setNick: (nick) ->
     console.log "setNick", nick
-    @socket.emit("setNick", {nick: nick})
+    socket.emit("setNick", {nick: nick})
 
   # THIS IS FOR DEV ONLY
   clearState: ->
@@ -118,11 +119,13 @@ class EventHandler
     gapi.hangout.data.setValue("#{sid}", "#{state}")
 
   sendMessage: (message) ->
-    @socket.emit("message", {message: message});
+    socket.emit("message", {message: message});
 
   log: (params...) ->
     console.log(params) if @logging
 
 
   module.exports = EventHandler
+
+
 
