@@ -20,20 +20,24 @@ class Switchboard
       socket.on "HANDSHAKE", (data) ->
         client = {id, adapter} = Clients.getClient(data.sid)
         console.log "HANDSHAKE <-"
-        unless client.adapter?
-          console.log "unless client.adapter?"
-          client = Clients.newClient(socket, data.sid)
 
         # if we don't have a client
         # - create new client in clientManager
+        if not client.adapter?
+          console.log "if we don't have a client"
+          client = Clients.newClient(socket, data.sid)
 
         # if we have a client but no client adapter
         # - create a new client adapter
+        if client.id? and not client.adapter?
+          console.log "if we have a client but no client adapter"
+          client.newClient(socket, data.sid)
 
         # if we have a client and a client adapter
         # - check. cool
+        if client.id? and client.adapter?
+          console.log "if we have a client and a client adapter"
 
-        # createSessionEvents(socket, client)
 
 
 
@@ -64,17 +68,6 @@ class Switchboard
         # db.findOne({sid: data.sid}, handleData)
 
 
-      createConnectionEvents = (socket, client) ->
-        socket.emit("OK")
-
-        socket.on "CONNECT", (data) ->
-          console.log "CONNECT"
-          session.client.connect(data)
-
-
-        socket.on "DISCONNECT", (data) ->
-          console.log "DISCONNECTING"
-          session.client.disconnect()
 
 
 

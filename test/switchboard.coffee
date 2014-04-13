@@ -45,7 +45,6 @@ describe "When the client tells Switchboard to connect:", ->
   db = {}
 
   before (done) ->
-    console.log "client"
     client.emit("CONNECT", ircOpts)
 
     client.on "OK", ->

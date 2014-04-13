@@ -14,30 +14,38 @@ class Clients
   newClient: (socket, id) ->
     client = @getClient(id)
     if client?
-      console.log "CLIENT", client
+      # console.log "CLIENT"
       client.adapter = new IRCAdapter(socket)
     else
-      client = {id: id, adapter: new IRCAdapter(@socket), socket: socket}
+      client = {id: id, adapter: new IRCAdapter(socket), socket: socket}
       @clients.push(client)
+
+    @createClientEvents(socket, client)
     return client.id
+
+  createClientEvents: (socket, client) ->
+    socket.on "CONNECT", (data) =>
+      # console.log "CONNECT <-", data
+      socket.emit("OK")
+      client.adapter.connect(data)
+
+
+    socket.on "DISCONNECT", (data) =>
+      # console.log "DISCONNECTING"
+      client.adapter.disconnect()
+
+
+    socket.on "JOIN", (data) =>
+      client.adapter.join(data)
+
+    socket.on "MESSAGE", (data) =>
+      client.adapter.message(data)
 
   getClient: (id) ->
     for client in @clients
       if client.id == id
-        console.log "FOUND CLIENT"
+        # console.log "FOUND CLIENT"
         return client
-
-  connect: (data) ->
-    @adapter = new IRCAdapter(@socket)
-    @adapter.connect(data)
-
-    @socket.on "JOIN", (data) =>
-      @adapter.join(data)
-
-    @socket.on "MESSAGE", (data) =>
-      @adapter.message(data)
-
-    return
 
   disconnect: ->
     @adapter.disconnect()
