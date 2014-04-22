@@ -41,6 +41,7 @@ class IRCAdapter extends EventEmitter
         port: @port
         nick: @nick
         channels: @channels
+      @socket.emit("CONNECTED", connection)
 
       @shapow()
 
