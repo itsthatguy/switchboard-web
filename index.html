@@ -22,31 +22,30 @@
 
 <script type="text/x-handlebars" data-template-name="topbar">
   <div id="topbar">
-  <div class="server">
-    <i class="icon-lab"></i>
-    <span>{{server}}</span>
-  </div>
-  <div id="sidebar-members-button" class="light small">
-    <i class="icon-user"></i>
-    <span>42</span>
-  </div>
+    <div class="server">
+      <i class="icon-lab"></i>
+      <span>{{server}}</span>
+    </div>
     <div>
       {{render "chat-tabs" App.chats}}
     </div>
-    {{!-- <div>
-      <button {{action "connect"}}>Connect</button>
-      <button {{action "disconnect"}}>Disconnect</button>
-      <button {{action 'openModal' 'modal' model}}>OPEN MODAL</button>
-    </div> --}}
-    <div class="account">
-      <i class="icon-user"></i>
-      <span>{{nickname}}</span>
-    </div>
-    <div id="sidebar-members-button" class="light small">
-      <i class="icon-user"></i>
-      <span>42</span>
+    <div class="right">
+      <div class="account">
+        <span class="indicator"></span>
+        <span>&#123;&#123;nickname&#125;&#125;</span>
+      </div>
+      <div id="sidebar-members-button" class="light small">
+        <i class="icon-user"></i>
+        <span>42</span>
+      </div>
     </div>
   </div>
+
+  {{!-- <div>
+    <button {{action "connect"}}>Connect</button>
+    <button {{action "disconnect"}}>Disconnect</button>
+    <button {{action 'openModal' 'modal' model}}>OPEN MODAL</button>
+  </div> --}}
 </script>
 
 
@@ -57,12 +56,15 @@
     <p>No Channels</p>
   {{/each}}
   {{ input value=msg id="newChannel" action="joinChannel" }}
-  <button {{action joinChannel}}>Add Channel</button>
+  <button {{action joinChannel}}>+</button>
 </script>
 
 
 <script type="text/x-handlebars" data-template-name="chat-tab">
-  {{#link-to "chat" name}}{{name}}{{/link-to}}
+  {{#link-to "chat" name}}
+  <span>{{name}}</span>
+  <span class="notifications-count">{{notifications}}</span>
+  {{/link-to}}
 </script>
 
 
@@ -140,53 +142,7 @@
 <script src="/vendor/handlebars/handlebars.js"></script>
 <script src="/vendor/ember/ember.js"></script>
 <script src="/assets/js/app.js"></script>
-<!-- <script src="/assets/js/main.js"></script> -->
-<script>
 
-  // var init = function() {
-  //   $chatlineTemplate = $('#chat').find("[data-template='chatline']").clone();
-  //   $("#chat > .wrapper").empty();
-  // }
-
-  // var addMessage = function(user, message) {
-  //   console.log("ADD MESSAGE");
-  //   $el = $chatlineTemplate.clone();
-  //   currentTime = new Date().getTime() / 1000;
-  //   $el.find('.time').html(currentTime);
-  //   $el.find('.nickname').html(user);
-  //   $el.find('.message').html(message);
-  //   $("#chat > .wrapper").append($el);
-  //   handleScroll();
-  // }
-
-
-  // var socket = io.connect('http://localhost:3002');
-  // socket.on('message', function (data) {
-  //   addMessage(data.user, data.message);
-  //   socket.emit('my other event', { my: 'data' });
-  // });
-
-  // $("#input").on("keypress", function (event) {
-  //   if (event.keyCode == 13) {
-  //     message = $(this).val();
-  //     $(this).val('');
-  //     socket.emit("message", {message: message});
-  //     addMessage("Stadl0r", message);
-  //   }
-  // });
-
-  // var scrollTolerance = 15;
-
-  // var handleScroll = function() {
-  //   scrollTo = $('#chat').scrollTop() + $('#chat > .wrapper li:last').outerHeight();
-  //   scrollCurrent = $('#chat > .wrapper').outerHeight() - $('#chat').outerHeight();
-  //   if (scrollTo >= scrollCurrent-this.scrollTolerance) {
-  //     $('#chat').animate({ scrollTop: $('#chat > .wrapper').outerHeight() });
-  //   }
-  // }
-
-  // init();
-</script>
 </body>
 </html>
 

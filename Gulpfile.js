@@ -1,11 +1,12 @@
 // Gulpfile.js
 // Require the needed packages
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var clean = require('gulp-clean');
-var stylus = require('gulp-stylus');
+var gulp       = require('gulp');
+var gutil      = require('gulp-util');
+var clean      = require('gulp-clean');
+var stylus     = require('gulp-stylus');
 var browserify = require('gulp-browserify');
-var rename = require('gulp-rename');
+var rename     = require('gulp-rename');
+var livereload = require('gulp-livereload');
 
 var paths = {
   cssPath: ['./app/css/**/*.styl*'],
@@ -58,7 +59,8 @@ gulp.task('stylus', function () {
     .pipe(stylus()
       .on('error', gutil.log)
       .on('error', gutil.beep))
-    .pipe(gulp.dest(paths.cssOutput));
+    .pipe(gulp.dest(paths.cssOutput))
+    .pipe(livereload());
 });
 
 

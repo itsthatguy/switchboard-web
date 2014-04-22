@@ -1,9 +1,7 @@
 Cookies = require "../../bower_components/cookies-js/src/cookies.js"
 
-module.exports = window.App = Ember.Application.create()
 
-App.Router.map ->
-  @resource "chat", { path: "/chat/:name" }
+module.exports = window.App = Ember.Application.create()
 
 App.Socket = io.connect "http://localhost:3002/"
 App.Socket.emit 'HANDSHAKE', sid: Cookies.get("sid")
@@ -31,10 +29,12 @@ App.ChatsArray = Ember.ArrayProxy.extend
     chat = App.chats.findBy("name", data.name)
     unless chat?
       chat = App.chats.addChat(data)
+    chat.set("notifications", null)
     return chat
 
 
   addChat: (data) ->
+    data.notifications = null
     chat = App.MessagesArray.create(data)
     @chats.pushObject(chat)
     return chat
@@ -43,6 +43,7 @@ App.ChatsArray = Ember.ArrayProxy.extend
   addMessage: (data) ->
     console.log data
     chat = App.chats.findBy("name", data.location)
+    chat.set("notifications", chat.notifications + 1)
     chat.pushObject(nick: data.nick, message: data.message)
 
 
@@ -109,7 +110,7 @@ App.ChatsTabsController = Ember.ArrayController.extend
 
 # ChatTabsView
 App.ChatTabsView = Ember.View.extend
-  tagName: 'ul'
+  tagName: 'div'
   classNames: ["chat-tabs-wrapper"]
   controller: App.chats
   templateName: "chat-tabs"
@@ -125,60 +126,13 @@ App.ChatTabsController = Ember.ArrayController.extend
       @set("msg", "")
 
 App.ChatTabView = Ember.View.extend
-  tagName: 'li'
+  tagName: 'div'
   templateName: "chat-tab"
-  classNames: ['active']
+  classNames: ['tab', 'current']
+  current: false
   active: ->
     console.log "bloop"
 
 
 
-
-# module.exports = App = Ember.Application.create
-#   ###*
-#     Name of the application
-
-#     @property name
-#     @type String
-#   ###
-#   name: 'App'
-
-
-# App.Store = DS.Store.extend
-#   revision: 12
-#   adapter: DS.FixtureAdapter.extend
-#     queryFixtures: (fixtures, query, type) ->
-#       return [] if typeof query isnt "object"
-#       hit = Object.keys(query).length
-#       fixtures = fixtures.filter (item) ->
-#         match = 0
-#         for key, val of query
-#           match += 1 if item[key] is val
-#         if match is hit then true else false
-#       return fixtures
-#   socket: io.connect "http://localhost:3002/"
-
-# App.ApplicationAdapter = DS.FixtureAdapter.extend()
-
-# Ember.View.reopen
-#   init: ->
-#     this._super()
-#     self = this
-
-#     # this lets us add data-attributes to handlebars
-#     Em.keys(this).forEach (key) ->
-#       if (key.substr(0, 5) == 'data-')
-#         self.get('attributeBindings').pushObject(key)
-
-
-
-# # require './socket.coffee'
-# require './controllers/index.coffee'
-# require './routes.coffee'
-# require './routes/index.coffee'
-# require './models/index.coffee'
-# require './views/index.coffee'
-# require './components/index.coffee'
-
-# window.App = App
-
+Routes = require './routes.coffee'
