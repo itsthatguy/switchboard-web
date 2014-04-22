@@ -4,14 +4,7 @@ console.log "Routes"
 App = require './app.coffee'
 
 App.Router.map ->
-  # put your routes here
-  @route('home', { path: '/' })
-  # @resource 'pages', ->
-    # @resource 'page', { path: '/:name' }
-
-  # @route('server', { path: '/server' })
-  @resource "chat", { path: '/chat/:location' }
-
+  @resource "chat", { path: "/chat/:name" }
 
 Ember.Route.reopen
   activate: ->

@@ -1,2 +1,3 @@
-require "./chat.coffee"
-require "./message.coffee"
+
+# require './somefile.coffee'
+

@@ -1,3 +1,3 @@
 
-require './message.coffee'
-require './modaldialog.coffee'
+# require './somefile.coffee'
+
