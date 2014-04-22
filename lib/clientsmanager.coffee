@@ -1,5 +1,5 @@
 
-IRCAdapter    = require('./ircadapter')
+IRCAdapter    = require('./adapters/ircadapter')
 
 
 class ClientsManager
