@@ -1,21 +1,43 @@
+#
+# IRCAdapter
+#
+# Interface Method Requirements:
+# - setsocket(socket)
+# - connect(data)
+# - disconnect()
+# - join(data)
+# - message(data)
+#
+# Interface Property Requirements:
+# - id: string
+# - isConnected: boolean
+#
 
-IRC     = require("irc")
-net     = require("net")
+IRC          = require("irc")
+net          = require("net")
+EventEmitter = require('events').EventEmitter
 
-class IRCAdapter
+class IRCAdapter extends EventEmitter
   io: null
   socket: null
+  id: null
 
   server: null
   port: null
   nick: null
   channels: null
+  isConnected: false
 
   debug: false
 
-  constructor: (socket) ->
+  constructor: (socket, id) ->
     console.log("IRCAdapter") unless @debug?
+    @id = id
     @socket = socket
+
+  setSocket: (socket) ->
+    @socket = socket
+
 
   connect: (data) ->
     @server = data.server
@@ -30,6 +52,7 @@ class IRCAdapter
       channels: @channels
 
     @io.addListener "registered", (message) =>
+      console.log "IRCAdapter::<registered>"
       connection =
         server: @server
         port: @port
@@ -37,21 +60,31 @@ class IRCAdapter
         channels: @channels
       @socket.emit("CONNECTED", connection)
 
+      @isConnected = true
+      this.emit "REGISTERED"
+
     @io.addListener "raw", (message) =>
       @eventsHandler(message)
+
 
   disconnect: -> @io.disconnect()
 
 
   join: (data) ->
+    console.log "IRCAdapter::join (data) ->"
+    io = @io
     for channel in data.channels
-      @io.join(channel)
+      io.join(channel)
+
 
   message: (data) ->
-    @io.say(data)
+    console.log "IRCAdapter::message (data) ->", data
+    @io.say(data.channel, data.message)
 
   eventsHandler: (data) ->
     command = data.command
+
+    console.log "COMMAND: ", command
 
     switch command
       when "JOIN"
@@ -65,6 +98,5 @@ class IRCAdapter
         @socket.emit "MESSAGE", payload
       else
         "poop"
-
 
 module.exports = IRCAdapter
