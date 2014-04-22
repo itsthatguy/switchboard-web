@@ -21,6 +21,9 @@ class IRCAdapter extends EventEmitter
     @id = id
     @socket = socket
 
+  setSocket: (socket) ->
+    @socket = socket
+
 
   connect: (data) ->
     @server = data.server

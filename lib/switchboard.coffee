@@ -37,6 +37,7 @@ class Switchboard
         # - check. cool
         else if client.id? and client.adapter?
           console.log "if we have a client and a client adapter"
+          ClientsManager.setSocket(socket, client)
 
 
 

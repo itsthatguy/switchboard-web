@@ -12,6 +12,14 @@ class ClientsManager
 
   constructor: -> return
 
+  setSocket: (socket, client) ->
+    oldSocket = client.adapter.socket
+    @removeClientEvents(oldSocket)
+    client.adapter.setSocket(socket)
+    @createClientEvents(socket, client)
+
+
+
   newClient: (socket, id) ->
     console.log "ClientsManager::newClient (socket, id) ->", id
     client = @getClient(id)
@@ -27,13 +35,31 @@ class ClientsManager
     client.queue = []
     return client
 
+  getClient: (id) ->
+    console.log "ClientsManager::getClient (id) ->", @clients
+    foundClient = { id: null, adapter: null }
+    for client in @clients
+      console.log "@clients => client", id, client.id
+      if client.id == id
+        console.log "FOUND CLIENT"
+        foundClient = client
+      else
+        console.log "UNABLE TO FIND CLIENT"
+    return foundClient
+
+
+  removeClientEvents: (socket) ->
+    socket.removeAllListeners()
+
+
   createClientEvents: (socket, client) ->
     console.log "ClientsManager::createClientEvents (socket, client) ->"
 
     socket.on "CONNECT", (data) =>
-      # console.log "CONNECT <-", data
+      console.log "CONNECT <-", client.adapter.isConnected
       socket.emit("OK")
-      client.adapter.connect(data)
+      if client.adapter.isConnected is false
+        client.adapter.connect(data)
 
     client.adapter.on "REGISTERED", =>
       console.log "> REGISTERED"
@@ -65,16 +91,6 @@ class ClientsManager
       client.adapter[item.fn](item.data)
       delete client["queue"][n]
 
-
-  getClient: (id) ->
-    for client in @clients
-      if client.id == id
-        console.log "FOUND CLIENT"
-      else
-        client.id = null
-        client.adapter = null
-        console.log "UNABLE TO FIND CLIENT"
-      return client
 
   disconnect: ->
     @adapter.disconnect()

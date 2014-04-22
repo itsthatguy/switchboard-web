@@ -8,10 +8,10 @@ App.Router.map ->
 App.Socket = io.connect "http://localhost:3002/"
 App.Socket.emit 'HANDSHAKE', sid: Cookies.get("sid")
 data =
-    server: "irc.freenode.net"
-    port: "6667"
-    nick: "testviking"
-    channels: ["#vikinghug"]
+  server: "irc.freenode.net"
+  port: "6667"
+  nick: "testviking"
+  channels: ["#vikinghug"]
 App.Socket.emit "CONNECT", data
 
 App.ChatsArray = Ember.ArrayProxy.extend
@@ -48,6 +48,11 @@ App.MessagesArray = Ember.ArrayProxy.extend
     @set("content", messages)
 
     @_super()
+
+
+# TopBar model
+App.topbar =
+  server: data.server
 
 
 App.chats = App.ChatsArray.create()

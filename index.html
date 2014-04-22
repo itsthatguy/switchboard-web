@@ -11,7 +11,7 @@
 <script type="text/x-handlebars">
 
   <div class="ember-view">
-  {{render "topbar" topbar}}
+  {{render "topbar" App.topbar}}
   <div>
     {{outlet}}
     {{outlet modal}}
@@ -22,10 +22,14 @@
 
 <script type="text/x-handlebars" data-template-name="topbar">
   <div id="topbar">
-    <div class="account">
-      <i class="icon-user"></i>
-      <span>{{nickname}}</span>
-    </div>
+  <div class="server">
+    <i class="icon-lab"></i>
+    <span>{{server}}</span>
+  </div>
+  <div id="sidebar-members-button" class="light small">
+    <i class="icon-user"></i>
+    <span>42</span>
+  </div>
     <div>
       {{render "chat-tabs" App.chats}}
     </div>
@@ -34,9 +38,13 @@
       <button {{action "disconnect"}}>Disconnect</button>
       <button {{action 'openModal' 'modal' model}}>OPEN MODAL</button>
     </div> --}}
+    <div class="account">
+      <i class="icon-user"></i>
+      <span>{{nickname}}</span>
+    </div>
     <div id="sidebar-members-button" class="light small">
       <i class="icon-user"></i>
-      <span>42 members</span>
+      <span>42</span>
     </div>
   </div>
 </script>
@@ -48,7 +56,7 @@
   {{else}}
     <p>No Channels</p>
   {{/each}}
-  {{ input value=msg id="newChannel" action="joinChannel"}}
+  {{ input value=msg id="newChannel" action="joinChannel" }}
   <button {{action joinChannel}}>Add Channel</button>
 </script>
 
