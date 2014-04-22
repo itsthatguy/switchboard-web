@@ -5,6 +5,7 @@ net     = require("net")
 class IRCAdapter
   io: null
   socket: null
+  id: null
 
   server: null
   port: null
@@ -14,8 +15,9 @@ class IRCAdapter
 
   debug: false
 
-  constructor: (socket) ->
+  constructor: (socket, id) ->
     console.log("IRCAdapter") unless @debug?
+    @id = id
     @socket = socket
 
   connect: (data) ->

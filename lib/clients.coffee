@@ -16,10 +16,10 @@ class Clients
     client = @getClient(id)
     if client.id?
       console.log "CLIENT"
-      client.adapter = new IRCAdapter(socket)
+      client.adapter = new IRCAdapter(socket, id)
     else
       console.log "NO CLIENT", id
-      client = {id: id, adapter: new IRCAdapter(socket), socket: socket}
+      client = {id: id, adapter: new IRCAdapter(socket, id), socket: socket}
       @clients.push(client)
 
     @createClientEvents(socket, client)
@@ -31,6 +31,10 @@ class Clients
       socket.emit("OK")
       client.adapter.connect(data)
 
+    socket.on "CONNECTED", (data) =>
+      console.log "Clients::<CONNECTED>"
+      @releaseQ(data)
+
 
     socket.on "DISCONNECT", (data) =>
       # console.log "DISCONNECTING"
@@ -39,17 +43,17 @@ class Clients
 
     socket.on "JOIN", (data) =>
       command = [client, "join", data]
-      @addQueue(command)
+      @Q(command)
 
     socket.on "MESSAGE", (data) =>
       command = [client, "message", data]
-      @addQueue(command)
+      @Q(command)
 
-  addQueue: (client, fn, data) ->
-    console.log "Clients::addQueue", fn, data
+  Q: (client, fn, data) ->
+    console.log "Clients::Q", fn, data
 
 
-  clearQueue: (client) ->
+  releaseQ: (data) ->
     console.log "Clients::clearQueue"
 
 
