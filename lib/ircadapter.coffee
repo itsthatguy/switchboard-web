@@ -1,8 +1,9 @@
 
-IRC     = require("irc")
-net     = require("net")
+IRC          = require("irc")
+net          = require("net")
+EventEmitter = require('events').EventEmitter
 
-class IRCAdapter
+class IRCAdapter extends EventEmitter
   io: null
   socket: null
   id: null
@@ -20,6 +21,7 @@ class IRCAdapter
     @id = id
     @socket = socket
 
+
   connect: (data) ->
     @server = data.server
     @port = data.port
@@ -33,25 +35,34 @@ class IRCAdapter
       channels: @channels
 
     @io.addListener "registered", (message) =>
+      console.log "IRCAdapter::<registered>"
       connection =
         server: @server
         port: @port
         nick: @nick
         channels: @channels
-      @socket.emit("CONNECTED", connection)
+
+      @shapow()
 
     @io.addListener "raw", (message) =>
       @eventsHandler(message)
 
+
   disconnect: -> @io.disconnect()
 
 
+  shapow: ->
+    console.log "shapow >>>>>"
+    @isConnected = true
+    this.emit "REGISTERED", "hello"
+
+
   join: (data) ->
-    console.log "IRCAdapter::join (data) ->", data
+    console.log "IRCAdapter::join (data) ->"
     io = @io
     for channel in data.channels
-      console.log channel, io
       io.join(channel)
+
 
   message: (data) ->
     console.log "IRCAdapter::message (data) ->", data
@@ -72,6 +83,5 @@ class IRCAdapter
         @socket.emit "MESSAGE", payload
       else
         "poop"
-
 
 module.exports = IRCAdapter

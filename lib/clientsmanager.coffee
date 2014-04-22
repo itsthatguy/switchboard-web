@@ -1,7 +1,8 @@
-IRCAdapter = require('./ircadapter')
+
+IRCAdapter    = require('./ircadapter')
 
 
-class Clients
+class ClientsManager
   adapter: null
   clients: [
     { id: "test", adapter: undefined }
@@ -12,50 +13,53 @@ class Clients
   constructor: -> return
 
   newClient: (socket, id) ->
-    console.log "Clients::newClient (socket, id) ->", id
+    console.log "ClientsManager::newClient (socket, id) ->", id
     client = @getClient(id)
     if client.id?
       console.log "CLIENT"
       client.adapter = new IRCAdapter(socket, id)
     else
       console.log "NO CLIENT", id
-      client = {id: id, adapter: new IRCAdapter(socket, id), socket: socket}
+      client = {id: id, adapter: new IRCAdapter(socket, id)}
       @clients.push(client)
 
     @createClientEvents(socket, client)
+    client.queue = []
     return client
 
   createClientEvents: (socket, client) ->
+    console.log "ClientsManager::createClientEvents (socket, client) ->"
+
     socket.on "CONNECT", (data) =>
       # console.log "CONNECT <-", data
       socket.emit("OK")
       client.adapter.connect(data)
 
-    socket.on "CONNECTED", (data) =>
-      console.log "Clients::<CONNECTED>"
-      @releaseQ(data)
-
+    client.adapter.on "REGISTERED", (data) =>
+      console.log "> REGISTERED"
+      @clearQ(client)
 
     socket.on "DISCONNECT", (data) =>
       # console.log "DISCONNECTING"
       client.adapter.disconnect()
 
-
     socket.on "JOIN", (data) =>
-      command = [client, "join", data]
-      @Q(command)
+      @Q(client, "join", data)
 
     socket.on "MESSAGE", (data) =>
-      command = [client, "message", data]
-      @Q(command)
+      @Q(client, "message", data)
 
   Q: (client, fn, data) ->
-    console.log "Clients::Q", fn, data
+    console.log "ClientsManager::Q", client.id
+    client["queue"].push({fn: fn, data: data})
 
 
-  releaseQ: (data) ->
-    console.log "Clients::clearQueue"
-
+  clearQ: (client) ->
+    console.log "ClientsManager::clearQ"
+    for item, n in client["queue"]
+      console.log ">> ", item, n
+      client.adapter[item.fn](item.data)
+      delete client["queue"][n]
 
 
   getClient: (id) ->
@@ -72,9 +76,4 @@ class Clients
     @adapter.disconnect()
 
 
-
-
-
-
-
-module.exports = new Clients()
+module.exports = new ClientsManager()
