@@ -70,7 +70,7 @@
   <div id="chat">
     {{#scrolling-div id="chat-messages" update-when=this}}
       {{#each}}
-        <p>{{{this}}}</p>
+        <p>{{{this.nick}}}: {{{this.message}}}</p>
       {{else}}
         <p>Sorry, no messages</p>
       {{/each}}

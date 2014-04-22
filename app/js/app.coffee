@@ -14,6 +14,10 @@ data =
   channels: ["#vikinghug"]
 App.Socket.emit "CONNECT", data
 
+App.Socket.on "MESSAGE", (data) ->
+  console.log "MESSAGE: ", data
+  App.chats.addMessage(data)
+
 App.ChatsArray = Ember.ArrayProxy.extend
   init: ->
     @chats = Ember.A()
@@ -37,7 +41,11 @@ App.ChatsArray = Ember.ArrayProxy.extend
 
 
   addMessage: (data) ->
-    console.log "yep"
+    console.log data
+    chat = App.chats.findBy("name", data.location)
+    chat.pushObject(nick: data.nick, message: data.message)
+
+
 
 
 
@@ -68,8 +76,8 @@ App.ChatController = Ember.ArrayController.extend
       channel = this.content.name
       message = this.get("msg")
       console.log "channel: ", channel
-      @pushObject(message)
-      App.Socket.emit("MESSAGE", {message: message, channel: channel});
+      @pushObject(nick: data.nick, message: message)
+      App.Socket.emit("MESSAGE", {message: message, channel: channel})
       @set("msg", "")
 
 # ChatRoute

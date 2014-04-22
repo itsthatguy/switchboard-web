@@ -65,15 +65,11 @@ class ClientsManager
       console.log "> REGISTERED"
       @clearQ(client)
 
-    socket.on "DISCONNECT", (data) =>
-      # console.log "DISCONNECTING"
-      client.adapter.disconnect()
+    socket.on "DISCONNECT", (data) =>  client.adapter.disconnect()
 
-    socket.on "JOIN", (data) =>
-      @Q(client, "join", data)
+    socket.on "JOIN", (data) => @Q(client, "join", data)
 
-    socket.on "MESSAGE", (data) =>
-      @Q(client, "message", data)
+    socket.on "MESSAGE", (data) => @Q(client, "message", data)
 
   Q: (client, fn, data) ->
     console.log "ClientsManager::Q", client.id

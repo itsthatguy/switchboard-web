@@ -84,6 +84,8 @@ class IRCAdapter extends EventEmitter
   eventsHandler: (data) ->
     command = data.command
 
+    console.log "COMMAND: ", command
+
     switch command
       when "JOIN"
         @socket.emit "JOIN", {nick: data.nick, channels: data.args}
