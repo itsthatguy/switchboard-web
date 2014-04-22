@@ -1,3 +1,17 @@
+#
+# IRCAdapter
+#
+# Interface Method Requirements:
+# - setsocket(socket)
+# - connect(data)
+# - disconnect()
+# - join(data)
+# - message(data)
+#
+# Interface Property Requirements:
+# - id: string
+# - isConnected: boolean
+#
 
 IRC          = require("irc")
 net          = require("net")
