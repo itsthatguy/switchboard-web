@@ -51,7 +51,11 @@ class ClientsManager
 
   Q: (client, fn, data) ->
     console.log "ClientsManager::Q", client.id
-    client["queue"].push({fn: fn, data: data})
+    if client.adapter.isConnected is false
+      client["queue"].push({fn: fn, data: data})
+    else
+      client.adapter[fn](data)
+
 
 
   clearQ: (client) ->
