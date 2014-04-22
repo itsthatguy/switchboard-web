@@ -43,6 +43,7 @@ class IRCAdapter extends EventEmitter
         channels: @channels
       @socket.emit("CONNECTED", connection)
 
+      @isConnected = true
       this.emit "REGISTERED"
 
     @io.addListener "raw", (message) =>
