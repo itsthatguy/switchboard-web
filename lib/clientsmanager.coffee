@@ -35,7 +35,7 @@ class ClientsManager
       socket.emit("OK")
       client.adapter.connect(data)
 
-    client.adapter.on "REGISTERED", (data) =>
+    client.adapter.on "REGISTERED", =>
       console.log "> REGISTERED"
       @clearQ(client)
 

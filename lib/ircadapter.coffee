@@ -43,19 +43,13 @@ class IRCAdapter extends EventEmitter
         channels: @channels
       @socket.emit("CONNECTED", connection)
 
-      @shapow()
+      this.emit "REGISTERED"
 
     @io.addListener "raw", (message) =>
       @eventsHandler(message)
 
 
   disconnect: -> @io.disconnect()
-
-
-  shapow: ->
-    console.log "shapow >>>>>"
-    @isConnected = true
-    this.emit "REGISTERED", "hello"
 
 
   join: (data) ->
