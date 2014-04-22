@@ -10,6 +10,7 @@ class IRCAdapter
   port: null
   nick: null
   channels: null
+  isConnected: false
 
   debug: false
 
@@ -44,11 +45,15 @@ class IRCAdapter
 
 
   join: (data) ->
+    console.log "IRCAdapter::join (data) ->", data
+    io = @io
     for channel in data.channels
-      @io.join(channel)
+      console.log channel, io
+      io.join(channel)
 
   message: (data) ->
-    @io.say(data)
+    console.log "IRCAdapter::message (data) ->", data
+    @io.say(data.channel, data.message)
 
   eventsHandler: (data) ->
     command = data.command

@@ -7,6 +7,12 @@ App.Router.map ->
 
 App.Socket = io.connect "http://localhost:3002/"
 App.Socket.emit 'HANDSHAKE', sid: Cookies.get("sid")
+data =
+    server: "irc.freenode.net"
+    port: "6667"
+    nick: "testviking"
+    channels: ["#vikinghug"]
+App.Socket.emit "CONNECT", data
 
 App.ChatsArray = Ember.ArrayProxy.extend
   init: ->
@@ -54,13 +60,18 @@ App.ChatController = Ember.ArrayController.extend
   actions:
     sendMessage: ->
       console.log "ACTIVE", this
-      @pushObject(this.get("msg"))
+      channel = this.content.name
+      message = this.get("msg")
+      console.log "channel: ", channel
+      @pushObject(message)
+      App.Socket.emit("MESSAGE", {message: message, channel: channel});
       @set("msg", "")
 
 # ChatRoute
 App.ChatRoute = Ember.Route.extend
   model: (params, queryParams) ->
     messages = App.chats.joinChat({name: params.name})
+    App.Socket.emit("JOIN", {channels: [params.name]});
     return messages
   render: ->
     $("#new-message").focus()

@@ -23,21 +23,20 @@ class Switchboard
 
         # if we don't have a client
         # - create new client in clientManager
-        if not client.adapter?
-          console.log "if we don't have a client"
+        if not client.id? and not client.adapter?
+          console.log "if we don't have a client id or adapter"
           client = Clients.newClient(socket, data.sid)
 
         # if we have a client but no client adapter
         # - create a new client adapter
-        if client.id? and not client.adapter?
+        else if client.id? and not client.adapter?
           console.log "if we have a client but no client adapter"
-          client.newClient(socket, data.sid)
+          client = Clients.newClient(socket, data.sid)
 
         # if we have a client and a client adapter
         # - check. cool
-        if client.id? and client.adapter?
+        else if client.id? and client.adapter?
           console.log "if we have a client and a client adapter"
-
 
 
 

@@ -12,16 +12,18 @@ class Clients
   constructor: -> return
 
   newClient: (socket, id) ->
+    console.log "Clients::newClient (socket, id) ->", id
     client = @getClient(id)
-    if client?
-      # console.log "CLIENT"
+    if client.id?
+      console.log "CLIENT"
       client.adapter = new IRCAdapter(socket)
     else
+      console.log "NO CLIENT", id
       client = {id: id, adapter: new IRCAdapter(socket), socket: socket}
       @clients.push(client)
 
     @createClientEvents(socket, client)
-    return client.id
+    return client
 
   createClientEvents: (socket, client) ->
     socket.on "CONNECT", (data) =>
@@ -36,16 +38,31 @@ class Clients
 
 
     socket.on "JOIN", (data) =>
-      client.adapter.join(data)
+      command = [client, "join", data]
+      @addQueue(command)
 
     socket.on "MESSAGE", (data) =>
-      client.adapter.message(data)
+      command = [client, "message", data]
+      @addQueue(command)
+
+  addQueue: (client, fn, data) ->
+    console.log "Clients::addQueue", fn, data
+
+
+  clearQueue: (client) ->
+    console.log "Clients::clearQueue"
+
+
 
   getClient: (id) ->
     for client in @clients
       if client.id == id
-        # console.log "FOUND CLIENT"
-        return client
+        console.log "FOUND CLIENT"
+      else
+        client.id = null
+        client.adapter = null
+        console.log "UNABLE TO FIND CLIENT"
+      return client
 
   disconnect: ->
     @adapter.disconnect()
