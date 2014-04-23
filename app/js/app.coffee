@@ -15,7 +15,27 @@ App.Socket.emit "CONNECT", data
 
 App.Socket.on "MESSAGE", (data) ->
   console.log "MESSAGE: ", data
-  App.chats.addMessage(data)
+  App.chats.addMessage(data, "message")
+
+App.Socket.on "NICK", (_data) ->
+  console.log "NICK: ", _data
+
+  oldnick = _data.oldnick
+  newnick = _data.newnick
+  locations = _data.locations
+
+  console.log data.nick, oldnick
+  if oldnick == data.nick
+    oldnick = "You are"
+    data.nick = newnick
+  else
+    oldnick = "#{oldnick} is"
+  _data.message = "#{oldnick} now known as #{newnick}"
+
+  for location in locations
+    _data.location = location
+    console.log _data
+    App.chats.addMessage(_data, "nick")
 
 App.ChatsArray = Ember.ArrayProxy.extend
   init: ->
@@ -41,12 +61,14 @@ App.ChatsArray = Ember.ArrayProxy.extend
     return chat
 
 
-  addMessage: (data) ->
+  addMessage: (data, type) ->
     console.log data
     chat = App.chats.findBy("name", data.location)
     time = moment().format('h:mm:ss a')
     chat.set("notifications", chat.notifications + 1)
-    chat.pushObject(nick: data.nick, message: data.message, time: time)
+    isNick = (type == "nick")
+    isMessage = (type == "message")
+    chat.pushObject(nick: data.nick, message: data.message, time: time, isNick: isNick, isMessage: isMessage)
 
 
 
@@ -81,10 +103,16 @@ App.ChatController = Ember.ArrayController.extend
         nick: data.nick
         message: this.get("msg")
 
-      App.chats.addMessage(data)
 
-      App.Socket.emit("MESSAGE", data)
+      if (/^\/nick/g.test(data.message))
+        nick = data.message.replace(/^\/nick\s*/g, "")
+        App.Socket.emit("SETNICK", {nick: nick})
+      else
+        App.chats.addMessage(data, "message")
+        App.Socket.emit("MESSAGE", data)
+
       @set("msg", "")
+
 
 # ChatRoute
 App.ChatRoute = Ember.Route.extend

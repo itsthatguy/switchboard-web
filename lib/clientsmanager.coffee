@@ -71,6 +71,8 @@ class ClientsManager
 
     socket.on "MESSAGE", (data) => @Q(client, "message", data)
 
+    socket.on "SETNICK", (data) => @Q(client, "setNick", data)
+
   Q: (client, fn, data) ->
     console.log "ClientsManager::Q", client.id
     if client.adapter.isConnected is false

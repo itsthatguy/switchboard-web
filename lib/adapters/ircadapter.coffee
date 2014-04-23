@@ -66,6 +66,14 @@ class IRCAdapter extends EventEmitter
     @io.addListener "raw", (message) =>
       @eventsHandler(message)
 
+    @io.addListener "nick", (oldnick, newnick, channels, message) =>
+      payload =
+        oldnick: oldnick
+        newnick: newnick
+        locations: channels
+        message: message
+      @socket.emit "NICK", payload
+
 
   disconnect: -> @io.disconnect()
 
@@ -76,6 +84,8 @@ class IRCAdapter extends EventEmitter
     for channel in data.channels
       io.join(channel)
 
+  setNick: (data) ->
+    @io.send("NICK", data.nick)
 
   message: (data) ->
     console.log "IRCAdapter::message (data) ->", data
