@@ -109,7 +109,6 @@ App.ChatController = Ember.ArrayController.extend
         nick: data.nick
         message: this.get("msg")
 
-
       if (/^\//g.test(data.message))
         @commandHandler(data)
       else
