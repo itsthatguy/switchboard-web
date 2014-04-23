@@ -78,6 +78,10 @@
         {{#if isNick}}
           {{chat-nick time=this.time message=this.message}}
         {{/if}}
+
+        {{#if isSystem}}
+          {{chat-system time=this.time message=this.message}}
+        {{/if}}
       {{else}}
         <p>Sorry, no messages</p>
       {{/each}}
@@ -93,7 +97,7 @@
 
 <script type="text/x-handlebars" id="components/chat-message">
   <li data-template="message">
-  <p><span class="time">{{time}}</span><span class="nickname">{{nick}}: </span><span class="message">{{{message}}}</span></p>
+  <p><span class="time">{{time}}</span> <span class="nickname">{{nick}}: </span><span class="message">{{{message}}}</span></p>
   </li>
 </script>
 <script type="text/x-handlebars" id="components/chat-join">
@@ -104,6 +108,11 @@
 <script type="text/x-handlebars" id="components/chat-nick">
   <li data-template="nick">
     <p><span class="time">{{this.time}}</span> * <span class="message">{{this.message}}</span></p>
+  </li>
+</script>
+<script type="text/x-handlebars" id="components/chat-system">
+  <li data-template="system">
+    <p><span class="time">{{time}}</span> * <span class="message">{{{message}}}</span></p>
   </li>
 </script>
 

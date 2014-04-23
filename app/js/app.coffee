@@ -22,7 +22,7 @@ App.Socket.on "NICK", (_data) ->
 
   oldnick = _data.oldnick
   newnick = _data.newnick
-  locations = _data.locations
+  channels = _data.channels
 
   console.log data.nick, oldnick
   if oldnick == data.nick
@@ -32,8 +32,8 @@ App.Socket.on "NICK", (_data) ->
     oldnick = "#{oldnick} is"
   _data.message = "#{oldnick} now known as #{newnick}"
 
-  for location in locations
-    _data.location = location
+  for channel in channels
+    _data.channel = channel
     console.log _data
     App.chats.addMessage(_data, "nick")
 
@@ -63,12 +63,18 @@ App.ChatsArray = Ember.ArrayProxy.extend
 
   addMessage: (data, type) ->
     console.log data
-    chat = App.chats.findBy("name", data.location)
-    time = moment().format('h:mm:ss a')
+    chat = App.chats.findBy("name", data.channel)
     chat.set("notifications", chat.notifications + 1)
-    isNick = (type == "nick")
-    isMessage = (type == "message")
-    chat.pushObject(nick: data.nick, message: data.message, time: time, isNick: isNick, isMessage: isMessage)
+
+    payload =
+      nick      : data.nick
+      message   : data.message
+      time      : moment().format('h:mm:ss a')
+      isNick    : (type == "nick")
+      isMessage : (type == "message")
+      isSystem  : (type == "system")
+
+    chat.pushObject(payload)
 
 
 
@@ -99,19 +105,44 @@ App.ChatController = Ember.ArrayController.extend
     sendMessage: ->
       console.log "ACTIVE", this
       data =
-        location: this.content.name
+        channel: this.content.name
         nick: data.nick
         message: this.get("msg")
 
-
-      if (/^\/nick/g.test(data.message))
-        nick = data.message.replace(/^\/nick\s*/g, "")
-        App.Socket.emit("SETNICK", {nick: nick})
+      if (/^\//g.test(data.message))
+        @commandHandler(data)
       else
         App.chats.addMessage(data, "message")
         App.Socket.emit("MESSAGE", data)
 
       @set("msg", "")
+
+  commandHandler: (data) ->
+    console.log "commandHandler", data
+    commandTests =
+      "nickCommand": /^\/nick/g
+      "joinCommand": /^\/join/g
+
+    for command, regexp of commandTests
+      if (regexp.test(data.message))
+        params = data.message.match(/^(?:\w*\/\S+)\s(.*)/)?[1]
+        return @[command](params)
+
+    command = data.message.match(/^(\/\S*)\s*/g)[0]
+    data.message = "Sorry, <strong>#{command}</strong> is not a command that I understand."
+    data.name = App.chats.content[0].name
+    App.chats.addMessage(data, "system")
+    console.log data.message
+
+
+  nickCommand: (params) ->
+    console.log "nickCommand", params
+    App.Socket.emit("SETNICK", {nick: params})
+
+  joinCommand: (params) ->
+    console.log "joinCommand", params
+    App.chats.joinChat({name: params})
+
 
 
 # ChatRoute

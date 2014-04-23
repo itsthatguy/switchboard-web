@@ -70,7 +70,7 @@ class IRCAdapter extends EventEmitter
       payload =
         oldnick: oldnick
         newnick: newnick
-        locations: channels
+        channels: channels
         message: message
       @socket.emit "NICK", payload
 
@@ -89,7 +89,7 @@ class IRCAdapter extends EventEmitter
 
   message: (data) ->
     console.log "IRCAdapter::message (data) ->", data
-    @io.say(data.location, data.message)
+    @io.say(data.channel, data.message)
 
   eventsHandler: (data) ->
     command = data.command
@@ -104,7 +104,7 @@ class IRCAdapter extends EventEmitter
         payload =
           nick: data.nick
           message: data.args.splice(1)[0]
-          location: data.args.shift()
+          channel: data.args.shift()
         @socket.emit "MESSAGE", payload
       else
         "poop"
