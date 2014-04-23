@@ -79,7 +79,7 @@ class IRCAdapter extends EventEmitter
 
   message: (data) ->
     console.log "IRCAdapter::message (data) ->", data
-    @io.say(data.channel, data.message)
+    @io.say(data.location, data.message)
 
   eventsHandler: (data) ->
     command = data.command
