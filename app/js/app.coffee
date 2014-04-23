@@ -129,13 +129,11 @@ App.ChatController = Ember.ArrayController.extend
         params = data.message.match(/^(?:\w*\/\S+)\s(.*)/)?[1]
         return @[command](params)
 
-
     command = data.message.match(/^(\/\S*)\s*/g)[0]
     data.message = "Sorry, <strong>#{command}</strong> is not a command that I understand."
     data.name = App.chats.content[0].name
     App.chats.addMessage(data, "system")
     console.log data.message
-
 
 
   nickCommand: (params) ->
