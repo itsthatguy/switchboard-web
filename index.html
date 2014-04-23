@@ -72,11 +72,12 @@
   <div id="chat">
     {{#scrolling-div id="chat-messages" update-when=this}}
       {{#each}}
-        <p>
-          <span class="time">{{{this.time}}}</span>
-          <span class="nickname">{{{this.nick}}}</span>
-          <span class="message">{{{this.message}}}</span>
-        </p>
+        {{#if isMessage}}
+          {{chat-message time=this.time nick=this.nick message=this.message}}
+        {{/if}}
+        {{#if isNick}}
+          {{chat-nick time=this.time message=this.message}}
+        {{/if}}
       {{else}}
         <p>Sorry, no messages</p>
       {{/each}}
@@ -90,19 +91,19 @@
 
 <script type="text/x-handlebars" id="components/scrolling-div">{{yield}}</script>
 
-<script type="text/x-handlebars" id="components/message">
+<script type="text/x-handlebars" id="components/chat-message">
   <li data-template="message">
-  <p><span class="time">11:20:20</span><span class="nickname">Stadl0r:</span> <span class="message">Message Test</span></p>
+  <p><span class="time">{{time}}</span><span class="nickname">{{nick}}: </span><span class="message">{{{message}}}</span></p>
   </li>
 </script>
-<script type="text/x-handlebars" id="components/join">
+<script type="text/x-handlebars" id="components/chat-join">
   <li data-template="join">
-    <p><span class="time">11:20:20</span> * <span class="message">Stadl0r has joined #vikinghug</span></p>
+    <p><span class="time">{{this.time}}</span> * <span class="message">{{this.message}}</span></p>
   </li>
 </script>
-<script type="text/x-handlebars" id="components/nick">
+<script type="text/x-handlebars" id="components/chat-nick">
   <li data-template="nick">
-    <p><span class="time">11:20:20</span> * <span class="message">Stadl0r now known as Dummy</span></p>
+    <p><span class="time">{{this.time}}</span> * <span class="message">{{this.message}}</span></p>
   </li>
 </script>
 
