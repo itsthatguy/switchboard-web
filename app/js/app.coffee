@@ -40,6 +40,7 @@ App.Socket.on "NICK", (_data) ->
 App.ChatsArray = Ember.ArrayProxy.extend
   init: ->
     @chats = Ember.A()
+    @currentChat = null
     @set("content", @chats)
 
     @_super()
@@ -51,6 +52,7 @@ App.ChatsArray = Ember.ArrayProxy.extend
     unless chat?
       chat = App.chats.addChat(data)
     chat.set("notifications", null)
+    @currentChat = chat
     return chat
 
 
@@ -64,7 +66,7 @@ App.ChatsArray = Ember.ArrayProxy.extend
   addMessage: (data, type) ->
     console.log data
     chat = App.chats.findBy("name", data.channel)
-    chat.set("notifications", chat.notifications + 1)
+    chat.set("notifications", chat.notifications + 1) unless chat == @currentChat
 
     payload =
       nick      : data.nick
@@ -141,7 +143,7 @@ App.ChatController = Ember.ArrayController.extend
 
   joinCommand: (params) ->
     console.log "joinCommand", params
-    App.chats.joinChat({name: params})
+    @transitionToRoute("chat", params)
 
 
 
@@ -186,7 +188,7 @@ App.ChatTabsController = Ember.ArrayController.extend
       reg = /^(#)/
       name = this.get("msg")
       unless reg.test(name) then name = "##{name}"
-      App.chats.joinChat({name: name})
+      @transitionToRoute("chat", name)
       @set("msg", "")
 
 App.ChatTabView = Ember.View.extend

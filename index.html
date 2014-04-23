@@ -63,7 +63,7 @@
 <script type="text/x-handlebars" data-template-name="chat-tab">
   {{#link-to "chat" name}}
   <span>{{name}}</span>
-  <span class="notifications-count">{{notifications}}</span>
+  <span class="notifications-count" {{bind-attr data-count="notifications"}}></span>
   {{/link-to}}
 </script>
 
