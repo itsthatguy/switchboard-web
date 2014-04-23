@@ -1,4 +1,5 @@
 Cookies = require "../../bower_components/cookies-js/src/cookies.js"
+moment  = require("../../bower_components/momentjs/moment.js")
 
 
 module.exports = window.App = Ember.Application.create()
@@ -43,8 +44,9 @@ App.ChatsArray = Ember.ArrayProxy.extend
   addMessage: (data) ->
     console.log data
     chat = App.chats.findBy("name", data.location)
+    time = moment().format('h:mm:ss a')
     chat.set("notifications", chat.notifications + 1)
-    chat.pushObject(nick: data.nick, message: data.message)
+    chat.pushObject(nick: data.nick, message: data.message, time: time)
 
 
 
@@ -74,11 +76,14 @@ App.ChatController = Ember.ArrayController.extend
   actions:
     sendMessage: ->
       console.log "ACTIVE", this
-      channel = this.content.name
-      message = this.get("msg")
-      console.log "channel: ", channel
-      @pushObject(nick: data.nick, message: message)
-      App.Socket.emit("MESSAGE", {message: message, channel: channel})
+      data =
+        location: this.content.name
+        nick: data.nick
+        message: this.get("msg")
+
+      App.chats.addMessage(data)
+
+      App.Socket.emit("MESSAGE", data)
       @set("msg", "")
 
 # ChatRoute
