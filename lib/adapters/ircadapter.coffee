@@ -40,6 +40,7 @@ class IRCAdapter extends EventEmitter
 
 
   connect: (data) ->
+    console.log ">>>>>", data
     @server = data.server
     @port = data.port
     @nick = data.nick
@@ -52,7 +53,7 @@ class IRCAdapter extends EventEmitter
       channels: @channels
 
     @io.addListener "registered", (message) =>
-      console.log "IRCAdapter::<registered>"
+      console.log "<< IRCAdapter::<registered>"
       connection =
         server: @server
         port: @port
@@ -63,10 +64,36 @@ class IRCAdapter extends EventEmitter
       @isConnected = true
       this.emit "REGISTERED"
 
+    @io.addListener "join", (channel, nick, message) =>
+      console.log "<< IRCAdapter::<join>", channel, nick, message
+      payload =
+        nick: nick
+        channel: channel
+        message: message
+      @socket.emit "JOIN", payload
+
+    @io.addListener "part", (channel, nick, message) =>
+      console.log "<< IRCAdapter::<part>", channel, nick, message
+      payload =
+        nick: nick
+        channel: channel
+        message: message
+      @socket.emit "PART", payload
+
+    @io.addListener "quit", (nick, reason, channels, message) =>
+      console.log "<< IRCAdapter::<quit>", nick, reason, channels, message
+      @socket.emit "QUIT"
+
+    @io.addListener "kick", (channel, nick, byNick, reason, message) =>
+      console.log "<< IRCAdapter::<kick>", channel, nick, byNick, reason, message
+      @socket.emit "KICK"
+
     @io.addListener "raw", (message) =>
-      @eventsHandler(message)
+      # console.log "<< IRCAdapter::<raw>"
+      # @eventsHandler(message)
 
     @io.addListener "nick", (oldnick, newnick, channels, message) =>
+      console.log "<< IRCAdapter::<nick>", oldnick, newnick, channels, message
       payload =
         oldnick: oldnick
         newnick: newnick
@@ -74,9 +101,26 @@ class IRCAdapter extends EventEmitter
         message: message
       @socket.emit "NICK", payload
 
+    @io.addListener "names", (channel, nicks) =>
+      console.log "<< IRCAdapter::<names>"
+      payload =
+        channel: channel
+        nicks: nicks
+      @socket.emit "NAMES", payload
+
 
   disconnect: -> @io.disconnect()
 
+  whoAmI: ->
+    console.log "> whoAmiI: "
+    payload =
+      server: @io.opt.server
+      nick: @io.nick
+      userName: @io.opt.userName
+      realName: @io.opt.realName
+    @socket.emit "YOUARE", payload
+
+  refresh: -> @getChannels()
 
   join: (data) ->
     console.log "IRCAdapter::join (data) ->"
@@ -87,6 +131,13 @@ class IRCAdapter extends EventEmitter
   setNick: (data) ->
     @io.send("NICK", data.nick)
 
+  getChannels: ->
+    console.log @io.chans
+
+  getNames: (data) ->
+    console.log "getNames", data
+    @io.send("NAMES", data.channel)
+
   message: (data) ->
     console.log "IRCAdapter::message (data) ->", data
     @io.say(data.channel, data.message)
@@ -94,7 +145,7 @@ class IRCAdapter extends EventEmitter
   eventsHandler: (data) ->
     command = data.command
 
-    console.log "COMMAND: ", command
+    # console.log "  [RAW] COMMAND: ", command
 
     switch command
       when "JOIN"

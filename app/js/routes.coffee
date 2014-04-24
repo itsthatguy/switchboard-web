@@ -1,7 +1,6 @@
 console.log "Routes"
 
-
-App = require './app.coffee'
+App = require('./app.coffee')
 
 App.Router.map ->
   @resource "chat", { path: "/chat/:name" }

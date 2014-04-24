@@ -8,6 +8,8 @@
 </head>
 <body>
 
+
+<!-- TEMPLATE:APPLICATION -->
 <script type="text/x-handlebars">
 
   <div class="ember-view">
@@ -20,6 +22,7 @@
 </script>
 
 
+<!-- TEMPLATE:TOPBAR -->
 <script type="text/x-handlebars" data-template-name="topbar">
   <div id="topbar">
     <div class="server">
@@ -35,8 +38,7 @@
         <span>&#123;&#123;nickname&#125;&#125;</span>
       </div>
       <div id="sidebar-members-button" class="light small">
-        <i class="icon-user"></i>
-        <span>42</span>
+        {{render "sidebar-button" App.SidebarButtonView}}
       </div>
     </div>
   </div>
@@ -48,7 +50,7 @@
   </div> --}}
 </script>
 
-
+<!-- TEMPLATE:CHAT-TABS -->
 <script type="text/x-handlebars" data-template-name="chat-tabs">
   {{#each}}
     {{view App.ChatTabView}}
@@ -59,7 +61,8 @@
   <button {{action joinChannel}}>+</button>
 </script>
 
-
+<!-- TEMPLATE:CHAT-TAB -->
+<!-- THIS SHOULD BE A COMPONENT? -->
 <script type="text/x-handlebars" data-template-name="chat-tab">
   {{#link-to "chat" name}}
   <span>{{name}}</span>
@@ -67,7 +70,7 @@
   {{/link-to}}
 </script>
 
-
+<!-- TEMPLATE:CHAT -->
 <script type="text/x-handlebars" data-template-name="chat">
   <div id="chat">
     {{#scrolling-div id="chat-messages" update-when=this}}
@@ -87,29 +90,40 @@
       {{/each}}
     {{/scrolling-div}}
 
+
     <div id="chat-input-wrapper">
       {{input action="sendMessage" value=msg id="chat-input" placeholder="Enter Message or / Command"}}
     </div>
+
+    {{outlet sidebar-members}}
   </div>
 </script>
 
+<!-- COMPONENTS/SCROLLING-DIV -->
 <script type="text/x-handlebars" id="components/scrolling-div">{{yield}}</script>
 
+<!-- COMPONENTS/CHAT:MESSAGE -->
 <script type="text/x-handlebars" id="components/chat-message">
   <li data-template="message">
   <p><span class="time">{{time}}</span> <span class="nickname">{{nick}}: </span><span class="message">{{{message}}}</span></p>
   </li>
 </script>
+
+<!-- COMPONENTS/CHAT:JOIN -->
 <script type="text/x-handlebars" id="components/chat-join">
   <li data-template="join">
     <p><span class="time">{{this.time}}</span> * <span class="message">{{this.message}}</span></p>
   </li>
 </script>
+
+<!-- COMPONENTS/CHAT:NICK -->
 <script type="text/x-handlebars" id="components/chat-nick">
   <li data-template="nick">
     <p><span class="time">{{this.time}}</span> * <span class="message">{{this.message}}</span></p>
   </li>
 </script>
+
+<!-- COMPONENTS/SIDEBAR -->
 <script type="text/x-handlebars" id="components/chat-system">
   <li data-template="system">
     <p><span class="time">{{time}}</span> * <span class="message">{{{message}}}</span></p>
@@ -117,16 +131,32 @@
 </script>
 
 
-<script type="text/x-handlebars" data-template-name="sidebar">
-  <div id="sidebar-members">
+<!-- TEMPLATES:SIDEBAR:BUTTON -->
+<script type="text/x-handlebars" data-template-name="sidebar-button">
+    <i class="icon-user"></i>
+    <span>42</span>
+</script>
+
+<!-- TEMPLATES:SIDEBAR:MEMBERS -->
+<script type="text/x-handlebars" data-template-name="sidebar-members">
+  <div id="sidebar-members" class="open">
     <ul>
-      <li data-template="memberlist"> <span class="nickname">Stadl0r</span> </li>
-      <li> <p><span class="nickname">Stadl0r</span></p> </li>
+      {{this}}
+      {{#each member in this.members}}
+        {{sidebar-member nick=member.nick attributes=member.attributes}}
+      {{/each}}
     </ul>
   </div>
 </script>
 
+<!-- COMPONENTS/SIDEBAR:MEMBER -->
+<script type="text/x-handlebars" id="components/sidebar-member">
+  <li data-template="memberlist">
+    <span class="nickname"><span>{{{attributes}}}</span><span>{{{nick}}}</span></span>
+  </li>
+</script>
 
+<!-- TEMPLATE:MODAL -->
 <script type="text/x-handlebars" data-template-name="modal">
     {{#modal-dialog action="close"}}
     <form id="server-info">
@@ -141,7 +171,7 @@
     {{/modal-dialog}}
 </script>
 
-
+<!-- COMPONENTS/MODAL:DIALOG -->
 <script type="text/x-handlebars" id="components/modal-dialog">
 
   <div id="modal" class="open" >

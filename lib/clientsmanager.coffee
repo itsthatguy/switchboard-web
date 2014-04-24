@@ -19,6 +19,8 @@ class ClientsManager
     @createClientEvents(socket, client)
 
 
+  refresh: (client) ->
+    client.adapter.refresh()
 
   newClient: (socket, id) ->
     console.log "ClientsManager::newClient (socket, id) ->", id
@@ -47,7 +49,6 @@ class ClientsManager
         console.log "UNABLE TO FIND CLIENT"
     return foundClient
 
-
   removeClientEvents: (socket) ->
     socket.removeAllListeners()
 
@@ -67,11 +68,15 @@ class ClientsManager
 
     socket.on "DISCONNECT", (data) =>  client.adapter.disconnect()
 
+    socket.on "WHOAMI", => @Q(client, "whoAmI")
+
     socket.on "JOIN", (data) => @Q(client, "join", data)
 
     socket.on "MESSAGE", (data) => @Q(client, "message", data)
 
     socket.on "SETNICK", (data) => @Q(client, "setNick", data)
+
+    socket.on "NAMES", (data) => @Q(client, "getNames", data)
 
   Q: (client, fn, data) ->
     console.log "ClientsManager::Q", client.id

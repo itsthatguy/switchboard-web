@@ -1,50 +1,49 @@
-Cookies = require "../../bower_components/cookies-js/src/cookies.js"
-moment  = require("../../bower_components/momentjs/moment.js")
-
 
 module.exports = window.App = Ember.Application.create()
 
-App.Socket = io.connect "http://localhost:3002/"
-App.Socket.emit 'HANDSHAKE', sid: Cookies.get("sid")
-data =
+App.serverData =
   server: "irc.freenode.net"
   port: "6667"
   nick: "testviking"
   channels: ["#vikinghug"]
-App.Socket.emit "CONNECT", data
 
-App.Socket.on "MESSAGE", (data) ->
-  console.log "MESSAGE: ", data
-  App.chats.addMessage(data, "message")
+moment  = require("../../bower_components/momentjs/moment.js")
+App.io = require("./socket-manager.coffee")
 
-App.Socket.on "NICK", (_data) ->
-  console.log "NICK: ", _data
+App.io.connect(App.serverData)
 
-  oldnick = _data.oldnick
-  newnick = _data.newnick
-  channels = _data.channels
+App.ApplicationRoute = Ember.Route.extend
+  actions:
+    openSidebar: (name) ->
+      console.log "YES!"
+      App.chats.getNames(App.currentModel.name)
+      @render "sidebar-members",
+        into: 'chat'
+        outlet: "sidebar-members"
+        controller: App.currentModel
 
-  console.log data.nick, oldnick
-  if oldnick == data.nick
-    oldnick = "You are"
-    data.nick = newnick
-  else
-    oldnick = "#{oldnick} is"
-  _data.message = "#{oldnick} now known as #{newnick}"
 
-  for channel in channels
-    _data.channel = channel
-    console.log _data
-    App.chats.addMessage(_data, "nick")
+App.setNick = (nick) ->
+  App.serverData.nick = nick
+
+App.getNick = (nick) ->
+  return App.serverData.nick
 
 App.ChatsArray = Ember.ArrayProxy.extend
   init: ->
     @chats = Ember.A()
-    @currentChat = null
     @set("content", @chats)
 
     @_super()
 
+  getNames: (channel) ->
+    App.io.Socket.emit("NAMES", {channel: channel})
+
+  addMembers: (data) ->
+    console.log "addMembers", data
+    chat = App.chats.findBy("name", data.channel)
+    console.log "addMembers:chat", chat
+    chat.set("members", data.members)
 
   # created this to avoid overwriting find, until i understand this better
   joinChat: (data) ->
@@ -52,7 +51,8 @@ App.ChatsArray = Ember.ArrayProxy.extend
     unless chat?
       chat = App.chats.addChat(data)
     chat.set("notifications", null)
-    @currentChat = chat
+    App.currentModel = chat
+    @getNames(data.name)
     return chat
 
 
@@ -65,8 +65,9 @@ App.ChatsArray = Ember.ArrayProxy.extend
 
   addMessage: (data, type) ->
     console.log data
-    chat = App.chats.findBy("name", data.channel)
-    chat.set("notifications", chat.notifications + 1) unless chat == @currentChat
+    channel = data.channel or App.currentModel.name
+    chat = App.chats.findBy("name", channel)
+    chat.set("notifications", chat.notifications + 1) unless chat == App.currentModel
 
     payload =
       nick      : data.nick
@@ -79,25 +80,23 @@ App.ChatsArray = Ember.ArrayProxy.extend
     chat.pushObject(payload)
 
 
-
+App.chats = App.ChatsArray.create()
 
 
 App.MessagesArray = Ember.ArrayProxy.extend
   init: (data) ->
     console.log "App.MessagesArray::init", this.name
     messages = Ember.A()
+    members = Ember.A()
     @set("content", messages)
+    @set("members", members)
 
     @_super()
 
 
 # TopBar model
 App.topbar =
-  server: data.server
-
-
-App.chats = App.ChatsArray.create()
-
+  server: App.serverData.server
 
 # ChatController
 App.ChatController = Ember.ArrayController.extend
@@ -105,17 +104,17 @@ App.ChatController = Ember.ArrayController.extend
   msg: ""
   actions:
     sendMessage: ->
-      console.log "ACTIVE", this
+      console.log "ACTIVE", this, App.serverData
       data =
         channel: this.content.name
-        nick: data.nick
+        nick: App.getNick()
         message: this.get("msg")
 
       if (/^\//g.test(data.message))
         @commandHandler(data)
       else
         App.chats.addMessage(data, "message")
-        App.Socket.emit("MESSAGE", data)
+        App.io.Socket.emit("MESSAGE", data)
 
       @set("msg", "")
 
@@ -124,6 +123,7 @@ App.ChatController = Ember.ArrayController.extend
     commandTests =
       "nickCommand": /^\/nick/g
       "joinCommand": /^\/join/g
+      "whoCommand": /^\/who/g
 
     for command, regexp of commandTests
       if (regexp.test(data.message))
@@ -139,11 +139,15 @@ App.ChatController = Ember.ArrayController.extend
 
   nickCommand: (params) ->
     console.log "nickCommand", params
-    App.Socket.emit("SETNICK", {nick: params})
+    App.io.Socket.emit("SETNICK", {nick: params})
 
   joinCommand: (params) ->
     console.log "joinCommand", params
     @transitionToRoute("chat", params)
+
+  whoCommand: ->
+    console.log "whoCommand"
+    App.io.Socket.emit("WHOAMI")
 
 
 
@@ -151,7 +155,7 @@ App.ChatController = Ember.ArrayController.extend
 App.ChatRoute = Ember.Route.extend
   model: (params, queryParams) ->
     messages = App.chats.joinChat({name: params.name})
-    App.Socket.emit("JOIN", {channels: [params.name]});
+    App.io.Socket.emit("JOIN", {channels: [params.name]});
     return messages
   render: ->
     $("#new-message").focus()
@@ -196,9 +200,17 @@ App.ChatTabView = Ember.View.extend
   templateName: "chat-tab"
   classNames: ['tab', 'current']
   current: false
-  active: ->
-    console.log "bloop"
 
+App.SidebarComponent = Ember.Component.extend
 
+App.SidebarButtonView = Ember.View.extend Ember.ViewTargetActionSupport,
+  action: "openSidebar"
+  mouseEnter: (e) ->
+    console.log "SidebarButtonView:hello"
+    @triggerAction()
+
+App.SidebarMembersView = Ember.View.extend
+  members: -> return App.currentModel.members
+  mouseEnter: (e) -> console.log "SidebarMembersView:hello"
 
 Routes = require './routes.coffee'

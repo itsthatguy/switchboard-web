@@ -11,6 +11,7 @@ class Switchboard
 
   constructor: ->
     socketServer = io.listen(webserver, {log: false})
+    socketServer.setMaxListeners(11)
 
     socketServer.sockets.on 'connection', (socket) =>
 
@@ -38,6 +39,7 @@ class Switchboard
         else if client.id? and client.adapter?
           console.log "if we have a client and a client adapter"
           ClientsManager.setSocket(socket, client)
+          ClientsManager.refresh(client)
 
 
 
