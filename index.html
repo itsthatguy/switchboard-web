@@ -33,10 +33,7 @@
       {{render "chat-tabs" App.chats}}
     </div>
     <div class="right">
-      <div class="account">
-        <span class="indicator"></span>
-        <span>&#123;&#123;nickname&#125;&#125;</span>
-      </div>
+      {{account-tab nick=App.serverData.nick}}
       <div id="sidebar-members-button" class="light small">
         {{render "sidebar-button" App.SidebarButtonView}}
       </div>
@@ -52,22 +49,30 @@
 
 <!-- TEMPLATE:CHAT-TABS -->
 <script type="text/x-handlebars" data-template-name="chat-tabs">
+  {{this}}
   {{#each}}
-    {{view App.ChatTabView}}
-  {{else}}
-    <p>No Channels</p>
+    {{chat-tab name=this.name notifications=this.notifications}}
   {{/each}}
-  {{ input value=msg id="newChannel" action="joinChannel" }}
+  {{ input value=msg id="new-channel" action="joinChannel" placeholder="enter channel" }}
   <button {{action joinChannel}}>+</button>
 </script>
 
-<!-- TEMPLATE:CHAT-TAB -->
-<!-- THIS SHOULD BE A COMPONENT? -->
-<script type="text/x-handlebars" data-template-name="chat-tab">
-  {{#link-to "chat" name}}
-  <span>{{name}}</span>
-  <span class="notifications-count" {{bind-attr data-count="notifications"}}></span>
-  {{/link-to}}
+<!-- COMPONENTS/CHAT-TAB -->
+<script type="text/x-handlebars" id="components/chat-tab">
+  <div class="tab">
+    {{#link-to "chat" name}}
+    <span>{{name}}</span>
+    <span class="notifications-count" {{bind-attr data-count="notifications"}}></span>
+    {{/link-to}}
+  </div>
+</script>
+
+<!-- COMPONENTS/ACCOUNT-TAB -->
+<script type="text/x-handlebars" id="components/account-tab">
+  <div class="account">
+    <span class="indicator"></span>
+    <span>{{nick}}</span>
+  </div>
 </script>
 
 <!-- TEMPLATE:CHAT -->
@@ -123,7 +128,7 @@
   </li>
 </script>
 
-<!-- COMPONENTS/SIDEBAR -->
+<!-- COMPONENTS/CHAT:SYSTEM -->
 <script type="text/x-handlebars" id="components/chat-system">
   <li data-template="system">
     <p><span class="time">{{time}}</span> * <span class="message">{{{message}}}</span></p>
@@ -141,19 +146,13 @@
 <script type="text/x-handlebars" data-template-name="sidebar-members">
   <div id="sidebar-members" class="open">
     <ul>
-      {{this}}
       {{#each member in this.members}}
-        {{sidebar-member nick=member.nick attributes=member.attributes}}
+        <li data-template="memberlist">
+          <span class="nickname"><span>{{{unbound member.attributes}}}</span><span>{{{unbound member.nick}}}</span></span>
+        </li>
       {{/each}}
     </ul>
   </div>
-</script>
-
-<!-- COMPONENTS/SIDEBAR:MEMBER -->
-<script type="text/x-handlebars" id="components/sidebar-member">
-  <li data-template="memberlist">
-    <span class="nickname"><span>{{{attributes}}}</span><span>{{{nick}}}</span></span>
-  </li>
 </script>
 
 <!-- TEMPLATE:MODAL -->

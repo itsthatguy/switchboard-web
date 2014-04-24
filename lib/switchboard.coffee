@@ -11,7 +11,7 @@ class Switchboard
 
   constructor: ->
     socketServer = io.listen(webserver, {log: false})
-    socketServer.setMaxListeners(11)
+    socketServer.setMaxListeners(12)
 
     socketServer.sockets.on 'connection', (socket) =>
 

@@ -52,6 +52,8 @@ class IRCAdapter extends EventEmitter
       port: @port
       channels: @channels
 
+    #
+    # LISTENER:registered
     @io.addListener "registered", (message) =>
       console.log "<< IRCAdapter::<registered>"
       connection =
@@ -64,6 +66,18 @@ class IRCAdapter extends EventEmitter
       @isConnected = true
       this.emit "REGISTERED"
 
+    #
+    # LISTENER:message
+    @io.addListener "message", (nick, to, text, message) =>
+      console.log "<< IRCAdapter::<message>", nick, to, text
+      payload =
+        nick: nick
+        message: text
+        channel: to
+      @socket.emit "MESSAGE", payload
+
+    #
+    # LISTENER:join
     @io.addListener "join", (channel, nick, message) =>
       console.log "<< IRCAdapter::<join>", channel, nick, message
       payload =
@@ -72,6 +86,8 @@ class IRCAdapter extends EventEmitter
         message: message
       @socket.emit "JOIN", payload
 
+    #
+    # LISTENER:part
     @io.addListener "part", (channel, nick, message) =>
       console.log "<< IRCAdapter::<part>", channel, nick, message
       payload =
@@ -80,18 +96,20 @@ class IRCAdapter extends EventEmitter
         message: message
       @socket.emit "PART", payload
 
+    #
+    # LISTENER:quit
     @io.addListener "quit", (nick, reason, channels, message) =>
       console.log "<< IRCAdapter::<quit>", nick, reason, channels, message
       @socket.emit "QUIT"
 
+    #
+    # LISTENER:kick
     @io.addListener "kick", (channel, nick, byNick, reason, message) =>
       console.log "<< IRCAdapter::<kick>", channel, nick, byNick, reason, message
       @socket.emit "KICK"
 
-    @io.addListener "raw", (message) =>
-      # console.log "<< IRCAdapter::<raw>"
-      # @eventsHandler(message)
-
+    #
+    # LISTENER:nick
     @io.addListener "nick", (oldnick, newnick, channels, message) =>
       console.log "<< IRCAdapter::<nick>", oldnick, newnick, channels, message
       payload =
@@ -101,6 +119,8 @@ class IRCAdapter extends EventEmitter
         message: message
       @socket.emit "NICK", payload
 
+    #
+    # LISTENER:names
     @io.addListener "names", (channel, nicks) =>
       console.log "<< IRCAdapter::<names>"
       payload =
@@ -108,6 +128,11 @@ class IRCAdapter extends EventEmitter
         nicks: nicks
       @socket.emit "NAMES", payload
 
+    #
+    # LISTENER:raw
+    @io.addListener "raw", (message) =>
+      # console.log "<< IRCAdapter::<raw>"
+      # @eventsHandler(message)
 
   disconnect: -> @io.disconnect()
 
@@ -118,6 +143,7 @@ class IRCAdapter extends EventEmitter
       nick: @io.nick
       userName: @io.opt.userName
       realName: @io.opt.realName
+      channels: @getChannels()
     @socket.emit "YOUARE", payload
 
   refresh: -> @getChannels()
@@ -131,8 +157,7 @@ class IRCAdapter extends EventEmitter
   setNick: (data) ->
     @io.send("NICK", data.nick)
 
-  getChannels: ->
-    console.log @io.chans
+  getChannels: -> return @io.chans
 
   getNames: (data) ->
     console.log "getNames", data

@@ -9,6 +9,7 @@ class SocketManager
     @Socket = io.connect "http://localhost:3002/"
     @Socket.emit 'HANDSHAKE', sid: Cookies.get("sid")
     @createListeners()
+    @Socket.emit("WHOAMI")
 
 
   createListeners: ->
@@ -25,7 +26,7 @@ class SocketManager
 
       if oldnick == App.serverData.nick
         oldnick = "You are"
-        App.setNick = newnick
+        App.serverData.set("nick", newnick)
       else
         oldnick = "#{oldnick} is"
       data.message = "#{oldnick} now known as #{newnick}"
@@ -44,8 +45,10 @@ class SocketManager
       App.chats.addMembers(payload)
 
     @Socket.on "YOUARE", (data) ->
+      console.log "YOUARE: ", {channels: data.channels}
+      App.serverData.set("nick", data.nick)
+      App.chats.joinChats({channels: data.channels})
       App.chats.addMessage(message: JSON.stringify(data), "system")
-      console.log "<< YOUARE", data
 
 
   connect: (data) -> @Socket.emit "CONNECT", data
