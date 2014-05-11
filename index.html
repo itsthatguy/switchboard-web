@@ -24,19 +24,13 @@
 
 <!-- TEMPLATE:TOPBAR -->
 <script type="text/x-handlebars" data-template-name="topbar">
+
   <div id="topbar">
-    <div class="server">
-      <i class="icon-lab"></i>
-      <span>{{server}}</span>
-    </div>
-    <div>
-      {{render "chat-tabs" App.chats}}
+    <div class="left">
+      <i class="icon-menu"></i>
     </div>
     <div class="right">
-      {{account-tab nick=App.serverData.nick}}
-      <div id="sidebar-members-button" class="light small">
-        {{render "sidebar-button" App.SidebarButtonView}}
-      </div>
+      {{account-tab nick=App.serverData.nick avatarURL=App.serverData.avatarURL}}
     </div>
   </div>
 
@@ -70,7 +64,9 @@
 <!-- COMPONENTS/ACCOUNT-TAB -->
 <script type="text/x-handlebars" id="components/account-tab">
   <div class="account">
-    <span class="indicator"></span>
+    <div class="avatar">
+      <img {{bind-attr src=avatarURL}}>
+    </div>
     <span>{{nick}}</span>
   </div>
 </script>
@@ -78,22 +74,24 @@
 <!-- TEMPLATE:CHAT -->
 <script type="text/x-handlebars" data-template-name="chat">
   <div id="chat">
-    {{#scrolling-div id="chat-messages" update-when=this}}
-      {{#each}}
-        {{#if isMessage}}
-          {{chat-message time=this.time nick=this.nick message=this.message}}
-        {{/if}}
-        {{#if isNick}}
-          {{chat-nick time=this.time message=this.message}}
-        {{/if}}
+    <div id="chat-messages-wrapper">
+      {{#scrolling-div id="chat-messages" update-when=this}}
+        {{#each}}
+          {{#if isMessage}}
+            {{chat-message time=this.time nick=this.nick message=this.message avatarURL=this.avatarURL}}
+          {{/if}}
+          {{#if isNick}}
+            {{chat-nick time=this.time message=this.message}}
+          {{/if}}
 
-        {{#if isSystem}}
-          {{chat-system time=this.time message=this.message}}
-        {{/if}}
-      {{else}}
-        <p>Sorry, no messages</p>
-      {{/each}}
-    {{/scrolling-div}}
+          {{#if isSystem}}
+            {{chat-system time=this.time message=this.message}}
+          {{/if}}
+        {{else}}
+          <p>Sorry, no messages</p>
+        {{/each}}
+      {{/scrolling-div}}
+    </div>
 
 
     <div id="chat-input-wrapper">
@@ -109,30 +107,38 @@
 
 <!-- COMPONENTS/CHAT:MESSAGE -->
 <script type="text/x-handlebars" id="components/chat-message">
-  <li data-template="message">
-  <p><span class="time">{{time}}</span> <span class="nickname">{{nick}}: </span><span class="message">{{{message}}}</span></p>
-  </li>
+  <div data-template="message" class="message chat">
+    <div class="avatar">
+      <img {{bind-attr src=avatarURL alt=nick}}>
+    </div>
+    <div class="meta"><span class="time">{{time}}</span></div>
+    <p class="nickname"{{nick}}</p>
+    <p><span class="content">{{{message}}}</span></p>
+  </div>
 </script>
 
 <!-- COMPONENTS/CHAT:JOIN -->
 <script type="text/x-handlebars" id="components/chat-join">
-  <li data-template="join">
-    <p><span class="time">{{this.time}}</span> * <span class="message">{{this.message}}</span></p>
-  </li>
+  <div data-template="join" class="message join">
+    <div class="meta"><span class="time">{{time}}</span></div>
+    <p><span class="content">{{{message}}}</span></p>
+  </div>
 </script>
 
 <!-- COMPONENTS/CHAT:NICK -->
 <script type="text/x-handlebars" id="components/chat-nick">
-  <li data-template="nick">
-    <p><span class="time">{{this.time}}</span> * <span class="message">{{this.message}}</span></p>
-  </li>
+  <div data-template="nick" class="message nick">
+    <div class="meta"><span class="time">{{time}}</span></div>
+    <p><span class="content">{{{message}}}</span></p>
+  </div>
 </script>
 
 <!-- COMPONENTS/CHAT:SYSTEM -->
 <script type="text/x-handlebars" id="components/chat-system">
-  <li data-template="system">
-    <p><span class="time">{{time}}</span> * <span class="message">{{{message}}}</span></p>
-  </li>
+  <div data-template="system" class="message system">
+    <div class="meta"><span class="time">{{time}}</span></div>
+    <p><span class="content">{{{message}}}</span></p>
+  </div>
 </script>
 
 
