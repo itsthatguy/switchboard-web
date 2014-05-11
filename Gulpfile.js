@@ -73,6 +73,7 @@ gulp.task('stylus', function () {
 gulp.task('coffee', function() {
   gulp.src(paths.coffeeInput, { read: false })
     .pipe(browserify({
+      basedir: __dirname,
       transform: ['coffeeify'],
       extensions: ['.coffee']
     })

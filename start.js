@@ -34,7 +34,6 @@ var runCommand = function(command, args) {
   });
 }
 
-
 runCommand("coffee", ['index.coffee']);
-runCommand("gulp", ["watch"]);
+runCommand("gulp", ['watch']);
 
