@@ -91,8 +91,9 @@ class ClientsManager
     console.log "ClientsManager::clearQ"
     for item, n in client["queue"]
       console.log ">> ", item, n
-      client.adapter[item.fn](item.data)
-      delete client["queue"][n]
+      if item?
+        client.adapter[item.fn](item.data)
+        delete client["queue"][n]
 
 
   disconnect: ->
