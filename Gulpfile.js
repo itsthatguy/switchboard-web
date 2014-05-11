@@ -7,23 +7,29 @@ var gulp       = require('gulp'),
     browserify = require('gulp-browserify'),
     rename     = require('gulp-rename'),
     livereload = require('gulp-livereload'),
-    ejs        = require("gulp-ejs");
+    ejs        = require("gulp-ejs"),
+    path       = require("path");
+
+var baseAppPath = path.join(__dirname, 'app'),
+    baseStaticPath = path.join(__dirname, '.generated'),
+    baseJsPath = path.join(baseAppPath, 'js'),
+    baseCssPath = path.join(baseAppPath, 'css');
 
 var paths = {
-  cssPath: ['./app/css/**/*.styl*'],
-  cssInput: './app/css/main.styl',
-  cssOutput: './.generated/css',
-  coffeePath: ['./app/js/**/*.coffee'],
-  coffeeInput: './app/js/main.coffee',
-  coffeeOutput: './.generated/js',
-  ejsPath:  './app/**/*.ejs',
-  assetsBasePath: './app',
+  cssPath: [path.join(baseCssPath, '**', '*.styl*')],
+  cssInput: path.join(baseCssPath, 'main.styl'),
+  cssOutput: path.join(baseStaticPath, 'css'),
+  coffeePath: [path.join(baseJsPath, '**', '*.coffee')],
+  coffeeInput: path.join(baseJsPath, 'main.coffee'),
+  coffeeOutput: path.join(baseStaticPath, 'js'),
+  ejsPath:  path.join(baseAppPath, '**', '*.ejs'),
+  assetsBasePath: baseAppPath,
   assetsPaths: [
-    './app/img/**/*',
-    './app/fonts/**/*',
-    './app/**/*.html'
+    path.join(baseAppPath, 'img', '**', '*'),
+    path.join(baseAppPath, 'fonts', '**', '*'),
+    path.join(baseAppPath, '**', '*.html')
   ],
-  assetsOutput: './.generated/'
+  assetsOutput: baseStaticPath
 };
 
 var testFiles = [
@@ -82,7 +88,7 @@ gulp.task('coffee', function() {
     .pipe(rename('main.js'))
     .pipe(gulp.dest(paths.coffeeOutput))
 
-  gulp.src('./app/js/app.coffee', { read: false })
+  gulp.src(path.join(__dirname, 'app', 'js', 'app.coffee'), { read: false })
     .pipe(browserify({
       transform: ['coffeeify'],
       extensions: ['.coffee']
