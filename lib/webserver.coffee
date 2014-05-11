@@ -22,9 +22,8 @@ app.configure ->
   app.use('/assets', express.static(staticPath))
   app.use('/vendor', express.static(basePath + '/bower_components'))
 
-port = Number(process.env.PORT || 3002)
-webserver.listenport, ->
-  console.log("Listening on " + port)
+port = process.env.PORT || 3002
+webserver.listen(port)
 
 app.get '/', (req, res) ->
   previousSession = req.cookies.sid
