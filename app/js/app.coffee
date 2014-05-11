@@ -16,6 +16,10 @@ App.io  = require("./socket-manager.coffee")
 
 App.io.connect(App.serverData)
 
+App.IndexRoute = Ember.Route.extend
+  setupController: (controller) ->
+    controller.set('title', "My App")
+
 App.ApplicationRoute = Ember.Route.extend
   actions:
     openSidebar: (name) ->
