@@ -192,8 +192,7 @@ App.ScrollingDivComponent = Ember.Component.extend
     Ember.run.scheduleOnce("afterRender", this, "scrollIntoView")
   ).observes("update-when.@each")
 
-  scrollIntoView: ->
-    this.$().scrollTop(this.$().prop("scrollHeight"))
+  scrollIntoView: -> @.$().scrollTop(@.$().prop("scrollHeight"))
 
 App.ChatsTabsController = Ember.ArrayController.extend
   itemController: App.chats
