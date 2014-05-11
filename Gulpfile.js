@@ -1,12 +1,13 @@
 // Gulpfile.js
 // Require the needed packages
-var gulp       = require('gulp');
-var gutil      = require('gulp-util');
-var clean      = require('gulp-clean');
-var stylus     = require('gulp-stylus');
-var browserify = require('gulp-browserify');
-var rename     = require('gulp-rename');
-var livereload = require('gulp-livereload');
+var gulp       = require('gulp'),
+    gutil      = require('gulp-util'),
+    clean      = require('gulp-clean'),
+    stylus     = require('gulp-stylus'),
+    browserify = require('gulp-browserify'),
+    rename     = require('gulp-rename'),
+    livereload = require('gulp-livereload'),
+    ejs        = require("gulp-ejs");
 
 var paths = {
   cssPath: ['./app/css/**/*.styl*'],
@@ -15,10 +16,12 @@ var paths = {
   coffeePath: ['./app/js/**/*.coffee'],
   coffeeInput: './app/js/main.coffee',
   coffeeOutput: './.generated/js',
+  ejsPath:  './app/**/*.ejs',
   assetsBasePath: './app',
   assetsPaths: [
     './app/img/**/*',
-    './app/fonts/**/*'
+    './app/fonts/**/*',
+    './app/**/*.html'
   ],
   assetsOutput: './.generated/'
 };
@@ -59,8 +62,7 @@ gulp.task('stylus', function () {
     .pipe(stylus()
       .on('error', gutil.log)
       .on('error', gutil.beep))
-    .pipe(gulp.dest(paths.cssOutput))
-    .pipe(livereload());
+    .pipe(gulp.dest(paths.cssOutput));
 });
 
 
@@ -100,6 +102,20 @@ gulp.task('assets', function() {
     .pipe(gulp.dest(paths.assetsOutput));
 });
 
+
+//
+// EJS
+//
+
+gulp.task('ejs', function() {
+  gulp.src(paths.ejsPath)
+    .pipe(ejs()
+      .on('error', gutil.log)
+      .on('error', gutil.beep))
+    .pipe(gulp.dest(paths.assetsOutput));
+});
+
+
 //
 // Clean
 //
@@ -113,10 +129,15 @@ gulp.task('clean', function() {
 //
 // Watch
 //
-gulp.task('watch', ['clean','stylus','coffee','assets'], function() {
+gulp.task('watch', ['clean','stylus','coffee','assets', 'ejs'], function() {
+  var server = livereload();
   gulp.watch(paths.cssPath, ['stylus']);
   gulp.watch(paths.coffeePath, ['coffee']);
   gulp.watch(paths.assetsPaths, ['assets']);
+  gulp.watch(paths.ejsPath, ['ejs']);
+  gulp.watch('.generated/**').on('change', function(file) {
+    server.changed(file.path);
+  });
 });
 
 gulp.task('default', ['stylus', 'coffee', 'assets']);
