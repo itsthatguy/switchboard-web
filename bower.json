@@ -1,7 +1,7 @@
 {
-  "name": "irc-client",
+  "name": "switchboard",
   "version": "0.0.0",
-  "homepage": "https://github.com/itsthatguy/irc-client",
+  "homepage": "https://github.com/itsthatguy/switchboard",
   "authors": [
     "Kevin Altman <kevin@itsthatguy.com>"
   ],

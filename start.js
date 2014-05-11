@@ -35,6 +35,6 @@ var runCommand = function(command, args) {
 }
 
 
-runCommand("gulp", ["watch"]);
 runCommand("coffee", ['index.coffee']);
+runCommand("gulp", ["watch"]);
 

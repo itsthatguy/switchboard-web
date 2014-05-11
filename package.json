@@ -1,7 +1,7 @@
 {
-  "name": "node-irc",
+  "name": "switchboard",
   "version": "0.0.0",
-  "description": "node irc",
+  "description": "switchboard node irc client",
   "main": "index.coffee",
   "directories": {
     "test": "test"
