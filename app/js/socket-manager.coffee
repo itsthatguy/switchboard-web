@@ -32,7 +32,6 @@ class SocketManager
         oldnick = "#{oldnick} is"
       data.message = "#{oldnick} now known as #{newnick}"
 
-
       for channel in channels
         data.channel = channel
         App.chats.addMessage(data, "nick")
