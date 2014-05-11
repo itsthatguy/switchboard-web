@@ -36,6 +36,6 @@ var runCommand = function(command, args) {
 
 
 runCommand("gulp");
-runCommand("node_modules/.bin/bower", ["install"]);
+runCommand("bower", ["install"]);
 runCommand("coffee", ['index.coffee']);
 
