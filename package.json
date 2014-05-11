@@ -31,6 +31,7 @@
   },
   "scripts": {
     "test": "node_modules/.bin/mocha",
+    "postinstall": "./node_modules/bower/bin/bower install",
     "start": "node start.js"
   },
   "author": "",

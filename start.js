@@ -36,6 +36,5 @@ var runCommand = function(command, args) {
 
 
 runCommand("gulp");
-runCommand("bower", ["install"]);
 runCommand("coffee", ['index.coffee']);
 
