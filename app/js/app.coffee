@@ -10,8 +10,8 @@ App.serverData = Ember.Object.create
 
 console.log "[App.serverData]", App.serverData
 
-moment  = require(__dirname + "bower_components/momentjs/moment.js")
-_       = require(__dirname + "bower_components/underscore/underscore.js")
+moment  = require("../../bower_components/momentjs/moment.js")
+_       = require("../../bower_components/underscore/underscore.js")
 App.io  = require("./socket-manager.coffee")
 
 App.io.connect(App.serverData)
