@@ -1,5 +1,5 @@
 
-moment = require(__dirname + "/bower_components/momentjs/moment.js")
+moment = require("../../bower_components/momentjs/moment.js")
 
 EventHandler = null
 

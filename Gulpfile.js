@@ -128,7 +128,7 @@ gulp.task('ejs', function() {
 //
 
 gulp.task('clean', function() {
-  gulp.src('./.generated/**/*', {read: false})
+  gulp.src(path.join(baseStaticPath, '**', '*'), {read: false})
     .pipe(clean());
 });
 
@@ -142,7 +142,7 @@ gulp.task('watch', ['clean','stylus','coffee','assets', 'ejs'], function() {
   gulp.watch(paths.coffeePath, ['coffee']);
   gulp.watch(paths.assetsPaths, ['assets']);
   gulp.watch(paths.ejsPath, ['ejs']);
-  gulp.watch('.generated/**').on('change', function(file) {
+  gulp.watch(path.join(baseStaticPath, '**')).on('change', function(file) {
     server.changed(file.path);
   });
 });
