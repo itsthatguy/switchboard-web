@@ -34,7 +34,8 @@ var runCommand = function(command, args) {
   });
 }
 
-
 runCommand("coffee", ['index.coffee']);
-runCommand("gulp", ["watch"]);
+if (process.env.ENVIRONMENT != "PRODUCTION") {
+  runCommand("gulp", ['watch']);
+}
 

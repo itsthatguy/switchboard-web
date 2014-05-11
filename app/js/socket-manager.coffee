@@ -6,7 +6,7 @@ class SocketManager
   Socket: null
 
   constructor: (data) ->
-    @Socket = io.connect "http://localhost:3002/"
+    @Socket = io.connect "http://" + window.location.host
     @Socket.emit 'HANDSHAKE', sid: Cookies.get("sid")
     @createListeners()
     @Socket.emit("WHOAMI")
@@ -31,7 +31,6 @@ class SocketManager
       else
         oldnick = "#{oldnick} is"
       data.message = "#{oldnick} now known as #{newnick}"
-
 
       for channel in channels
         data.channel = channel

@@ -3,6 +3,7 @@
 <head>
   <title>Switchboard</title>
   <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="/vendor/jquery/dist/jquery.js"></script>
 </head>
@@ -14,11 +15,18 @@
 
   <div class="ember-view">
   {{render "topbar" App.topbar}}
-  <div>
+  <div id="main">
     {{outlet}}
     {{outlet modal}}
   </div>
 
+</script>
+
+<script type="text/x-handlebars" data-template-name="index">
+  <div class="primary-wrapper">
+
+    <p>Hello World!</p>
+  </div>
 </script>
 
 
@@ -73,33 +81,31 @@
 
 <!-- TEMPLATE:CHAT -->
 <script type="text/x-handlebars" data-template-name="chat">
-  <div id="chat">
-    <div id="chat-messages-wrapper">
-      {{#scrolling-div id="chat-messages" update-when=this}}
-        {{#each}}
-          {{#if isMessage}}
-            {{chat-message time=this.time nick=this.nick message=this.message avatarURL=this.avatarURL}}
-          {{/if}}
-          {{#if isNick}}
-            {{chat-nick time=this.time message=this.message}}
-          {{/if}}
+  <div class="primary-wrapper">
+    {{#scrolling-div id="chat-messages" update-when=this}}
+      {{#each}}
+        {{#if isMessage}}
+          {{chat-message time=this.time nick=this.nick message=this.message avatarURL=this.avatarURL}}
+        {{/if}}
+        {{#if isNick}}
+          {{chat-nick time=this.time message=this.message}}
+        {{/if}}
 
-          {{#if isSystem}}
-            {{chat-system time=this.time message=this.message}}
-          {{/if}}
-        {{else}}
-          <p>Sorry, no messages</p>
-        {{/each}}
-      {{/scrolling-div}}
-    </div>
-
-
-    <div id="chat-input-wrapper">
-      {{input action="sendMessage" value=msg id="chat-input" placeholder="Enter Message or / Command"}}
-    </div>
-
-    {{outlet sidebar-members}}
+        {{#if isSystem}}
+          {{chat-system time=this.time message=this.message}}
+        {{/if}}
+      {{else}}
+        <p>Sorry, no messages</p>
+      {{/each}}
+    {{/scrolling-div}}
   </div>
+
+
+  <div id="chat-input-wrapper">
+    {{input action="sendMessage" value=msg id="chat-input" placeholder="Enter Message or / Command"}}
+  </div>
+
+  {{outlet sidebar-members}}
 </script>
 
 <!-- COMPONENTS/SCROLLING-DIV -->

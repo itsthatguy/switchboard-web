@@ -16,6 +16,10 @@ App.io  = require("./socket-manager.coffee")
 
 App.io.connect(App.serverData)
 
+App.IndexRoute = Ember.Route.extend
+  setupController: (controller) ->
+    controller.set('title', "My App")
+
 App.ApplicationRoute = Ember.Route.extend
   actions:
     openSidebar: (name) ->
@@ -37,11 +41,13 @@ App.ChatsArray = Ember.ArrayProxy.extend
 
   addMembers: (data) ->
     console.log "addMembers", data
-    chat = App.chats.findBy("name", data.channel)
-    chat.set("members", [])
-    for member in data.members
-      # chat.members.push(member)
-      _.throttle(console.log, 200, "hello")
+    channel = data.channel
+    if channel?
+      chat = App.chats.findBy("name", data.channel)
+      chat.set("members", [])
+      for member in data.members
+        # chat.members.push(member)
+        _.throttle(console.log, 200, "hello")
 
 
   joinChats: (data) ->
@@ -73,21 +79,20 @@ App.ChatsArray = Ember.ArrayProxy.extend
   addMessage: (data, type) ->
     console.log data
     channel = data.channel
-    channel ?= App.currentModel.name
-    console.log "[ - - - ]", channel
-    chat = App.chats.findBy("name", channel)
-    chat.set("notifications", chat.notifications + 1) unless chat == App.currentModel
+    if channel?
+      chat = App.chats.findBy("name", channel)
+      chat.set("notifications", chat.notifications + 1) unless chat == App.currentModel
 
-    payload =
-      nick      : data.nick
-      message   : data.message
-      time      : moment().format('h:mm:ss a')
-      avatarURL : "http://minotar.net/avatar/#{data.nick}"
-      isNick    : (type == "nick")
-      isMessage : (type == "message")
-      isSystem  : (type == "system")
+      payload =
+        nick      : data.nick
+        message   : data.message
+        time      : moment().format('h:mm:ss a')
+        avatarURL : "http://minotar.net/avatar/#{data.nick}"
+        isNick    : (type == "nick")
+        isMessage : (type == "message")
+        isSystem  : (type == "system")
 
-    chat.pushObject(payload)
+      chat.pushObject(payload)
 
 
 App.chats = App.ChatsArray.create()
@@ -170,8 +175,11 @@ App.ChatController = Ember.ArrayController.extend
 # ChatRoute
 App.ChatRoute = Ember.Route.extend
   model: (params, queryParams) ->
-    messages = App.chats.joinChat({name: params.name})
-    App.io.Socket.emit("JOIN", {channels: [params.name]});
+    name = decodeURIComponent(params.name)
+    unless name == params.name
+      @transitionTo "chat", name
+    messages = App.chats.joinChat({name: name})
+    App.io.Socket.emit("JOIN", {channels: [name]});
     return messages
   render: ->
     $("#new-message").focus()
@@ -184,8 +192,7 @@ App.ScrollingDivComponent = Ember.Component.extend
     Ember.run.scheduleOnce("afterRender", this, "scrollIntoView")
   ).observes("update-when.@each")
 
-  scrollIntoView: ->
-    this.$().scrollTop(this.$().prop("scrollHeight"))
+  scrollIntoView: -> @.$().scrollTop(@.$().prop("scrollHeight"))
 
 App.ChatsTabsController = Ember.ArrayController.extend
   itemController: App.chats
