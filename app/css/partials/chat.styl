@@ -1,0 +1,91 @@
+
+
+#chat-messages-wrapper {
+  position: absolute;
+  overflow-y: auto;
+  padding-bottom: 20px;
+  top: 50px;
+  left: 0;
+  bottom: 50px;
+  right: 0;
+}
+
+#chat-messages {
+  list-style-type: none;
+  padding-left: 0;
+
+  .message {
+    box-shadow: 0 -1px 0 0 rgba(white, .05);
+    font-size: 14px;
+    padding: 15px 100px 0 20px;
+    margin-top: 15px;
+    clear: both;
+
+    .meta {
+      color: rgba(white, .14);
+      display: block;
+      position: absolute;
+      right: 0;
+    }
+
+    .avatar {
+      margin-top: 4px;
+      margin-right: 10px;
+      width: 36px;
+      height: 36px;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .time { margin-right: 20px; }
+    .nickname {
+      color: coralred;
+      margin-bottom: 5px;
+
+    }
+
+    .content {
+      word-wrap: break-word;
+
+      &:before {
+        // padding-right: 10px;
+      }
+    }
+
+
+    // Message type
+    &.system {
+      .content {
+        color: rgba(white, .14);
+        inline-icon('tv', color: rgba(white, .14), padding: 0 10px 0 0);
+      }
+    }
+    &.chat {
+      &.thread {
+        box-shadow: none;
+        margin-top: 5px;
+        padding-top: 0;
+        padding-bottom: 0;
+        padding-left: 66px;
+
+        .avatar,
+        .nickname { display: none; }
+      }
+    }
+    &.join {
+      .content {
+        color: rgba(white, .14);
+        inline-icon('star', color: rgba(white, .14), padding: 0 10px 0 0);
+      }
+    }
+    &.nick {
+      .content {
+        color: rgba(white, .14);
+        inline-icon('pen', color: rgba(white, .14), padding: 0 10px 0 0);
+      }
+    }
+
+  }
+}
