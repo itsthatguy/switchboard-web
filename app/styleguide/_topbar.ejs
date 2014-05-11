@@ -1,0 +1,15 @@
+<div id="topbar">
+  <div class="server">
+    <i class="icon-lab"></i>
+    <span>{{server}}</span>
+  </div>
+  <div class="chat-tabs-wrapper">
+    <% include _chat-tabs.ejs %>
+  </div>
+  <div class="right">
+    {{account-tab nick=App.serverData.nick}}
+    <div id="sidebar-members-button" class="light small">
+      {{render "sidebar-button" App.SidebarButtonView}}
+    </div>
+  </div>
+</div>

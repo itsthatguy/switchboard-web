@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Switchboard</title>
+  <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+  <script type="text/javascript" src="/vendor/jquery/dist/jquery.js"></script>
+</head>
+<body>
+
+
+<!-- TEMPLATE:APPLICATION -->
+
+<div id="main">
+
+  <div id="topbar">
+    <div class="left">
+      <div class="left">
+        <i class="icon-menu"></i>
+      </div>
+    </div>
+    <div class="right">
+      <div class="account">
+        <div class="avatar">
+          <img src="http://minotar.net/avatar/calculatordisco/36.png"/>
+        </div>
+        <!-- <span class="indicator"></span> -->
+        <span>vikinghug</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="chat">
+    <div id="chat-messages">
+
+      <!-- COMPONENTS/CHAT:SYSTEM -->
+      <div data-template="system" class="message system">
+        <div class="meta"><span class="time">12:49:16 pm</span></div>
+        <p><span class="content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.</span></p>
+      </div>
+
+      <!-- COMPONENTS/CHAT:MESSAGE -->
+      <div data-template="chat" class="message chat">
+
+        <div class="avatar">
+          <img src="http://minotar.net/avatar/calculatordisco/36.png"/>
+        </div>
+        <div class="meta"><span class="time"> 12:49:16 pm</span></div>
+        <p class="nickname">vikinghug</p>
+        <p><span class="content">Hello friends, I'm here!</span></p>
+      </div>
+
+      <!-- COMPONENTS/CHAT:JOIN -->
+      <div data-template="join" class="message join">
+        <div class="meta"><span class="time">12:49:16 pm</span></div>
+        <p><span class="content">stadlor has joined the channel</span></p>
+      </div>
+
+      <!-- COMPONENTS/CHAT:NICK -->
+      <div data-template="nick" class="message nick">
+        <div class="meta"><span class="time">12:49:16 pm</span></div>
+        <p><span class="content">stadlor is now known as Stadler89</span></p>
+      </div>
+
+      <!-- COMPONENTS/CHAT:MESSAGE -->
+      <div data-template="chat" class="message chat">
+        <div class="avatar">
+          <img src="http://minotar.net/avatar/Stadler89/36.png"/>
+        </div>
+        <div class="meta"><span class="time"> 12:49:16 pm</span></div>
+        <p class="nickname">Stadler89</p>
+        <p><span class="content">Oh hi!</span></p>
+      </div>
+
+
+      <!-- COMPONENTS/CHAT:MESSAGE -->
+      <div data-template="chat" class="message chat thread">
+
+        <div class="avatar">
+          <img src="http://minotar.net/avatar/Stadler89/36.png"/>
+        </div>
+        <div class="meta"><span class="time"> 12:49:16 pm</span></div>
+        <p class="nickname">Stadler89</p>
+        <p><span class="content">hey vikinghug...</span></p>
+      </div>
+
+      <!-- COMPONENTS/CHAT:MESSAGE -->
+      <div data-template="chat" class="message chat thread">
+
+        <div class="avatar">
+          <img src="http://minotar.net/avatar/Stadler89/36.png"/>
+        </div>
+        <div class="meta"><span class="time"> 12:49:16 pm</span></div>
+        <p class="nickname">Stadler89</p>
+        <p><span class="content">I just pooped a little!</span></p>
+      </div>
+
+
+      <!-- COMPONENTS/CHAT:MESSAGE -->
+      <div data-template="chat" class="message chat">
+
+        <div class="avatar">
+          <img src="http://minotar.net/avatar/calculatordisco/36.png"/>
+        </div>
+        <div class="meta"><span class="time"> 12:49:16 pm</span></div>
+        <p class="nickname">vikinghug</p>
+        <p><span class="content">Gross</span></p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div id="chat-input-wrapper">
+    <input type="text" id="chat-input" placeholder="Enter Message or / Command"/>
+  </div>
+
+<div>
+
+</body>
+</html>
+

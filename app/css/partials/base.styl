@@ -12,27 +12,27 @@ body {
   font-family: body-font;
 }
 
+.avatar {
+  background: rgba(white, .05);
+  border-radius: 1000px;
+  float: left;
+  margin-top: 4px;
+  margin-right: 10px;
+  overflow: hidden;
+  width: 36px;
+  height: 36px;
+  img { width: 100%; }
+}
+
 
 #chat {
   position: fixed;
-  overflow-y: auto;
-  top: 60px;
+  overflow: hidden;
+  top: 0;
   right: 0;
   left: 0;
-  bottom: 60px;
-  padding: 0 30px 30px 30px;
-
-  #chat-messages {
-    list-style-type: none;
-    padding-left: 0;
-  }
-
-  .time {
-    color: rgba(white, .3);
-    margin-right: 10px;
-  }
-  .nickname { color: coralred; }
-  .message { word-wrap: break-word; }
+  bottom: 0;
+  padding: 0;
 }
 
 
