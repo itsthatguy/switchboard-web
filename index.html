@@ -91,6 +91,14 @@
           {{chat-nick time=this.time message=this.message}}
         {{/if}}
 
+        {{#if isJoin}}
+          {{chat-join time=this.time message=this.message}}
+        {{/if}}
+
+        {{#if isPart}}
+          {{chat-part time=this.time message=this.message}}
+        {{/if}}
+
         {{#if isSystem}}
           {{chat-system time=this.time message=this.message}}
         {{/if}}
@@ -126,6 +134,14 @@
 <!-- COMPONENTS/CHAT:JOIN -->
 <script type="text/x-handlebars" id="components/chat-join">
   <div data-template="join" class="message join">
+    <div class="meta"><span class="time">{{time}}</span></div>
+    <p><span class="content">{{{message}}}</span></p>
+  </div>
+</script>
+
+<!-- COMPONENTS/CHAT:PART -->
+<script type="text/x-handlebars" id="components/chat-part">
+  <div data-template="part" class="message part">
     <div class="meta"><span class="time">{{time}}</span></div>
     <p><span class="content">{{{message}}}</span></p>
   </div>

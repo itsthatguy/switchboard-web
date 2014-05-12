@@ -77,7 +77,7 @@ App.ChatsArray = Ember.ArrayProxy.extend
 
 
   addMessage: (data, type) ->
-    console.log data
+    console.log "addMessage", data
     channel = data.channel
     if channel?
       chat = App.chats.findBy("name", channel)
@@ -91,6 +91,8 @@ App.ChatsArray = Ember.ArrayProxy.extend
         isNick    : (type == "nick")
         isMessage : (type == "message")
         isSystem  : (type == "system")
+        isJoin    : (type == "join")
+        isPart    : (type == "part")
 
       chat.pushObject(payload)
 

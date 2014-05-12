@@ -36,6 +36,16 @@ class SocketManager
         data.channel = channel
         App.chats.addMessage(data, "nick")
 
+    @Socket.on "JOIN", (data) ->
+      console.log "JOIN: ", data
+      data.message = "#{data.nick} has joined the channel."
+      App.chats.addMessage(data, "join")
+
+    @Socket.on "PART", (data) ->
+      console.log "PART: ", data
+      data.message = "#{data.nick} has left the channel."
+      App.chats.addMessage(data, "part")
+
     @Socket.on "NAMES", (data) ->
       payload =
         channel: data.channel
