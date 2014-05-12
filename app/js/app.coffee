@@ -5,7 +5,7 @@ App.serverData = Ember.Object.create
   server: "irc.freenode.net"
   port: "6667"
   nick: "testviking"
-  avatarURL: "http://minotar.net/avatar/testviking"
+  avatarURL: "http://adorable-avatars.herokuapp.com/avatar/testviking"
   channels: ["#vikinghug"]
 
 console.log "[App.serverData]", App.serverData
@@ -87,7 +87,7 @@ App.ChatsArray = Ember.ArrayProxy.extend
         nick      : data.nick
         message   : data.message
         time      : moment().format('h:mm:ss a')
-        avatarURL : "http://minotar.net/avatar/#{data.nick}"
+        avatarURL : "http://adorable-avatars.herokuapp.com/avatar/#{data.nick}"
         isNick    : (type == "nick")
         isMessage : (type == "message")
         isSystem  : (type == "system")

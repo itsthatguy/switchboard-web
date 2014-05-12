@@ -27,7 +27,7 @@ class SocketManager
       if oldnick == App.serverData.nick
         oldnick = "You are"
         App.serverData.set("nick", newnick)
-        App.serverData.set("avatarURL", "http://minotar.net/avatar/#{newnick}")
+        App.serverData.set("avatarURL", "http://adorable-avatars.herokuapp.com/avatar/#{newnick}")
       else
         oldnick = "#{oldnick} is"
       data.message = "#{oldnick} now known as #{newnick}"
@@ -48,7 +48,7 @@ class SocketManager
     @Socket.on "YOUARE", (data) ->
       console.log "YOUARE: ", {channels: data.channels}
       App.serverData.set("nick", data.nick)
-      App.serverData.set("avatarURL", "http://minotar.net/avatar/#{data.nick}")
+      App.serverData.set("avatarURL", "http://adorable-avatars.herokuapp.com/avatar/#{data.nick}")
       App.chats.joinChats({channels: data.channels})
       App.chats.addMessage(message: JSON.stringify(data), "system")
 
