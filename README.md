@@ -1,4 +1,6 @@
-# Switchboard Multi-Chat Service Client [irc, flowdock, slack, etc...]
+# Switchboard Multi-Chat Service Client (pre-alpha) [irc, flowdock, slack, etc...]
+
+Switchboard is built using a modular adapter system that allows you to integrate custom chat protocols with relative ease. Simply follow the 'Adapter Interface Requirements'. Switchboard and the client will handle the rest.
 
 ## Screenshot!!
 
