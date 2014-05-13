@@ -10,7 +10,7 @@ Switchboard is built using a modular adapter system that allows you to integrate
 
 ## Protocol adapter list
 
-- IRC (done)
+- ~~IRC (done)~~
 - Flowdock (not-started)
 - Slack (not-started)
 - others... (not-started)
