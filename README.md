@@ -1,8 +1,10 @@
 # Switchboard IRC Client
 
-Early screenshot of design work:
+## Screenshot!!
 
-![image](https://cloud.githubusercontent.com/assets/1118006/2670564/69d5a5b4-c0cf-11e3-989b-0c8b296dae90.png)
+Avatars are generated using a (soon to be released) new service built with @bigtiger and @adorableio
+
+![image](https://cloud.githubusercontent.com/assets/1118006/2958223/2faad70a-daa7-11e3-8bb2-96c218469f2f.png)
 
 
 ## Getting started
