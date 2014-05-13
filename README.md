@@ -1,6 +1,20 @@
-# Switchboard Multi-Chat Service Client (pre-alpha) [irc, flowdock, slack, etc...]
+# Switchboard Multi-Chat Service Client (pre-alpha)
 
 Switchboard is built using a modular adapter system that allows you to integrate custom chat protocols with relative ease. Simply follow the 'Adapter Interface Requirements'. Switchboard and the client will handle the rest.
+
+
+### Note
+
+*Currently setup to run locally in the browser, and deploy to a server. Alpha version will include node-webkit version, which removes the express dependency.*
+
+
+## Protocol adapter list
+
+- IRC (done)
+- Flowdock (not-started)
+- Slack (not-started)
+- others... (not-started)
+
 
 ## Screenshot!!
 
@@ -27,3 +41,16 @@ npm start
 ```
 
 Point your browsering devices to: `http://localhost:3002/`
+
+
+## Contributing
+
+There's a ton of work to do. Want to help?
+
+### Ways to help:
+
+- Submit feature requests using github issues
+- Give code review/suggestions
+- Contact me on twitter: [@itg](http://twitter.com/itg)
+
+
