@@ -1,4 +1,4 @@
-# Switchboard Multi-Chat Service Client (pre-alpha)
+# Switchboard Multi-Service Chat Client (pre-alpha)
 
 Switchboard is built using a modular adapter system that allows you to integrate custom chat protocols with relative ease. Simply follow the 'Adapter Interface Requirements'. Switchboard and the client will handle the rest.
 
