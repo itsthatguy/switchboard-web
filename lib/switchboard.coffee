@@ -42,35 +42,4 @@ class Switchboard
           ClientsManager.refresh(client)
 
 
-
-
-        # handleData = (err, doc) ->
-        #   unless doc?
-        #     console.log "NO RECORDS"
-        #     session =
-        #       sid: data.sid
-        #       clientID: ClientsManager.newClient(socket, data.sid)
-        #     console.log "clientID", session
-        #     db.insert(session, (err, newDoc) ->
-        #       console.log "WTF", err, newDoc
-        #     )
-
-        #   else
-        #     console.log "FOUND RECORDS", ClientsManager.getClientID(data.sid)
-        #     session =
-        #       socket: socket
-        #       clientID:  || ClientsManager.newClient(socket, data.sid)
-        #     console.log data.sid
-        #     db.update({sid: data.sid}, {$set: session}, {upsert: true}, (err) ->
-        #       db.findOne({sid: data.sid}, (err, doc) -> console.log "HANDSHAKE <-", data.sid)
-        #       createConnectionEvents()
-        #     )
-
-        # # NEED THIS
-        # db.findOne({sid: data.sid}, handleData)
-
-
-
-
-
 module.exports = new Switchboard()
