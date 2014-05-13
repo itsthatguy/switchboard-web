@@ -50,6 +50,7 @@ There's a ton of work to do. Want to help?
 ### Ways to help:
 
 - Submit feature requests using github issues
+- Build adapters
 - Give code review/suggestions
 - Contact me on twitter: [@itg](http://twitter.com/itg)
 
