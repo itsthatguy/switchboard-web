@@ -12,6 +12,7 @@ Switchboard is built using a modular adapter system that allows you to integrate
 
 - ~~IRC (done)~~
 - Flowdock (not-started)
+- Campfire (not-started) 
 - Slack (not-started)
 - others... (not-started)
 
@@ -40,7 +41,15 @@ When you run `npm start` the server will automatically precompile any files as t
 npm start
 ```
 
-Point your browsering devices to: `http://localhost:3002/`
+Point your browsering devices to: `http://localhost:3002/#/chat/#vikinghug`
+
+#### current commands: 
+
+- `/nick <newnick>` - changes your username
+- `/join <channel>` - joins specified channel
+- `/part` - leaves current channel
+- `/who`- emits App.io.Socket.emit("WHOAMI") and returns result
+- `/test` - returns App.serverData
 
 
 ## Contributing
