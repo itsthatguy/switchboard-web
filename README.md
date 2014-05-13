@@ -1,4 +1,4 @@
-# Switchboard IRC Client
+# Switchboard Multi-Chat Service Client [irc, flowdock, slack, etc...]
 
 ## Screenshot!!
 
