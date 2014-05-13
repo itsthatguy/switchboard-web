@@ -5,7 +5,7 @@ Switchboard is built using a modular adapter system that allows you to integrate
 
 ### Note
 
-*Currently setup to run locally in the browser, and deploy to a server. Alpha version will include node-webkit version, which removes the express dependency.*
+*Currently setup to run locally in the browser, or deploy to a server. The alpha version will include node-webkit version, which removes the express dependency.*
 
 
 ## Protocol adapter list
