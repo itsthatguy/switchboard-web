@@ -1,17 +1,32 @@
+
+# **************************************************************************
 #
-# IRCAdapter
+## IRCAdapter
 #
-# Interface Method Requirements:
-# - setsocket(socket)
-# - connect(data)
-# - disconnect()
-# - join(data)
-# - message(data)
+# **************************************************************************
 #
-# Interface Property Requirements:
-# - id: string
-# - isConnected: boolean
+## Interface Method Requirements:
+#   - setsocket(socket)
+#   - connect(data)
+#   - disconnect()
+#   - join(data)
+#   - message(data)
 #
+## Client socket messages:
+#   These are event messages that are used to communicate with the client.
+#   - (see SERVICE:LISTENERS below)
+#
+## Backend socket messages:
+#   - this.emit('REGISTERED')
+#     - Use this only after a successful connection to let the
+#       ClientsManager know to clear it's queued call stack
+#
+#
+## Interface Property Requirements:
+#   - id: string
+#   - isConnected: boolean
+#
+# **************************************************************************
 
 IRC          = require("irc")
 net          = require("net")
@@ -52,8 +67,34 @@ class IRCAdapter extends EventEmitter
       port: @port
       channels: @channels
 
+
+
+    # **************************************************************************
     #
-    # LISTENER:registered
+    ## SERVICE:LISTENERS
+    #
+    # **************************************************************************
+    #
+    ## Description:
+    #   Service Listeners are listening to the adapter service only. In this
+    #   case, IRC. After intercepting a message from the service, you  will
+    #   need to emit a message on the socket (to the client) which will
+    #   inform it to react.
+    #
+    ## Available outgoing messages
+    #   - this.socket.emit('CONNECTED', connection)
+    #   - this.socket.emit("MESSAGE", payload)
+    #   - this.socket.emit("NICK", payload)
+    #   - this.socket.emit("JOIN", payload)
+    #   - this.socket.emit("PART", payload)
+    #   - this.socket.emit("QUIT", payload)
+    #   - this.socket.emit("NAMES", payload)
+    #   - this.socket.emit("YOUARE", payload)
+    #
+    # **************************************************************************
+
+    #
+    # SERVICE:LISTENER::registered
     @io.addListener "registered", (message) =>
       console.log "<< IRCAdapter::<registered>"
       connection =
@@ -67,7 +108,7 @@ class IRCAdapter extends EventEmitter
       this.emit "REGISTERED"
 
     #
-    # LISTENER:message
+    # SERVICE:LISTENER::message
     @io.addListener "message", (nick, to, text, message) =>
       console.log "<< IRCAdapter::<message>", nick, to, text
       payload =
@@ -77,7 +118,7 @@ class IRCAdapter extends EventEmitter
       @socket.emit "MESSAGE", payload
 
     #
-    # LISTENER:join
+    # SERVICE:LISTENER::join
     @io.addListener "join", (channel, nick, message) =>
       console.log "<< IRCAdapter::<join>", channel, nick, message
       payload =
@@ -87,7 +128,7 @@ class IRCAdapter extends EventEmitter
       @socket.emit "JOIN", payload
 
     #
-    # LISTENER:part
+    # SERVICE:LISTENER::part
     @io.addListener "part", (channel, nick, message) =>
       console.log "<< IRCAdapter::<part>", channel, nick, message
       payload =
@@ -97,19 +138,19 @@ class IRCAdapter extends EventEmitter
       @socket.emit "PART", payload
 
     #
-    # LISTENER:quit
+    # SERVICE:LISTENER::quit
     @io.addListener "quit", (nick, reason, channels, message) =>
       console.log "<< IRCAdapter::<quit>", nick, reason, channels, message
       @socket.emit "QUIT"
 
     #
-    # LISTENER:kick
+    # SERVICE:LISTENER::kick
     @io.addListener "kick", (channel, nick, byNick, reason, message) =>
       console.log "<< IRCAdapter::<kick>", channel, nick, byNick, reason, message
       @socket.emit "KICK"
 
     #
-    # LISTENER:nick
+    # SERVICE:LISTENER::nick
     @io.addListener "nick", (oldnick, newnick, channels, message) =>
       console.log "<< IRCAdapter::<nick>", oldnick, newnick, channels, message
       payload =
@@ -120,7 +161,7 @@ class IRCAdapter extends EventEmitter
       @socket.emit "NICK", payload
 
     #
-    # LISTENER:names
+    # SERVICE:LISTENER::names
     @io.addListener "names", (channel, nicks) =>
       console.log "<< IRCAdapter::<names>"
       payload =
@@ -129,7 +170,7 @@ class IRCAdapter extends EventEmitter
       @socket.emit "NAMES", payload
 
     #
-    # LISTENER:raw
+    # SERVICE:LISTENER::raw
     @io.addListener "raw", (message) =>
       # console.log "<< IRCAdapter::<raw>"
       # @eventsHandler(message)
