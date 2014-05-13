@@ -18,7 +18,7 @@ Switchboard is built using a modular adapter system that allows you to integrate
 
 ## Screenshot!!
 
-Avatars are generated using a (soon to be released) new service built with @bigtiger and @adorableio
+Avatars are generated using a (soon to be released) new service built with [@bigtiger](https://github.com/bigtiger) and [@adorableio](https://github.com/adorableio)
 
 <img src="https://cloud.githubusercontent.com/assets/1118006/2958272/de38007c-daa7-11e3-8682-5d72db11be8d.png" width="514" height="625"/>
 
