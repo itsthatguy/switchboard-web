@@ -12,6 +12,7 @@ Switchboard is built using a modular adapter system that allows you to integrate
 
 - ~~IRC (done)~~
 - Flowdock (not-started)
+- Campfire (not-started) 
 - Slack (not-started)
 - others... (not-started)
 
