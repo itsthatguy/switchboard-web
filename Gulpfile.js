@@ -6,9 +6,12 @@ var gulp       = require('gulp'),
     stylus     = require('gulp-stylus'),
     browserify = require('gulp-browserify'),
     rename     = require('gulp-rename'),
-    livereload = require('gulp-livereload'),
     ejs        = require("gulp-ejs"),
     path       = require("path");
+
+if (process.env.ENVIRONMENT != "PRODUCTION") {
+  livereload = require('gulp-livereload');
+}
 
 var baseAppPath = path.join(__dirname, 'app'),
     baseStaticPath = path.join(__dirname, '.generated'),
@@ -137,14 +140,16 @@ gulp.task('clean', function() {
 // Watch
 //
 gulp.task('watch', ['clean','stylus','coffee','assets', 'ejs'], function() {
-  var server = livereload();
   gulp.watch(paths.cssPath, ['stylus']);
   gulp.watch(paths.coffeePath, ['coffee']);
   gulp.watch(paths.assetsPaths, ['assets']);
   gulp.watch(paths.ejsPath, ['ejs']);
-  gulp.watch(path.join(baseStaticPath, '**')).on('change', function(file) {
-    server.changed(file.path);
-  });
+  if (livereload) {
+    var server = livereload();
+    gulp.watch(path.join(baseStaticPath, '**')).on('change', function(file) {
+      server.changed(file.path);
+    });
+  }
 });
 
 gulp.task('default', ['stylus', 'coffee', 'assets']);
