@@ -26,13 +26,13 @@ class Switchboard
         # - create new client in clientManager
         if not client.id? and not client.adapter?
           console.log "if we don't have a client id or adapter"
-          client = ClientsManager.newClient(socket, data.sid)
+          client = ClientsManager.newClient(socket, data.sid, "flowdock")
 
         # if we have a client but no client adapter
         # - create a new client adapter
         else if client.id? and not client.adapter?
           console.log "if we have a client but no client adapter"
-          client = ClientsManager.newClient(socket, data.sid)
+          client = ClientsManager.newClient(socket, data.sid, "flowdock")
 
         # if we have a client and a client adapter
         # - check. cool

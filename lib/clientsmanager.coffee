@@ -1,5 +1,6 @@
 
-IRCAdapter    = require('./adapters/ircadapter')
+IRCAdapter      = require('./adapters/ircadapter')
+FlowdockAdapter = require('./adapters/flowdockadapter')
 
 
 class ClientsManager
@@ -22,15 +23,29 @@ class ClientsManager
   refresh: (client) ->
     client.adapter.refresh()
 
-  newClient: (socket, id) ->
+  getAdapter: (adapterType) ->
+    switch adapterType
+      when "irc"
+        console.log "IRC"
+      when "flowdock"
+        console.log "flowdock"
+      else console.log "nothing found"
+
+    return FlowdockAdapter
+
+
+  newClient: (socket, id, adapterType) ->
     console.log "ClientsManager::newClient (socket, id) ->", id
+
+    Adapter = @getAdapter(adapterType)
+
     client = @getClient(id)
     if client.id?
       console.log "CLIENT"
-      client.adapter = new IRCAdapter(socket, id)
+      client.adapter = new Adapter(socket, id)
     else
       console.log "NO CLIENT", id
-      client = {id: id, adapter: new IRCAdapter(socket, id)}
+      client = {id: id, adapter: new Adapter(socket, id)}
       @clients.push(client)
 
     @createClientEvents(socket, client)
