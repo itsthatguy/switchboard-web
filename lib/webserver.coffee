@@ -1,8 +1,9 @@
 
-http    = require('http')
-express = require('express')
-path    = require('path')
-crypto  = require('crypto')
+http     = require('http')
+express  = require('express')
+path     = require('path')
+crypto   = require('crypto')
+calmsoul = require('calmsoul')
 
 generateKey = ->
   sha = crypto.createHash('sha256')
@@ -26,16 +27,18 @@ port = process.env.PORT || 3002
 webserver.listen(port)
 
 app.get '/', (req, res) ->
+  console.info "\nWebServer::<app.get '/'>"
   previousSession = req.cookies.sid
   if previousSession?
-    console.log "I see you have a previous session."
+    calmsoul.info " - I see you have a previous session."
   else unless previousSession?
-    console.log "No previous session. let me generate one for you."
+    console.log " - No previous session. let me generate one for you."
     sid = generateKey()
     res.cookie("sid", sid)
   res.render(path.join(basePath, '/index.html'))
 
 app.get '/styleguide', (req, res) ->
+  console.info "\nWebServer::<app.get '/styleguide'>"
   res.render(path.join(staticPath, 'styleguide', 'index.html'))
 
 module.exports = webserver

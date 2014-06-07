@@ -29,7 +29,7 @@
 # **************************************************************************
 
 Config       = require(process.env.PWD + '/config/default.coffee').flowdock
-calmsoul      = require(process.env.PWD + '/lib/utilities/calmsoul.coffee')
+calmsoul     = require('calmsoul')
 Flowdock     = require("Flowdock").Session
 net          = require("net")
 EventEmitter = require('events').EventEmitter
@@ -38,7 +38,7 @@ EventEmitter = require('events').EventEmitter
 # calmsoul.set("debug", on)
 # calmsoul.set("info", on)
 
-calmsoul.set("info": on, "debug": off, "pee": on, "poop": off, )
+calmsoul.set("info": on, "debug": off)
 
 calmsoul.log "CalmSoul::log -> Log Enabled"
 calmsoul.debug "CalmSoul::debug -> Debug Enabled"
@@ -58,7 +58,7 @@ class Flowdock extends EventEmitter
   debug: false
 
   constructor: (socket, id) ->
-    loggins.log("Flowdock") unless @debug?
+    calmsoul.info "\n\n@@Flowdock::constructor ->"
     @id = id
     @socket = socket
 
@@ -67,7 +67,7 @@ class Flowdock extends EventEmitter
 
 
   connect: (data) ->
-    loggins.log ">>>>>", data
+    calmsoul.debug ">>>>>", data
     @server = data.server
     @port = data.port
     @nick = data.nick
@@ -104,7 +104,7 @@ class Flowdock extends EventEmitter
     #
     # SERVICE:LISTENER::registered
     @io.addListener "registered", (message) =>
-      loggins.log "<< Flowdock::<registered>"
+      calmsoul.info "<< Flowdock::<registered>"
       connection =
         server: @server
         port: @port
@@ -118,7 +118,8 @@ class Flowdock extends EventEmitter
     #
     # SERVICE:LISTENER::message
     @io.addListener "message", (nick, to, text, message) =>
-      loggins.log "<< Flowdock::<message>", nick, to, text
+      calmsoul.info "<< Flowdock::<message>"
+      calmsoul.debug nick, to, text
       payload =
         nick: nick
         message: text
@@ -128,7 +129,8 @@ class Flowdock extends EventEmitter
     #
     # SERVICE:LISTENER::join
     @io.addListener "join", (channel, nick, message) =>
-      loggins.log "<< Flowdock::<join>", channel, nick, message
+      calmsoul.info "<< Flowdock::<join>"
+      calmsoul.debug channel, nick, message
       payload =
         nick: nick
         channel: channel
@@ -138,7 +140,8 @@ class Flowdock extends EventEmitter
     #
     # SERVICE:LISTENER::part
     @io.addListener "part", (channel, nick, message) =>
-      loggins.log "<< Flowdock::<part>", channel, nick, message
+      calmsoul.info "<< Flowdock::<part>"
+      calmsoul.debug channel, nick, message
       payload =
         nick: nick
         channel: channel
@@ -148,19 +151,22 @@ class Flowdock extends EventEmitter
     #
     # SERVICE:LISTENER::quit
     @io.addListener "quit", (nick, reason, channels, message) =>
-      loggins.log "<< Flowdock::<quit>", nick, reason, channels, message
+      calmsoul.info "<< Flowdock::<quit>"
+      calmsoul.debug nick, reason, channels, message
       @socket.emit "QUIT"
 
     #
     # SERVICE:LISTENER::kick
     @io.addListener "kick", (channel, nick, byNick, reason, message) =>
-      loggins.log "<< Flowdock::<kick>", channel, nick, byNick, reason, message
+      calmsoul.info "<< Flowdock::<kick>"
+      calmsoul.debug channel, nick, byNick, reason, message
       @socket.emit "KICK"
 
     #
     # SERVICE:LISTENER::nick
     @io.addListener "nick", (oldnick, newnick, channels, message) =>
-      loggins.log "<< Flowdock::<nick>", oldnick, newnick, channels, message
+      calmsoul.info "<< Flowdock::<nick>"
+      calmsoul.debug oldnick, newnick, channels, message
       payload =
         oldnick: oldnick
         newnick: newnick
@@ -171,7 +177,7 @@ class Flowdock extends EventEmitter
     #
     # SERVICE:LISTENER::names
     @io.addListener "names", (channel, nicks) =>
-      loggins.log "<< Flowdock::<names>"
+      calmsoul.info "<< Flowdock::<names>"
       payload =
         channel: channel
         nicks: nicks
@@ -180,13 +186,14 @@ class Flowdock extends EventEmitter
     #
     # SERVICE:LISTENER::raw
     @io.addListener "raw", (message) =>
-      # loggins.log "<< Flowdock::<raw>"
+      calmsoul.info "<< Flowdock::<raw>"
+      # calmsoul.debug message
       # @eventsHandler(message)
 
   disconnect: -> @io.disconnect()
 
   whoAmI: ->
-    loggins.log "> whoAmiI: "
+    calmsoul.info ">> whoAmiI: "
     payload =
       server: @io.opt.server
       nick: @io.nick
@@ -198,7 +205,7 @@ class Flowdock extends EventEmitter
   refresh: -> @getChannels()
 
   join: (data) ->
-    loggins.log "Flowdock::join (data) ->"
+    calmsoul.info ">> Flowdock::join (data) ->"
     io = @io
     for channel in data.channels
       io.join(channel)
@@ -209,23 +216,24 @@ class Flowdock extends EventEmitter
   getChannels: -> return @io.chans
 
   getNames: (data) ->
-    loggins.log "getNames", data
+    calmsoul.info "getNames"
+    calmsoul.debug data
     @io.send("NAMES", data.channel)
 
   message: (data) ->
-    loggins.log "Flowdock::message (data) ->", data
+    calmsoul.info ">> Flowdock::message (data) ->"
+    calmsoul.debug data
     @io.say(data.channel, data.message)
 
   eventsHandler: (data) ->
     command = data.command
 
-    # loggins.log "  [RAW] COMMAND: ", command
+    # calmsoul.debug "  [RAW] COMMAND: ", command
 
     switch command
       when "JOIN"
         @socket.emit "JOIN", {nick: data.nick, channels: data.args}
       when "PRIVMSG"
-        # loggins.log data
         payload =
           nick: data.nick
           message: data.args.splice(1)[0]
