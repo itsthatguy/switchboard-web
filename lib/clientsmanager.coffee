@@ -1,6 +1,7 @@
 
-IRCAdapter    = require('./adapters/ircadapter')
-
+IRCAdapter      = require('./adapters/ircadapter')
+FlowdockAdapter = require('./adapters/flowdockadapter')
+calmsoul        = require('calmsoul')
 
 class ClientsManager
   adapter: null
@@ -10,9 +11,12 @@ class ClientsManager
     { id: 123456, adapter: undefined }
   ]
 
-  constructor: -> return
+  constructor: ->
+    calmsoul.info "\n\n@@ClientsManager::constructor ->"
+    return
 
   setSocket: (socket, client) ->
+    calmsoul.info "\nClientsManager::setSocket (socket, client) ->"
     oldSocket = client.adapter.socket
     @removeClientEvents(oldSocket)
     client.adapter.setSocket(socket)
@@ -22,15 +26,32 @@ class ClientsManager
   refresh: (client) ->
     client.adapter.refresh()
 
-  newClient: (socket, id) ->
-    console.log "ClientsManager::newClient (socket, id) ->", id
+  getAdapter: (adapterType) ->
+    calmsoul.info "\nClientsManager::getAdapter (adapterType) ->"
+    switch adapterType
+      when "irc"
+         calmsoul.info " = IRC"
+      when "flowdock"
+        calmsoul.info " = Flowdock"
+      else calmsoul.info " ! nothing found"
+
+    return FlowdockAdapter
+
+
+  newClient: (socket, id, adapterType) ->
+    calmsoul.info "\nClientsManager::newClient (socket, id) ->"
+    calmsoul.debug id
+
+    Adapter = @getAdapter(adapterType)
+
     client = @getClient(id)
     if client.id?
-      console.log "CLIENT"
-      client.adapter = new IRCAdapter(socket, id)
+      calmsoul.info " - CLIENT"
+      client.adapter = new Adapter(socket, id)
     else
-      console.log "NO CLIENT", id
-      client = {id: id, adapter: new IRCAdapter(socket, id)}
+      calmsoul.info " - NO CLIENT"
+      calmsoul.debug id
+      client = {id: id, adapter: new Adapter(socket, id)}
       @clients.push(client)
 
     @createClientEvents(socket, client)
@@ -38,32 +59,36 @@ class ClientsManager
     return client
 
   getClient: (id) ->
-    console.log "ClientsManager::getClient (id) ->", @clients
+    calmsoul.info "\nClientsManager::getClient (id) ->"
+    calmsoul.debug @clients
     foundClient = { id: null, adapter: null }
     for client in @clients
-      console.log "@clients => client", id, client.id
+      calmsoul.info " - @clients => client"
+      calmsoul.debug id, client.id
       if client.id == id
-        console.log "FOUND CLIENT"
+        calmsoul.info " - FOUND CLIENT"
         foundClient = client
       else
-        console.log "UNABLE TO FIND CLIENT"
+        calmsoul.info " - UNABLE TO FIND CLIENT"
     return foundClient
 
   removeClientEvents: (socket) ->
+    calmsoul.info "\nClientsManager::removeClientEvents (socket) ->"
     socket.removeAllListeners()
 
 
   createClientEvents: (socket, client) ->
-    console.log "ClientsManager::createClientEvents (socket, client) ->"
+    calmsoul.info "\nClientsManager::createClientEvents (socket, client) ->"
 
     socket.on "CONNECT", (data) =>
-      console.log "CONNECT <-", client.adapter.isConnected
+      calmsoul.info " << CONNECT"
+      calmsoul.debug client.adapter.isConnected
       socket.emit("OK")
       if client.adapter.isConnected is false
         client.adapter.connect(data)
 
     client.adapter.on "REGISTERED", =>
-      console.log "> REGISTERED"
+      calmsoul.info " >> REGISTERED"
       @clearQ(client)
 
     socket.on "DISCONNECT", (data) =>  client.adapter.disconnect()
@@ -79,7 +104,8 @@ class ClientsManager
     socket.on "NAMES", (data) => @Q(client, "getNames", data)
 
   Q: (client, fn, data) ->
-    console.log "ClientsManager::Q", client.id
+    calmsoul.info "\nClientsManager::Q (client, fn, data) ->"
+    calmsoul.debug client.id
     if client.adapter.isConnected is false
       client["queue"].push({fn: fn, data: data})
     else
@@ -88,15 +114,17 @@ class ClientsManager
 
 
   clearQ: (client) ->
-    console.log "ClientsManager::clearQ"
+    calmsoul.info "\nClientsManager::clearQ (client) ->"
     for item, n in client["queue"]
-      console.log ">> ", item, n
+      calmsoul.info ">> "
+      calmsoul.debug item, n
       if item?
         client.adapter[item.fn](item.data)
         delete client["queue"][n]
 
 
   disconnect: ->
+    calmsoul.info "\nClientsManager::disconnect ->"
     @adapter.disconnect()
 
 
