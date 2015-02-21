@@ -49,6 +49,7 @@ webserver = (options = {}) ->
 
   app.get '/styleguide', (req, res) ->
     res.render(path.join(staticPath, 'styleguide', 'index.html'))
-    return server
+
+  return server
 
 module.exports = webserver
