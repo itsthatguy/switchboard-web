@@ -5,7 +5,7 @@ paths.watch =
   js  : [path.join(paths.BASE_APP_PATH, 'js', '**', '*.styl*')]
 
 # Watch
-gulp.task 'watch', ['clean','css','js','assets', 'ejs'], ->
+gulp.task 'watch', ['default'], ->
   gulp.watch(paths.watch.css, ['css'])
   gulp.watch(paths.watch.js, ['js'])
   gulp.watch(paths.watch.assets, ['assets'])
