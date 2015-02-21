@@ -35,8 +35,8 @@ describe "When Switchboard is initialized the client:", ->
 ircOpts =
   server: "irc.freenode.net"
   port: "6667"
-  nick: "testviking"
-  channels: ["#vikinghug"]
+  nick: "switchboard-test"
+  channels: ["#switchboard-test"]
 
 
 

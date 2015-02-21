@@ -4,9 +4,9 @@ module.exports = window.App = Ember.Application.create()
 App.serverData = Ember.Object.create
   server: "irc.freenode.net"
   port: "6667"
-  nick: "testviking"
-  avatarURL: "http://adorable-avatars.herokuapp.com/avatar/testviking"
-  channels: ["#vikinghug"]
+  nick: "switchboard-client"
+  avatarURL: "http://api.adorable.io/avatars/switchboard-client"
+  channels: ["#switchboard-test"]
 
 console.log "[App.serverData]", App.serverData
 
