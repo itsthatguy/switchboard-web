@@ -11,6 +11,5 @@ paths.output.assets = paths.BASE_GENERATED_PATH
 # Static Assets
 gulp.task 'assets', ->
   gulp.src(paths.input.assets, {base: paths.BASE_APP_PATH})
-    .on('error', gutil.log)
-    .on('error', gutil.beep)
+    .pipe(plumber())
     .pipe(gulp.dest(paths.output.assets))
