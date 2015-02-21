@@ -1,10 +1,9 @@
 global.path = require("path")
 
-paths =
+module.exports = paths =
   input  : {}
   output : {}
   watch  : {}
-paths.BASE_APP_PATH       = path.join(__dirname, '..', 'app')
-paths.BASE_GENERATED_PATH = path.join(__dirname, '..', '.generated')
-
-module.exports = paths
+paths.ROOT_PATH = path.join(__dirname, '..')
+paths.BASE_APP_PATH       = path.join(paths.ROOT_PATH, 'app')
+paths.BASE_GENERATED_PATH = path.join(paths.ROOT_PATH, '.generated')

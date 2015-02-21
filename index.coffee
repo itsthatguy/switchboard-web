@@ -1,2 +1,1 @@
-Switchboard = require("./lib/switchboard")
-
+switchboard = require("./lib/switchboard")
