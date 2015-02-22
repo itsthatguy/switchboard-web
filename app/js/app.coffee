@@ -87,7 +87,7 @@ App.ChatsArray = Ember.ArrayProxy.extend
         nick      : data.nick
         message   : data.message
         time      : moment().format('h:mm:ss a')
-        avatarURL : "http://adorable-avatars.herokuapp.com/avatar/#{data.nick}"
+        avatarURL : "http://api.adorable.io/avatars/#{data.nick}"
         isNick    : (type == "nick")
         isMessage : (type == "message")
         isSystem  : (type == "system")

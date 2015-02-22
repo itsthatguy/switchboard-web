@@ -1,4 +1,3 @@
-
 IRCAdapter      = require('./adapters/ircadapter')
 FlowdockAdapter = require('./adapters/flowdockadapter')
 calmsoul        = require('calmsoul')
@@ -30,12 +29,13 @@ class ClientsManager
     calmsoul.info "\nClientsManager::getAdapter (adapterType) ->"
     switch adapterType
       when "irc"
-         calmsoul.info " = IRC"
+        calmsoul.info " = IRC"
+        return IRCAdapter
       when "flowdock"
         calmsoul.info " = Flowdock"
+        return FlowdockAdapter
       else calmsoul.info " ! nothing found"
 
-    return FlowdockAdapter
 
 
   newClient: (socket, id, adapterType) ->

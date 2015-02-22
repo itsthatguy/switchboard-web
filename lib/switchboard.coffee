@@ -4,6 +4,7 @@ webserver      = require("./webserver")
 io             = require("socket.io")
 ClientsManager = require("./clientsmanager")
 parseCookie    = require("cookie-parser")
+calmsoul       = require("calmsoul")
 
 switchboard = (options = {}) ->
   server = webserver(options)
@@ -24,13 +25,13 @@ switchboard = (options = {}) ->
       # - create new client in clientManager
       if not client.id? and not client.adapter?
         calmsoul.info " - NO client.id? & NO client.adapter?"
-        client = ClientsManager.newClient(socket, data.sid, "flowdock")
+        client = ClientsManager.newClient(socket, data.sid, "irc")
 
       # if we have a client but no client adapter
       # - create a new client adapter
       else if client.id? and not client.adapter?
         calmsoul.info " - YES client.id? & NO client.adapter?"
-        client = ClientsManager.newClient(socket, data.sid, "flowdock")
+        client = ClientsManager.newClient(socket, data.sid, "irc")
 
       # if we have a client and a client adapter
       # - check. cool
